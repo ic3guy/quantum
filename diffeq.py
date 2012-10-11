@@ -14,17 +14,27 @@ def metitarski(expr, **settings):
 #from matplotlib import *
 
 t = Symbol('t')
-X1 = Symbol('X1')
-X2 = Symbol('X2')
-x1 = Function('x1')(t)
-x2 = Function('x2')(t)
+
+#X1 = Symbol('X1')
+#X2 = Symbol('X2')
+#x1 = Function('x1')(t)
+#x2 = Function('x2')(t)
+
+W = Symbol('W')
+TH = Symbol('TH')
+w = Function('w')(t)
+th = Function('th')(t)
+
 
 #taken from https://groups.google.com/forum/?fromgroups=#!searchin/sympy/derivatives$20back$20substitution/sympy/BcVatqiR5Ss/5506c-y7QvgJ
 
-deriv_dict = {x1.diff(t): x2,
-              x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
+#deriv_dict = {x1.diff(t): x2,
+ #             x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
 
-plot_dict = {x1(t):X1,x2(t):X2}
+deriv_dict = {th.diff(t): w, w.diff(t):-2*sin(th)}
+plot_dict = {th(t):TH, w(t):W}
+
+#plot_dict = {x1(t):X1,x2(t):X2}
 #x1d = x2(t)
 #x2d = sin(x1(t))*cos(x1(t))-10*sin(x1(t))
 
@@ -37,16 +47,15 @@ plotlist = []
 def get_derivs (n, seed):
 
     for n in range(n):
-
         dn = diff(seed).subs(deriv_dict)
-
         #print str(n) + " : "  + str(dn)
         #plot(diff(seed).subs(deriv_dict))
         plotlist.append(dn.subs(plot_dict))
+        #plotlist.append(dn)
         seed = diff(seed).subs(deriv_dict)
 
-get_derivs(3, sin(x1)*cos(x1)-10*sin(x1))
-#print plotlist
+get_derivs(7, -2*sin(th))
+print plotlist
 
 p = Plot()
 
@@ -55,10 +64,9 @@ p = Plot()
 #setrecursionlimit()
 
 for plot in plotlist:
-    p.extend(plot_implicit(Eq(plot,0), (X1,-2,2),(X2,-2,2), adaptive=False, show=False, points=400))
+    p.extend(plot_implicit(Eq(plot,0), (TH,-2,2),(W,-2,2), adaptive=False, show=False, points=400))
 
 p.show()
-
 
 for plot in plotlist:
     print metitarski(plot)

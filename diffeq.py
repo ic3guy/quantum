@@ -2,7 +2,8 @@ from __future__ import division
 from sympy import *
 from sympy.plotting.plot import Plot
 from MetitarskiPrinter import MetitarskiPrinter
-
+from itertools import product
+import subprocess
 
 def metitarski(expr, **settings):
     """Transform an expression to a string with Mathematica syntax. """
@@ -39,7 +40,7 @@ plot_dict = {th(t):TH, w(t):W}
 #x2d = sin(x1(t))*cos(x1(t))-10*sin(x1(t))
 
 odelist = []
-plotlist = []
+plotlist = [W,TH]
 #diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict)
 #print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict)
 #print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict).diff().subs(deriv_dict)
@@ -54,7 +55,7 @@ def get_derivs (n, seed):
         #plotlist.append(dn)
         seed = diff(seed).subs(deriv_dict)
 
-get_derivs(7, -2*sin(th))
+get_derivs(2, -2*sin(th))
 print plotlist
 
 p = Plot()
@@ -63,10 +64,49 @@ p = Plot()
 #getrecursionlimit()
 #setrecursionlimit()
 
-for plot in plotlist:
-    p.extend(plot_implicit(Eq(plot,0), (TH,-2,2),(W,-2,2), adaptive=False, show=False, points=400))
+#for plot in plotlist:
+#    p.extend(plot_implicit(Eq(plot,0), (TH,-pi,pi),(W,-pi,pi), adaptive=False, show=False, points=800))
 
-p.show()
+#p.show()
+
+oplist = ['>','<','=']
 
 for plot in plotlist:
-    print metitarski(plot)
+    odelist.append(metitarski(plot))
+
+#inftest = product(odelist,oplist)
+
+inftest = []
+
+for ode in odelist:
+    predlist = []    
+    for op in oplist:
+        predlist.append('(' + ode + op + '0' + ')')
+
+    inftest.append(predlist)
+
+for element in product(*inftest):
+    print element
+    
+print list(inftest)
+
+metit_options = ['metit', 
+                 '--autoIncludeExtended', 
+                 '--strategy', '1',
+                 '--time','60',
+                 '-']
+
+def make_imp (varlist, preds) :
+    out_string = " & ".join(map(str,preds))
+    return 'fof(stdin,conjecture, ![' + varlist + '] : ((W > -2 & W < 2 & TH > -2 & TH < 2) => ~(' + out_string + '))).'
+
+
+for element in product(*inftest):
+    process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
+    #process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
+    metit_input = make_imp('W,TH', element)
+    #print metit_input
+    process.communicate(metit_input)
+    print "Return code: " + str(process.returncode)
+    if process.returncode == 0: print element
+   

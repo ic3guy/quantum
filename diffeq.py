@@ -55,7 +55,7 @@ def get_derivs (n, seed):
         #plotlist.append(dn)
         seed = diff(seed).subs(deriv_dict)
 
-get_derivs(2, -2*sin(th))
+get_derivs(4, -2*sin(th))
 print plotlist
 
 p = Plot()
@@ -64,12 +64,16 @@ p = Plot()
 #getrecursionlimit()
 #setrecursionlimit()
 
-#for plot in plotlist:
-#    p.extend(plot_implicit(Eq(plot,0), (TH,-pi,pi),(W,-pi,pi), adaptive=False, show=False, points=800))
+for plot in plotlist:
+    p.extend(plot_implicit(Eq(plot,0), (TH,-pi,pi),(W,-pi,pi), adaptive=False, show=False, points=800))
 
-#p.show()
+p.show()
 
-oplist = ['>','<','=']
+vv = sympify('And(' + ','.join([str(x < 0) for x in plotlist]) + ')')
+
+plot_implicit(vv,(TH,-pi,pi), (W,-pi,pi))
+
+oplist = ['>','<']
 
 for plot in plotlist:
     odelist.append(metitarski(plot))
@@ -92,20 +96,20 @@ print list(inftest)
 
 metit_options = ['metit', 
                  '--autoIncludeExtended', 
-                 '--strategy', '1',
-                 '--time','60',
+                 '--strategy','1',
+                 '--time','5',
                  '-']
 
 def make_imp (varlist, preds) :
     out_string = " & ".join(map(str,preds))
-    return 'fof(stdin,conjecture, ![' + varlist + '] : ((W > -2 & W < 2 & TH > -2 & TH < 2) => ~(' + out_string + '))).'
+    return 'fof(stdin,conjecture, ![' + varlist + '] : ((TH>-2 & TH < 2) => ~(' + out_string + '))).'
 
 
 for element in product(*inftest):
-    process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
-    #process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
+    #process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
+    process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
     metit_input = make_imp('W,TH', element)
-    #print metit_input
+    print metit_input
     process.communicate(metit_input)
     print "Return code: " + str(process.returncode)
     if process.returncode == 0: print element

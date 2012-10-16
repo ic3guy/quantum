@@ -16,31 +16,35 @@ def metitarski(expr, **settings):
 
 t = Symbol('t')
 
-#X1 = Symbol('X1')
-#X2 = Symbol('X2')
-#x1 = Function('x1')(t)
-#x2 = Function('x2')(t)
+X1 = Symbol('X1')
+X2 = Symbol('X2')
+x1 = Function('x1')(t)
+x2 = Function('x2')(t)
 
-W = Symbol('W')
-TH = Symbol('TH')
-w = Function('w')(t)
-th = Function('th')(t)
-
+#W = Symbol('W')
+#TH = Symbol('TH')
+#w = Function('w')(t)
+#th = Function('th')(t)
 
 #taken from https://groups.google.com/forum/?fromgroups=#!searchin/sympy/derivatives$20back$20substitution/sympy/BcVatqiR5Ss/5506c-y7QvgJ
 
-#deriv_dict = {x1.diff(t): x2,
- #             x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
+deriv_dict = {x1.diff(t): x2,
+              x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
 
-deriv_dict = {th.diff(t): w, w.diff(t):-2*sin(th)}
-plot_dict = {th(t):TH, w(t):W}
+#deriv_dict = {th.diff(t): w, w.diff(t):-2*sin(th)}
+#plot_dict = {th(t):TH, w(t):W}
 
-#plot_dict = {x1(t):X1,x2(t):X2}
+plot_dict = {x1(t):X1,x2(t):X2}
 #x1d = x2(t)
 #x2d = sin(x1(t))*cos(x1(t))-10*sin(x1(t))
 
 odelist = []
-plotlist = [W,TH]
+#plotlist = [W,TH,5*W-16*TH,-80*W+231*TH]
+
+#plotlist = [X1,X2,0.3345*X2**2+1.4615*sin(X1)**2+1.7959*cos(X1)**2-6.689*cos(X1)+4.6931,X2-0.5]
+plotlist = [X1,X2]
+
+
 #diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict)
 #print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict)
 #print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict).diff().subs(deriv_dict)
@@ -55,7 +59,8 @@ def get_derivs (n, seed):
         #plotlist.append(dn)
         seed = diff(seed).subs(deriv_dict)
 
-get_derivs(4, -2*sin(th))
+#get_derivs(3, -2*sin(th))
+get_derivs(1, sin(x1)*cos(x1)-10*sin(x1))
 print plotlist
 
 p = Plot()
@@ -65,15 +70,16 @@ p = Plot()
 #setrecursionlimit()
 
 for plot in plotlist:
-    p.extend(plot_implicit(Eq(plot,0), (TH,-pi,pi),(W,-pi,pi), adaptive=False, show=False, points=800))
+    p.extend(plot_implicit(Eq(plot,0), (X1,-pi,pi),(X2,-pi,pi), adaptive=False, show=False, points=800))
 
 p.show()
 
 vv = sympify('And(' + ','.join([str(x < 0) for x in plotlist]) + ')')
 
-plot_implicit(vv,(TH,-pi,pi), (W,-pi,pi))
+print 'vv : %s' % vv
+plot_implicit(vv,(X1,-pi,pi), (X2,-pi,pi))
 
-oplist = ['>','<']
+oplist = ['>','<','=']
 
 for plot in plotlist:
     odelist.append(metitarski(plot))
@@ -89,28 +95,39 @@ for ode in odelist:
 
     inftest.append(predlist)
 
-for element in product(*inftest):
-    print element
+#for element in product(*inftest):
+#    print element
     
-print list(inftest)
+#print list(inftest)
 
 metit_options = ['metit', 
-                 '--autoIncludeExtended', 
-                 '--strategy','1',
-                 '--time','5',
+                 '--autoInclude', 
+                 '--time','5', '-t','1',
                  '-']
 
 def make_imp (varlist, preds) :
     out_string = " & ".join(map(str,preds))
-    return 'fof(stdin,conjecture, ![' + varlist + '] : ((TH>-2 & TH < 2) => ~(' + out_string + '))).'
+    out_string = out_string.replace('sin(X1)', 'X')
+    out_string = out_string.replace('cos(X1)', 'Y')
+    #out_string = out_string.replace('sin(X2)', 'A')
+    #out_string = out_string.replace('cos(X2)', 'B')
+    
+    return 'fof(stdin,conjecture, (![' + varlist + '] : ~(X^2+Y^2=1 & (' + out_string + ')))).'
+    #return 'fof(stdin,conjecture, (?[' + varlist + '] : ((X^2+Y^2=1) & (' + out_string + ')))).'
+    #return 'fof(stdin,conjecture, (![' + varlist + '] : ~((X1<pi & X1>-pi) & (' + out_string + ')))).'
 
-
+feasible = 0
+infeasible = 0
+    
 for element in product(*inftest):
     #process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
     process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
-    metit_input = make_imp('W,TH', element)
+    metit_input = make_imp('X1,X2', element)
     print metit_input
     process.communicate(metit_input)
     print "Return code: " + str(process.returncode)
-    if process.returncode == 0: print element
-   
+    if process.returncode == 0: infeasible = infeasible+1
+    if process.returncode == 1: feasible = feasible+1
+    
+print "Feasible %s" % feasible
+print "Infeasible %s" % infeasible

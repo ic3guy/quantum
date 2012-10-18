@@ -8,12 +8,7 @@ import metitarski
 import predicate
 
 
-def metitarski_pp(expr, **settings):
-    """Transform an expression to a string with Mathematica syntax. """
-    p = MetitarskiPrinter(settings)
-    s = p.doprint(expr)
 
-    return s
 
 #from matplotlib import *
 
@@ -31,10 +26,10 @@ x2 = Function('x2')(t)
 
 #taken from https://groups.google.com/forum/?fromgroups=#!searchin/sympy/derivatives$20back$20substitution/sympy/BcVatqiR5Ss/5506c-y7QvgJ
 
-deriv_dict = {x1.diff(t): x2,
+deriv_sub_dict = {x1.diff(t): x2,
               x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
 
-#deriv_dict = {th.diff(t): w, w.diff(t):-2*sin(th)}
+#deriv_sub_dict = {th.diff(t): w, w.diff(t):-2*sin(th)}
 #plot_dict = {th(t):TH, w(t):W}
 
 plot_dict = {x1(t):X1,x2(t):X2}
@@ -48,19 +43,16 @@ plotlist = [X1,X2,0.3345*X2**2+1.4615*sin(X1)**2+1.7959*cos(X1)**2-6.689*cos(X1)
 #plotlist = [X1,X2]
 
 
-#diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict)
-#print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict)
-#print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_dict).diff().subs(deriv_dict).diff().subs(deriv_dict)
+#diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_sub_dict)
+#print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_sub_dict).diff().subs(deriv_sub_dict)
+#print diff(sin(x1)*cos(x1)-10*sin(x1)).subs(deriv_sub_dict).diff().subs(deriv_sub_dict).diff().subs(deriv_sub_dict)
 
 def get_derivs (n, seed):
 
     for n in range(n):
-        dn = diff(seed).subs(deriv_dict)
-        #print str(n) + " : "  + str(dn)
-        #plot(diff(seed).subs(deriv_dict))
+        dn = diff(seed).subs(deriv_sub_dict)
         plotlist.append(dn.subs(plot_dict))
-        #plotlist.append(dn)
-        seed = diff(seed).subs(deriv_dict)
+        seed = diff(seed).subs(deriv_sub_dict)
 
 #get_derivs(3, -2*sin(th))
 get_derivs(1, sin(x1)*cos(x1)-10*sin(x1))

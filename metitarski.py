@@ -1,10 +1,11 @@
 import subprocess
 import re
+import predicate
 #import predicates.State
 
 metit_options = ('metit', 
                  '--autoInclude', 
-                 '--time','5', '-t','0',
+                 '--time','1', '-t','0',
                  '-')
 
 process = None
@@ -30,4 +31,27 @@ def make_fof_inf(state, subsdict=None):
     
     return 'fof(stdin, conjecture, (![%s] : ((X1>-pi & X1<pi) => ~(%s)))).' % (state.varstring, equation)
 
+def make_fof_rel(state, derivative, op):
+
+    return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
+
+def checkTransition(state, pred):
+    next_state_predicates = []
+
+    der = pred.derivative
+    
+    if pred.operator == '<':
+        if not send_to_metit(make_fof_rel(state,der,'<')):
+            next_state_predicates.append(predicate.MetitPredicate(pred.equation),'<')
+        elif not  send_to_metit(make_fof_rel(state,der,'=')):
+            next_state_predicates.append(predicate.MetitPredicate(pred.equation),'<')
+        elif not send_to_metit(make_fof_rel(state,der,'>')):
+            next_state_predicates.extend([predicate.MetitPredicate(pred.equation,'<'),predicate.MetitPredicate(pred.equation,'=')])
+        else:
+            next_state_predicates.extend([predicate.MetitPredicate(pred.equation,'<'),predicate.MetitPredicate(pred.equation,'='), predicate.MetitPredicate(pred.equation,'>')])
+    elif pred.operator ==
+
+    return next_state_predicates
+            
+    
 if __name__ == '__main__': print 'hello world'

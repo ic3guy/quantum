@@ -36,6 +36,9 @@ class MetitEquation:
         
     def __str__(self):
         return metitarski_pp(self.equation.subs(self.vars_dict))
+
+    def print_derivative(self):
+        return metitarski_pp(self.derivative.subs(self.vars_dict))
         
     def plot_format(self, subs_dict):
         return self.equation.subs(subs_dict)
@@ -48,8 +51,11 @@ class MetitPredicate:
     def __init__(self,equation,operator):
         self.equation = equation
         self.operator = operator
-        self.derivative = None
-
+        self.derivative = equation.print_derivative()
+        self.depvar = equation.depvar
+        self.subs_dict = equation.subs_dict
+        self.vars_dict = equation.vars_dict
+        
     def __eq__(self, other):
         return self.equation.equation == other.equation.equation and self.operator == other.operator
         
@@ -65,13 +71,16 @@ class State:
         self.varstring = varstring
 
     def __eq__(self, other):
-        for pred in predicates:
-            if pred not in other:
+        for pred in self.state:
+            #print self.state
+            if pred not in other.state:
+                #print other.state
                 return False
 
         return True
-        
 
+    #def __iter__(self):
+    #    return self
         
     def get_state(self):
         return " & ".join([x.get_equation() for x in self.state])

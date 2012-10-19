@@ -5,17 +5,19 @@ import predicate
 
 metit_options = ('metit', 
                  '--autoInclude', 
-                 '--time','1', '-t','0',
+                 '--time','1',
                  '-')
 
 process = None
 
-def send_to_metit(fof,output=True):
+def send_to_metit(fof,output=False):
     if output:
+        print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
     else:
         process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
 
+    #print fof
     process.communicate(fof)
 
     return process.returncode
@@ -39,17 +41,45 @@ def checkTransition(state, pred):
     next_state_predicates = []
 
     der = pred.derivative
+    pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
+    #the error was above, I was assigning the derivative to the pre equation. Coudln't find a state'
+    
+    lt = make_fof_rel(state,der,'<')
+    eq = make_fof_rel(state,der,'=')
+    gt = make_fof_rel(state,der,'>')
+
+    lt_pred = predicate.MetitPredicate(pre,'<')
+    gt_pred = predicate.MetitPredicate(pre,'>')
+    eq_pred = predicate.MetitPredicate(pre,'=')
     
     if pred.operator == '<':
-        if not send_to_metit(make_fof_rel(state,der,'<')):
-            next_state_predicates.append(predicate.MetitPredicate(pred.equation),'<')
-        elif not  send_to_metit(make_fof_rel(state,der,'=')):
-            next_state_predicates.append(predicate.MetitPredicate(pred.equation),'<')
-        elif not send_to_metit(make_fof_rel(state,der,'>')):
-            next_state_predicates.extend([predicate.MetitPredicate(pred.equation,'<'),predicate.MetitPredicate(pred.equation,'=')])
+        if not send_to_metit(lt):
+            next_state_predicates.extend([lt_pred])
+        elif not  send_to_metit(eq):
+            next_state_predicates.extend([lt_pred])
+        elif not send_to_metit(gt):
+            next_state_predicates.extend([lt_pred,eq_pred])
         else:
-            next_state_predicates.extend([predicate.MetitPredicate(pred.equation,'<'),predicate.MetitPredicate(pred.equation,'='), predicate.MetitPredicate(pred.equation,'>')])
-    elif pred.operator ==
+            next_state_predicates.extend([lt_pred,eq_pred, gt_pred])
+    elif pred.operator == '>':
+        if not send_to_metit(lt):
+            next_state_predicates.extend([gt_pred,eq_pred])
+        elif not send_to_metit(eq):
+            next_state_predicates.extend([gt_pred])
+        elif not send_to_metit(gt):
+            next_state_predicates.extend([gt_pred])
+        else:
+            next_state_predicates.extend([gt_pred,eq_pred])
+    elif pred.operator == '=':
+        if not send_to_metit(lt):
+            next_state_predicates.extend([lt_pred])
+        elif not send_to_metit(eq):
+            next_state_predicates.extend([eq_pred])
+        elif not send_to_metit(gt):
+            next_state_predicates.extend([gt_pred])
+        else:
+            next_state_predicates.extend([gt_pred,eq_pred,lt_pred])
+        
 
     return next_state_predicates
             

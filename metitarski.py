@@ -1,6 +1,7 @@
 import subprocess
 import re
 import predicate
+import uuid
 #import predicates.State
 
 metit_options = ('metit', 
@@ -10,7 +11,7 @@ metit_options = ('metit',
 
 process = None
 
-def send_to_metit(fof,output=False):
+def send_to_metit(fof,output=False,tofile=True):
     if output:
         print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
@@ -20,6 +21,10 @@ def send_to_metit(fof,output=False):
     #print fof
     process.communicate(fof)
 
+    if tofile:
+        if process.returncode==0:
+            send_to_file(fof,'proved',uuid.uuid4())
+            
     return process.returncode
 
 def make_fof_inf(state, subsdict=None):
@@ -36,7 +41,13 @@ def make_fof_inf(state, subsdict=None):
 def make_fof_rel(state, derivative, op):
 
     return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
-
+    
+def send_to_file(formula, directory, name):
+    f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')
+    f.write(formula)
+    f.close()
+        
+    
 def checkTransition(state, pred):
     next_state_predicates = []
 
@@ -60,6 +71,9 @@ def checkTransition(state, pred):
         elif not send_to_metit(gt):
             next_state_predicates.extend([lt_pred,eq_pred])
         else:
+            send_to_file(lt,'unproved',uuid.uuid4())
+            send_to_file(gt,'unproved',uuid.uuid4())
+            send_to_file(eq,'unproved',uuid.uuid4())
             next_state_predicates.extend([lt_pred,eq_pred, gt_pred])
     elif pred.operator == '>':
         if not send_to_metit(lt):
@@ -69,6 +83,9 @@ def checkTransition(state, pred):
         elif not send_to_metit(gt):
             next_state_predicates.extend([gt_pred])
         else:
+            send_to_file(lt,'unproved',uuid.uuid4())
+            send_to_file(gt,'unproved',uuid.uuid4())
+            send_to_file(eq,'unproved',uuid.uuid4())
             next_state_predicates.extend([gt_pred,eq_pred])
     elif pred.operator == '=':
         if not send_to_metit(lt):
@@ -78,6 +95,9 @@ def checkTransition(state, pred):
         elif not send_to_metit(gt):
             next_state_predicates.extend([gt_pred])
         else:
+            send_to_file(lt,'unproved',uuid.uuid4())
+            send_to_file(gt,'unproved',uuid.uuid4())
+            send_to_file(eq,'unproved',uuid.uuid4())
             next_state_predicates.extend([gt_pred,eq_pred,lt_pred])
         
 

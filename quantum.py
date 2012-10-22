@@ -25,7 +25,7 @@ equations.extend(predicate.get_derivs(1,e5))
 
 feasible = 0
 infeasible = 0
-oplist = ['>','=']
+oplist = ['>','=','<']
 inftest = []
     
 for equation in equations:
@@ -36,7 +36,7 @@ system = [predicate.State('X1,X2',*element) for element in product(*inftest)]
 
 for state in system:
     #print metitarski.make_fof_inf(state)
-    rc = metitarski.send_to_metit(metitarski.make_fof_inf(state),output=False)
+    rc = metitarski.send_to_metit(metitarski.make_fof_inf(state),output=False,tofile=False)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False

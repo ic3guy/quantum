@@ -32,17 +32,44 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State('X1,X2',*element) for element in product(*inftest)]
+system = [predicate.State('X1,X2',n,*element) for n,element in enumerate(product(*inftest))]
 
 for state in system:
     #print metitarski.make_fof_inf(state)
-    rc = metitarski.send_to_metit(metitarski.make_fof_inf(state),output=False,tofile=False)
+    fof = metitarski.make_fof_inf(state)
+    rc = metitarski.send_to_metit(fof,output=False,tofile=False)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
     else:
         feasible = feasible+1
-        
+        metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
+
+print "Feasible %s" % feasible
+print "Infeasible %s" % infeasible
+
+print "Second Run"
+
+feasible = 0
+infeasible = 0
+
+options = ('metit', 
+           '--autoInclude', 
+           '--time','30',
+           '-')
+
+for state in system:
+    #print metitarski.make_fof_inf(state)
+    if state.is_feasible:
+        fof = metitarski.make_fof_inf(state)
+        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
+        if rc == 0:
+            infeasible = infeasible+1
+            state.is_feasible = False
+        else:
+            feasible = feasible+1
+            metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
+
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
@@ -52,7 +79,7 @@ def find_states(state_list, preds):
     for sta in preds:
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
     
-for n,state in enumerate(system_f):
+for state in system_f:
     pos_successors = []
     
     for pred in state.state:
@@ -68,14 +95,14 @@ for n,state in enumerate(system_f):
     
     for state2 in product(*pos_successors):
         #print state
-        ss = predicate.State('X1,X2',*state2)
+        ss = predicate.State('X1,X2',666,*state2)
         #print ss
         
-        for x, s in enumerate(system_f):
+        for s in system_f:
             if s == ss:
-                nstate.append(x)
+                nstate.append(s.number)
             #else:
                 #print 'no state found'
 
-    print "From State %s Next State %s" % (n,nstate)
+    print "From State %s Next State %s" % (state.number,nstate)
    # print find_states(system_f,product(*pos_successors))

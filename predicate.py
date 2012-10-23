@@ -65,10 +65,11 @@ class MetitPredicate:
 
 class State:
 
-    def __init__(self, varstring, *predicates):
+    def __init__(self, varstring, number, *predicates):
         self.is_feasible = True
         self.state = predicates
         self.varstring = varstring
+        self.number = number
 
     def __eq__(self, other):
         for pred in self.state:

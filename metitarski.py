@@ -11,7 +11,7 @@ metit_options = ('metit',
 
 process = None
 
-def send_to_metit(fof,output=False,tofile=True):
+def send_to_metit(fof,output=False,tofile=True,metit_options=metit_options):
     if output:
         print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)

@@ -75,6 +75,8 @@ print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
+raw_input()
+
 def find_states(state_list, preds):
     for sta in preds:
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]

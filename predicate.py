@@ -86,6 +86,9 @@ class State:
     def get_state(self):
         return " & ".join([x.get_equation() for x in self.state])
 
+    def get_state_number(self):
+        return str(number)
+
 if __name__ == '__main__':
 
     e1 = MetitEquation('x(t)','t',{},{})

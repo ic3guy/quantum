@@ -1,17 +1,29 @@
 import predicate
 
-def state_to_transition(cur_state, next_states):
-    transition = 'next(state) := case\n'
+def transition_relation(cur_state,next_states):
 
     if len(next_states) == 1:
-        next_states_str = next_states[0]
+        next_states_str = str(next_states[0])
     else:
-        next_states_str = ','.join(next_states)
+        next_states_str = ','.join(map(str,next_states))
         next_states_str = '{' + next_states_str + '}'
     
-    transition = transition + ('state = %s: %s;\n' % (cur_state, next_states_str))
+    return '\t\tstate = %s: %s;\n' % (cur_state, next_states_str)
+    
+def construct_nusmv_input(system, init_state):
+    transition = 'MODULE main\nVAR\n\t'
 
-    transition = transition + ('esac;\n')
+    states = ','.join([s.get_state_number() for s in system])
+    
+    transition = transition + 'state : {%s};\nASSIGN\n\t' % states
+
+    transition = transition + 'init(state) := %s;\n' % str(init_state)
+    transition = transition + '\tnext(state) := case\n'
+
+    for tr in system:
+        transition = transition + transition_relation(tr.get_state_number(),tr.next_states)
+    
+    transition = transition + ('\tesac;\n')
 
     print transition
     
@@ -24,4 +36,14 @@ if __name__ == '__main__':
     p1 = predicate.MetitPredicate(e1,'<')
     p2 = predicate.MetitPredicate(e2,'>')
     p3 = predicate.MetitPredicate(e2, '>')
-    s1 = predicate.State('X,Y',p1,p2,p3)
+    s1 = predicate.State('X,Y',1,[1,2,3],p1,p2,p3)
+    s2 = predicate.State('X,Y',2,[4],p1,p2,p3) 
+    
+    system = [s1,s2]
+
+    construct_nusmv_input(system,3)
+
+
+
+
+

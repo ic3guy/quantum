@@ -48,30 +48,30 @@ for state in system:
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
-print "Second Run"
+#print "Second Run"
 
-feasible = 0
-infeasible = 0
+#feasible = 0
+#infeasible = 0
 
-options = ('metit', 
-           '--autoInclude', 
-           '--time','30',
-           '-')
+#options = ('metit', 
+#           '--autoInclude', 
+#           '--time','30',
+#           '-')
 
-for state in system:
+#for state in system:
     #print metitarski.make_fof_inf(state)
-    if state.is_feasible:
-        fof = metitarski.make_fof_inf(state)
-        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
-        if rc == 0:
-            infeasible = infeasible+1
-            state.is_feasible = False
-        else:
-            feasible = feasible+1
-            metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
+#    if state.is_feasible:
+#        fof = metitarski.make_fof_inf(state)
+#        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
+#        if rc == 0:
+#            infeasible = infeasible+1
+#            state.is_feasible = False
+#        else:
+#            feasible = feasible+1
+#            metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
 
-print "Feasible %s" % feasible
-print "Infeasible %s" % infeasible
+#print "Feasible %s" % feasible
+#print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
@@ -85,7 +85,7 @@ for state in system_f:
     pos_successors = []
     
     for pred in state.state:
-        print pred.operator
+        #print pred.operator
         pos_successors.append(metitarski.checkTransition(state,pred))
 
     #print pos_successors
@@ -107,4 +107,6 @@ for state in system_f:
                 #print 'no state found'
 
     print "From State %s Next State %s" % (state.number,nstate)
+    state.next_states = nstate
    # print find_states(system_f,product(*pos_successors))
+

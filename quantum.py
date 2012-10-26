@@ -2,6 +2,9 @@ from sympy import *
 import metitarski
 from itertools import product
 import predicate
+import datetime
+import os
+import nusmv
 
 t = Symbol('t')
 X1 = Symbol('X1')
@@ -34,44 +37,57 @@ for equation in equations:
 
 system = [predicate.State('X1,X2',n,*element) for n,element in enumerate(product(*inftest))]
 
+now = datetime.datetime.now()
+directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
+
+os.makedirs('/opt/quantum/'+ directory_name + '/firstpass/proved')
+os.makedirs('/opt/quantum/'+ directory_name + '/firstpass/unproved')
+
 for state in system:
     #print metitarski.make_fof_inf(state)
+    print "checking state %s"  % state.get_state_number()
     fof = metitarski.make_fof_inf(state)
     rc = metitarski.send_to_metit(fof,output=False,tofile=False)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
+        print 'it is not feasible, proved'
     else:
         feasible = feasible+1
-        metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
+        print 'it is feasible, unproved'
+        metitarski.send_to_file(fof, directory_name + '/firstpass/unproved', '%s' % state.number)
 
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
-#print "Second Run"
+print "Second Run"
 
-#feasible = 0
-#infeasible = 0
+feasible = 0
+infeasible = 0
 
-#options = ('metit', 
-#           '--autoInclude', 
-#           '--time','30',
-#           '-')
+options = ('metit', 
+           '--autoInclude', 
+           '--time','30',
+           '-')
 
-#for state in system:
+os.makedirs('/opt/quantum/'+ directory_name + '/secondpass/proved')
+os.makedirs('/opt/quantum/'+ directory_name + '/secondpass/unproved')
+
+for state in system:
     #print metitarski.make_fof_inf(state)
-#    if state.is_feasible:
-#        fof = metitarski.make_fof_inf(state)
-#        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
-#        if rc == 0:
-#            infeasible = infeasible+1
-#            state.is_feasible = False
-#        else:
-#            feasible = feasible+1
-#            metitarski.send_to_file(fof, 'unproved', '%s' % state.number)
+    if state.is_feasible:
+        print "checking state %s"  % state.get_state_number()
+        fof = metitarski.make_fof_inf(state)
+        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
+        if rc == 0:
+            infeasible = infeasible+1
+            state.is_feasible = False
+        else:
+            feasible = feasible+1
+            metitarski.send_to_file(fof, directory_name + '/secondpass/unproved', '%s' % state.number)
 
-#print "Feasible %s" % feasible
-#print "Infeasible %s" % infeasible
+print "Feasible %s" % feasible
+print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
@@ -104,9 +120,10 @@ for state in system_f:
             if s == ss:
                 nstate.append(s.number)
             #else:
-                #print 'no state found'
+            #    print 'no state found'
 
     print "From State %s Next State %s" % (state.number,nstate)
     state.next_states = nstate
    # print find_states(system_f,product(*pos_successors))
 
+nusmv.construct_nusmv_input(system_f,23)

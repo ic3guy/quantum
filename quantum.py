@@ -14,17 +14,19 @@ x2 = Function('x2')(t)
     
     
 deriv_dict = {x1.diff(t): x2,
-              x2.diff(t): sin(x1)*cos(x1)-10*sin(x1)}
+              x2.diff(t): -9.8*sin(x1)}
 
 vars_dict = {x1(t) : X1, x2(t) : X2}
     
 equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(sin(x1)*cos(x1)-10*sin(x1),'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931, 't',deriv_dict, vars_dict)]
+             predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(x1-1,'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(x2-1,'t',deriv_dict,vars_dict)]
+             #predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931, 't',deriv_dict, vars_dict)]
 
 e5 = predicate.MetitEquation(deriv_dict[x2.diff(t)],'t',deriv_dict,vars_dict)
-equations.extend(predicate.get_derivs(1,e5))
+equations.extend(predicate.get_derivs(2,e5))
 
 feasible = 0
 infeasible = 0
@@ -47,7 +49,7 @@ for state in system:
     #print metitarski.make_fof_inf(state)
     print "checking state %s"  % state.get_state_number()
     fof = metitarski.make_fof_inf(state)
-    rc = metitarski.send_to_metit(fof,output=False,tofile=False)
+    rc = metitarski.send_to_metit(fof,output=True,tofile=False)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
@@ -91,6 +93,7 @@ print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
+print 'Press -ENTER- to continue'
 raw_input()
 
 def find_states(state_list, preds):

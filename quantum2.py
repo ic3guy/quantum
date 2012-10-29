@@ -18,15 +18,15 @@ deriv_dict = {x1.diff(t): x2,
 
 vars_dict = {x1(t) : X1, x2(t) : X2}
     
-equations = [#predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
-             #predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
+equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict),
              #predicate.MetitEquation(x1-1,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931-15, 't',deriv_dict, vars_dict)]
+             predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict)]
+             #predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931-15, 't',deriv_dict, vars_dict)]
 
 e5 = predicate.MetitEquation(deriv_dict[x2.diff(t)],'t',deriv_dict,vars_dict)
-equations.extend(predicate.get_derivs(3,e5))
+equations.extend(predicate.get_derivs(1,e5))
 
 feasible = 0
 infeasible = 0
@@ -104,8 +104,38 @@ for state in system_f:
     pos_successors = []
     
     for pred in state.state:
-        #print pred.operator
-        pos_successors.append(metitarski.checkTransition(state,pred))
+        Q1,Q2,Q3 = metitarski.checkTransition2(state,pred)
+        print Q1
+        print Q2
+        print Q3
+
+        pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
+        lt_pred = predicate.MetitPredicate(pre,'<')
+        gt_pred = predicate.MetitPredicate(pre,'>')
+        eq_pred = predicate.MetitPredicate(pre,'=')
+
+        if pred.operator == '>':
+            if state in Q1: 
+                pos_successors.append([gt_pred])
+            else:
+                pos_successors.append([gt_pred,eq_pred])
+        elif pred.operator == '<':
+            if state in Q3:
+                pos_successors.append([lt_pred])
+            else:
+                pos_successors.append([lt_pred,eq_pred])
+        else:
+            if state in Q3 and state in Q2:
+                pos_successors.append([gt_pred])
+            elif state in Q3 and state in Q2:
+                pos_successors.append([lt_pred])
+            elif state in Q1 and state in Q3:
+                pos_successors.append([eq_pred])
+            else:
+                pos_successors.append([eq_pred,lt_pred,gt_pred])
+#print pred.operator
+        
+       # pos_successors.append(metitarski.checkTransition(state,pred))
 
     #print pos_successors
     #print "State %s :" % list(product(*pos_successors))

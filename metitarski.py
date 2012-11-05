@@ -41,6 +41,10 @@ def make_fof_inf(state, subsdict=None):
 def make_fof_rel(state, derivative, op):
 
     return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
+
+def make_fof_rel_2(state, derivative, op1, op2):
+
+    return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (state.varstring, state.get_state(), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')
@@ -115,19 +119,19 @@ def checkTransition2(state, pred):
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
     lteq = make_fof_rel(state,der,'<=')
-    gt = make_fof_rel(state,der,'>')
-    lt = make_fof_rel(state,der,'<')
+    gt_or_lt = make_fof_rel_2(state,der,'>', '<')
+    #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel(state,der,'>=')
 
-    if not send_to_metit(gteq):
+    if not send_to_metit(gteq, output=True):
         Q1.append(state)
         print 'In Q1'
     
-    if not send_to_metit(lteq):
+    if not send_to_metit(lteq, output=True):
         Q3.append(state)
         print 'In Q3'
     
-    if not send_to_metit(gt) or not send_to_metit(lt):
+    if not send_to_metit(gt_or_lt,output=True):
         Q2.append(state)
         print 'In Q2'
 

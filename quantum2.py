@@ -126,7 +126,7 @@ for state in system_f:
             else:
                 pos_successors.append([lt_pred,eq_pred])
         else:
-            if state in Q3 and state in Q2:
+            if state in Q1 and state in Q2:
                 pos_successors.append([gt_pred])
             elif state in Q3 and state in Q2:
                 pos_successors.append([lt_pred])

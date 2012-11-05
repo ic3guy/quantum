@@ -5,6 +5,7 @@ import predicate
 import datetime
 import os
 import nusmv
+import timing
 
 t = Symbol('t')
 X1 = Symbol('X1')
@@ -12,6 +13,7 @@ X2 = Symbol('X2')
 x1 = Function('x1')(t)
 x2 = Function('x2')(t)
     
+timing.log("Start Program")
     
 deriv_dict = {x1.diff(t): x2,
               x2.diff(t): -9.8*sin(x1)}
@@ -93,8 +95,8 @@ print "Infeasible %s" % infeasible
 '''
 system_f = [state for state in system if state.is_feasible]
 
-print 'Press -ENTER- to continue'
-raw_input()
+#print 'Press -ENTER- to continue'
+#raw_input()
 
 def find_states(state_list, preds):
     for sta in preds:
@@ -130,3 +132,4 @@ for state in system_f:
    # print find_states(system_f,product(*pos_successors))
 
 nusmv.construct_nusmv_input(system_f,23)
+timing.endlog()

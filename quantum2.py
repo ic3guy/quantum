@@ -19,10 +19,10 @@ deriv_dict = {x1.diff(t): x2,
 vars_dict = {x1(t) : X1, x2(t) : X2}
     
 equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(x2,'t',deriv_dict,vars_dict)]
+             #predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict)
              #predicate.MetitEquation(x1-1,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict)]
+             #predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict)]
              #predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931-15, 't',deriv_dict, vars_dict)]
 
 e5 = predicate.MetitEquation(deriv_dict[x2.diff(t)],'t',deriv_dict,vars_dict)
@@ -99,15 +99,16 @@ raw_input()
 def find_states(state_list, preds):
     for sta in preds:
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
+
     
 for state in system_f:
     pos_successors = []
     
     for pred in state.state:
         Q1,Q2,Q3 = metitarski.checkTransition2(state,pred)
-        print Q1
-        print Q2
-        print Q3
+        print "In Q1 : %s" % Q1
+        print "In Q2 : %s" % Q2
+        print "In Q3 : %s" % Q3
 
         pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
         lt_pred = predicate.MetitPredicate(pre,'<')

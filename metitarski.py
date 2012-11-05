@@ -106,6 +106,11 @@ def checkTransition(state, pred):
 def checkTransition2(state, pred):
     Q1,Q2,Q3 = [],[],[]
 
+    options = ('metit', 
+           '--autoInclude', 
+           '--time','30',
+           '-')
+    
     der = pred.derivative
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
@@ -117,12 +122,14 @@ def checkTransition2(state, pred):
     if not send_to_metit(gteq):
         Q1.append(state)
         print 'In Q1'
-    elif not send_to_metit(lteq):
+    
+    if not send_to_metit(lteq):
         Q3.append(state)
         print 'In Q3'
-    #elif not (send_to_metit(gt) or send_to_metit(lt)):
-    #    Q2.append(state)
-    #    print 'In Q2'
+    
+    if not send_to_metit(gt) or not send_to_metit(lt):
+        Q2.append(state)
+        print 'In Q2'
 
     return (Q1,Q2,Q3)
 

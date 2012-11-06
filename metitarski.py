@@ -118,10 +118,10 @@ def checkTransition2(state, pred):
     der = pred.derivative
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel(state,der,'<=')
+    lteq = make_fof_rel_2(state,der,'<','=')
     gt_or_lt = make_fof_rel_2(state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel(state,der,'>=')
+    gteq = make_fof_rel_2(state,der,'>', '=')
 
     if not send_to_metit(gteq, output=True):
         Q1.append(state)

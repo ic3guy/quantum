@@ -63,7 +63,7 @@ for state in system:
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
-'''print "Second Run"
+print "Second Run"
 
 feasible = 0
 infeasible = 0
@@ -91,7 +91,7 @@ for state in system:
 
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
-'''
+
 system_f = [state for state in system if state.is_feasible]
 
 #print 'Press -ENTER- to continue'

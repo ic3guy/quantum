@@ -40,11 +40,11 @@ def make_fof_inf(state, subsdict=None):
 
 def make_fof_rel(state, derivative, op):
 
-    return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
+    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-pi & X1<pi) & %s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
 
 def make_fof_rel_2(state, derivative, op1, op2):
 
-    return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (state.varstring, state.get_state(), derivative, op1, derivative, op2)
+    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-pi & X1<pi) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, state.get_state(), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')

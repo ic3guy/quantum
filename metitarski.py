@@ -107,7 +107,7 @@ def checkTransition(state, pred):
 
     return next_state_predicates
 
-def checkTransition2(state, pred):
+def checkTransition2(state, pred, x):
     Q1,Q2,Q3 = [],[],[]
 
     options = ('metit', 
@@ -126,14 +126,20 @@ def checkTransition2(state, pred):
     if not send_to_metit(gteq, output=True):
         Q1.append(state)
         print 'In Q1'
+    else: 
+        send_to_file(gteq,'unproved', 'Q1-S:%s-P:%s-O:%sI:>=' % (state.number, x, pred.operator))
     
     if not send_to_metit(lteq, output=True):
         Q3.append(state)
         print 'In Q3'
+    else:
+         send_to_file(gteq,'unproved', 'Q2-S:%s-P:%s-O:%sI:<=' % (state.number, x, pred.operator))
     
     if not send_to_metit(gt_or_lt,output=True):
         Q2.append(state)
         print 'In Q2'
+    else:
+         send_to_file(gteq,'unproved', 'Q3-S:%s-P:%s-O:%sI:><' % (state.number, x, pred.operator))
 
     return (Q1,Q2,Q3)
 

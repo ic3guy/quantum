@@ -21,10 +21,10 @@ vars_dict = {x1(t) : X1, x2(t) : X2}
     
 equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict)]
              #predicate.MetitEquation(x1-1,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931-15, 't',deriv_dict, vars_dict)]
+            #predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict),
+             #predicate.MetitEquation(0.3345*x2**2+1.4615*sin(x1)**2+1.7959*cos(x1)**2-6.689*cos(x1)+4.6931-15, 't',deriv_dict, vars_dict)]
 
 e5 = predicate.MetitEquation(deriv_dict[x2.diff(t)],'t',deriv_dict,vars_dict)
 equations.extend(predicate.get_derivs(1,e5))
@@ -106,8 +106,8 @@ for state in system:
     pos_successors = []
     
     if state.is_feasible:
-        for pred in state.state:
-            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred)
+        for x,pred in enumerate(state.state):
+            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,x)
             print "In Q1 : %s" % Q1
             print "In Q2 : %s" % Q2
             print "In Q3 : %s" % Q3

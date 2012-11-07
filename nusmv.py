@@ -1,7 +1,10 @@
 import predicate
 
-def transition_relation(cur_state,next_states):
-
+def transition_relation(cur_state,next_states, system):
+    
+    #filter out next states that have been shown to have no next state (deleted)
+    next_states = [n for n in next_states if system[n].is_feasible] 
+    
     if len(next_states) == 1:
         next_states_str = str(next_states[0])
     else:
@@ -13,7 +16,7 @@ def transition_relation(cur_state,next_states):
 def construct_nusmv_input(system, init_state):
     transition = 'MODULE main\nVAR\n\t'
 
-    states = ','.join([s.get_state_number() for s in system])
+    states = ','.join([s.get_state_number() for s in system if s.is_feasible])
     
     transition = transition + 'state : {%s};\nASSIGN\n\t' % states
 
@@ -21,7 +24,8 @@ def construct_nusmv_input(system, init_state):
     transition = transition + '\tnext(state) := case\n'
 
     for tr in system:
-        transition = transition + transition_relation(tr.get_state_number(),tr.next_states)
+        if tr.is_feasible:
+            transition = transition + transition_relation(tr.get_state_number(),tr.next_states,system)
     
     transition = transition + ('\tesac;\n')
 

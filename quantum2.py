@@ -63,7 +63,7 @@ for state in system:
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
-print "Second Run"
+'''print "Second Run"
 
 feasible = 0
 infeasible = 0
@@ -91,7 +91,7 @@ for state in system:
 
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
-
+'''
 system_f = [state for state in system if state.is_feasible]
 
 #print 'Press -ENTER- to continue'
@@ -102,39 +102,40 @@ def find_states(state_list, preds):
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
 
     
-for state in system_f:
+for state in system:
     pos_successors = []
     
-    for pred in state.state:
-        Q1,Q2,Q3 = metitarski.checkTransition2(state,pred)
-        print "In Q1 : %s" % Q1
-        print "In Q2 : %s" % Q2
-        print "In Q3 : %s" % Q3
+    if state.is_feasible:
+        for pred in state.state:
+            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred)
+            print "In Q1 : %s" % Q1
+            print "In Q2 : %s" % Q2
+            print "In Q3 : %s" % Q3
 
-        pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
-        lt_pred = predicate.MetitPredicate(pre,'<')
-        gt_pred = predicate.MetitPredicate(pre,'>')
-        eq_pred = predicate.MetitPredicate(pre,'=')
+            pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
+            lt_pred = predicate.MetitPredicate(pre,'<')
+            gt_pred = predicate.MetitPredicate(pre,'>')
+            eq_pred = predicate.MetitPredicate(pre,'=')
 
-        if pred.operator == '>':
-            if state in Q1: 
-                pos_successors.append([gt_pred])
+            if pred.operator == '>':
+                if state in Q1: 
+                    pos_successors.append([gt_pred])
+                else:
+                    pos_successors.append([gt_pred,eq_pred])
+            elif pred.operator == '<':
+                if state in Q3:
+                    pos_successors.append([lt_pred])
+                else:
+                    pos_successors.append([lt_pred,eq_pred])
             else:
-                pos_successors.append([gt_pred,eq_pred])
-        elif pred.operator == '<':
-            if state in Q3:
-                pos_successors.append([lt_pred])
-            else:
-                pos_successors.append([lt_pred,eq_pred])
-        else:
-            if state in Q1 and state in Q2:
-                pos_successors.append([gt_pred])
-            elif state in Q3 and state in Q2:
-                pos_successors.append([lt_pred])
-            elif state in Q1 and state in Q3:
-                pos_successors.append([eq_pred])
-            else:
-                pos_successors.append([eq_pred,lt_pred,gt_pred])
+                if state in Q1 and state in Q2:
+                    pos_successors.append([gt_pred])
+                elif state in Q3 and state in Q2:
+                    pos_successors.append([lt_pred])
+                elif state in Q1 and state in Q3:
+                    pos_successors.append([eq_pred])
+                else:
+                    pos_successors.append([eq_pred,lt_pred,gt_pred])
 #print pred.operator
         
        # pos_successors.append(metitarski.checkTransition(state,pred))
@@ -144,22 +145,26 @@ for state in system_f:
 
     #for state in product(*pos_successors)
 
-    nstate = []
-    
-    for state2 in product(*pos_successors):
+        nstate = []
+        
+        for state2 in product(*pos_successors):
         #print state
-        ss = predicate.State('X1,X2',666,*state2)
+            ss = predicate.State('X1,X2',666,*state2)
         #print ss
         
-        for s in system_f:
-            if s == ss:
-                nstate.append(s.number)
+            for s in system:
+                if s == ss and s.is_feasible:
+                    nstate.append(s.number)
             #else:
-            #    print 'no state found'
-
-    print "From State %s Next State %s" % (state.number,nstate)
-    state.next_states = nstate
+                #print 'no next state state found'
+                
+        if nstate: 
+            print "From State %s Next State %s" % (state.number,nstate)
+            state.next_states = nstate
+        else:
+            print 'no next state found, deleting'
+            state.is_feasible = False
    # print find_states(system_f,product(*pos_successors))
 
-nusmv.construct_nusmv_input(system_f,23)
+nusmv.construct_nusmv_input(system,23)
 timing.endlog()

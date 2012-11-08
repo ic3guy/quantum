@@ -11,7 +11,7 @@ metit_options = ('metit',
 
 process = None
 
-def send_to_metit(fof,output=False,tofile=True,metit_options=metit_options):
+def send_to_metit(fof,output=False,tofile=False,metit_options=metit_options):
     if output:
         print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
@@ -132,17 +132,19 @@ def checkTransition2(state, pred, x):
     #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel_2(state,der,'>', '=')
 
-    if not send_to_metit(gteq, output=True):
-        Q1.append(state)
-        print 'In Q1'
-    else: 
-        send_to_file(gteq,'unproved', 'Q1--S_%s_P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+    if pred.operator == '>' or pred.operator == '=':
+        if not send_to_metit(gteq, output=True):
+            Q1.append(state)
+            print 'In Q1'
+        else: 
+            send_to_file(gteq,'unproved', 'Q1--S_%s--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
-    if not send_to_metit(lteq, output=True):
-        Q3.append(state)
-        print 'In Q3'
-    else:
-         send_to_file(lteq,'unproved', 'Q2--S_%s--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+    if pred.operator == '<' or pred.operator == '=':
+        if not send_to_metit(lteq, output=True):
+            Q3.append(state)
+            print 'In Q3'
+        else:
+            send_to_file(lteq,'unproved', 'Q2--S_%s--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if not send_to_metit(gt_or_lt,output=True):
         Q2.append(state)

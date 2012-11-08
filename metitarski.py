@@ -146,11 +146,12 @@ def checkTransition2(state, pred, x):
         else:
             send_to_file(lteq,'unproved', 'Q2--S_%s--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
-    if not send_to_metit(gt_or_lt,output=True):
-        Q2.append(state)
-        print 'In Q2'
-    else:
-         send_to_file(gt_or_lt,'unproved', 'Q3--S_%s--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+    if pred.operator == '=':
+        if not send_to_metit(gt_or_lt,output=True):
+            Q2.append(state)
+            print 'In Q2'
+        else:
+            send_to_file(gt_or_lt,'unproved', 'Q3--S_%s--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

@@ -1,17 +1,19 @@
 import predicate
 
-def transition_relation(cur_state,next_states, system):  
+def transition_relation(cur_state,next_states,system):  
     if next_states:
         if len(next_states) == 1:
             next_states_str = str(next_states[0])
         else:
             next_states_str = ','.join(map(str,next_states))
             next_states_str = '{' + next_states_str + '}'
+        
+        return '\t\tstate = %s: %s;\n' % (cur_state, next_states_str)
     else:
         system[cur_state].is_feasible = False
+        return '\n'
     
-        return '\t\tstate = %s: %s;\n' % (cur_state, next_states_str)
-    
+            
 def construct_nusmv_input(system, init_state):
     case_block = construct_transition_case_block(system)
     states = ','.join([s.get_state_number() for s in system if s.is_feasible])

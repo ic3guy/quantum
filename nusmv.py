@@ -16,7 +16,7 @@ def transition_relation(cur_state,next_states,system):
             
 def construct_nusmv_input(system, init_state):
     case_block = construct_transition_case_block(system)
-    states = ','.join([s.get_state_number() for s in system if s.is_feasible])
+    states = ','.join([s.get_state_number() for s in system if (s.is_feasible and all(system[state].is_feasible for state in s.next_states))])
 
     nusmv_output = 'MODULE main\nVAR\n\t'
     nusmv_output += 'state : {%s};\nASSIGN\n\t' % states
@@ -60,3 +60,13 @@ def concrete_initial_to_abstract(system, *predicates):
     initial_states = [state.number for state in system if all(p in [pred.equation_string for pred in state.state] for p in predicates) and state.is_feasible]
 
     return initial_states
+
+def construct_safety_ltl_property(bad_states):
+    ltl_property = "LTLSPEC G !("
+
+    for state in bad_states:
+        ltl_property += "state = %s|" % state
+    
+    ltl_property += ")"
+
+    return ltl_property

@@ -54,6 +54,7 @@ class MetitPredicate:
         self.derivative = equation.print_derivative()
         self.depvar = equation.depvar
         self.equation_string = str(equation) + operator + '0'
+        self.plot_format_str = plot_format(equation,operator)
         #self.subs_dict = equation.subs_dict
         #self.vars_dict = equation.vars_dict
         
@@ -63,6 +64,15 @@ class MetitPredicate:
     def get_equation(self):
         #pred_equation = str(self.equation) + self.operator + '0'
         return self.equation_string
+    
+def plot_format(equation, operator):
+    if operator == '=':
+        return 'Eq(%s,0)' % equation
+    else:
+        return str(equation) + operator + '0'
+        
+        
+        
 
 class State:
 

@@ -37,7 +37,7 @@ def make_fof_inf(state, subsdict=None):
         pattern = re.compile("|".join(rep.keys()))
         equation = pattern.sub(lambda m: rep[m.group(0)], equation)
     
-    return 'fof(stdin, conjecture, (![%s] : ((X1>-pi & X1<pi) => ~(%s)))).' % (state.varstring, equation)
+    return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (state.varstring, equation)
 
 def make_fof_rel(state, derivative, op):
 

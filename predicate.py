@@ -53,15 +53,16 @@ class MetitPredicate:
         self.operator = operator
         self.derivative = equation.print_derivative()
         self.depvar = equation.depvar
-        self.subs_dict = equation.subs_dict
-        self.vars_dict = equation.vars_dict
+        self.equation_string = str(equation) + operator + '0'
+        #self.subs_dict = equation.subs_dict
+        #self.vars_dict = equation.vars_dict
         
     def __eq__(self, other):
         return self.equation.equation == other.equation.equation and self.operator == other.operator
         
     def get_equation(self):
-        pred_equation = str(self.equation) + self.operator + '0'
-        return pred_equation
+        #pred_equation = str(self.equation) + self.operator + '0'
+        return self.equation_string
 
 class State:
 

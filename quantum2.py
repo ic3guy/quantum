@@ -7,6 +7,7 @@ import os
 import nusmv
 #import timing
 import time
+from termcolor import colored, cprint
 
 def secondsToStr(t):
     return "%d:%02d:%02d.%03d" % \
@@ -42,10 +43,10 @@ for state in system:
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
-        print 'it is not feasible, proved'
+        cprint('it is not feasible, proved', 'green')
     else:
         feasible = feasible+1
-        print 'it is feasible, unproved'
+        print cprint('it is feasible, unproved', 'red')
         metitarski.send_to_file(fof, directory_name + '/firstpass/unproved', '%s' % state.number)
 
 print "Feasible %s" % feasible

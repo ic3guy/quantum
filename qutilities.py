@@ -27,6 +27,6 @@ def plot_state(state):
 
     v = sympify('And(' + ','.join([s.plot_format_str for s in state.state]) + ')')
    
-    plot_implicit(v,(X1,-pi,pi),(X2,-20,20),title='State %s' % state.number)
+    plot_implicit(v,(X1,-pi,pi),(X2,-20,20),title='State %s' % state.number,linewidth=2,axis=False)
     
     

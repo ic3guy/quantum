@@ -7,7 +7,7 @@ import uuid
 metit_options = ('metit', 
                  '--autoInclude', 
                  '--time','1',
-                 '-q',
+                 '-q', '--allowSF',
                  '-')
 
 process = None
@@ -122,7 +122,7 @@ def checkTransition2(state, pred, x):
 
     options = ('metit', 
                '--autoInclude', 
-               '--time','1',
+               '--time','10','--allowSF',
                '-q',
                '-')
     
@@ -139,21 +139,21 @@ def checkTransition2(state, pred, x):
             Q1.append(state)
             #print 'In Q1'
         else: 
-            send_to_file(gteq,'unproved', 'Q1--S_%s--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gteq,'unproved', 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '<' or pred.operator == '=':
         if not send_to_metit(lteq, output=True,metit_options=options):
             Q3.append(state)
             #print 'In Q3'
         else:
-            send_to_file(lteq,'unproved', 'Q3--S_%s--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(lteq,'unproved', 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '=':
         if not send_to_metit(gt_or_lt,output=True,metit_options=options):
             Q2.append(state)
             #print 'In Q2'
         else:
-            send_to_file(gt_or_lt,'unproved', 'Q2--S_%s--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gt_or_lt,'unproved', 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

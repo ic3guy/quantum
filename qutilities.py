@@ -6,6 +6,7 @@ def save_system(system, filename):
     
     system_to_save = list(system)
 
+
     #sympy functions cannot be pickled, therefore we remove them
     #this shouldn't be an issue
     for state in system_to_save:

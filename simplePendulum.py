@@ -13,7 +13,7 @@ x2 = Function('x2')(t)
 deriv_dict = {x1.diff(t): x2,
               x2.diff(t): -9.8*sin(x1)}
 
-vars_dict = {x1(t) : X1, x2(t) : X2}
+vars_dict = {x1 : X1, x2 : X2}
     
 equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),

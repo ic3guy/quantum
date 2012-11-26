@@ -58,7 +58,7 @@ def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
     if subsdict:
         rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
         pattern = re.compile("|".join(rep.keys()))
-        equation = pattern.sub(lambda m: rep[m.group(0)], equation)
+        derivative = pattern.sub(lambda m: rep[m.group(0)], derivative)
 
     return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
     

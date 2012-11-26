@@ -18,7 +18,8 @@ def secondsToStr(t):
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(t*1000,),1000,60,60])
            
-execfile('/Users/will/Research/quantum/simplePendulum.py')
+#execfile('/Users/will/Research/quantum/simplePendulum.py')
+execfile('simplePendulum.py')
 start_time = time.time()    
 
 feasible = 0
@@ -42,7 +43,7 @@ os.makedirs('/opt/quantum/'+ directory_name + '/firstpass/unproved')
 for state in system:
     #print metitarski.make_fof_inf(state)
     print "checking state %s"  % state.get_state_number()
-    fof = metitarski.make_fof_inf(state)
+    fof = metitarski.make_fof_inf(state,subsdict={'e':'*10^'})
     rc = metitarski.send_to_metit(fof,output=True,tofile=False)
     if rc == 0:
         infeasible = infeasible+1

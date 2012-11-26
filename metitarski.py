@@ -14,7 +14,8 @@ process = None
 
 def send_to_metit(fof,output=False,tofile=False,metit_options=metit_options):
     if output:
-        #print fof
+        
+        print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
     else:
         process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
@@ -39,13 +40,27 @@ def make_fof_inf(state, subsdict=None):
     
     return 'fof(stdin, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) => ~(%s)))).' % (state.varstring, equation)
 
-def make_fof_rel(state, derivative, op):
+def make_fof_rel(state, derivative, op, subsdict=None):
 
-    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, state.get_state(), derivative, op)
+    equation = state.get_state()
+    
+    if subsdict:
+        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+        pattern = re.compile("|".join(rep.keys()))
+        equation = pattern.sub(lambda m: rep[m.group(0)], equation)
+    
+    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(state, derivative, op1, op2):
+def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
 
-    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, state.get_state(), derivative, op1, derivative, op2)
+    equation = state.get_state()
+    
+    if subsdict:
+        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+        pattern = re.compile("|".join(rep.keys()))
+        equation = pattern.sub(lambda m: rep[m.group(0)], equation)
+
+    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')
@@ -129,10 +144,10 @@ def checkTransition2(state, pred, x):
     der = pred.derivative
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(state,der,'<','=')
-    gt_or_lt = make_fof_rel_2(state,der,'>', '<')
+    lteq = make_fof_rel_2(state,der,'<','=',subsdict={'e':'*10^'})
+    gt_or_lt = make_fof_rel_2(state,der,'>', '<',subsdict={'e':'*10^'})
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(state,der,'>', '=')
+    gteq = make_fof_rel_2(state,der,'>', '=',subsdict={'e':'*10^'})
 
     if pred.operator == '>' or pred.operator == '=':
         if not send_to_metit(gteq, output=True,metit_options=options):

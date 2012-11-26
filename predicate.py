@@ -25,7 +25,7 @@ def metitarski_pp(expr, **settings):
     s = p.doprint(expr)
 
     return s
-    
+
 class MetitEquation:
     def __init__(self,equation,depvar,subs_dict,vars_dict):
         self.equation = sympify(equation)

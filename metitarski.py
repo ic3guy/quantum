@@ -137,7 +137,7 @@ def checkTransition2(state, pred, x):
 
     options = ('metit', 
                '--autoInclude', 
-               '--time','10','--allowSF',
+               '--time','5','--allowSF',
                '-q',
                '-')
     

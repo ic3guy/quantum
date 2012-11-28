@@ -94,8 +94,6 @@ system_f = [state for state in system if state.is_feasible]
 def find_states(state_list, preds):
     for sta in preds:
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
-
-
     
 for state in system:
     pos_successors = []
@@ -131,14 +129,6 @@ for state in system:
                     pos_successors.append([eq_pred])
                 else:
                     pos_successors.append([eq_pred,lt_pred,gt_pred])
-#print pred.operator
-        
-       # pos_successors.append(metitarski.checkTransition(state,pred))
-
-    #print pos_successors
-    #print "State %s :" % list(product(*pos_successors))
-
-    #for state in product(*pos_successors)
 
         nstate = []
         

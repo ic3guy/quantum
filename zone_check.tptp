@@ -1,7 +1,0 @@
-fof(stdin,conjecture, 
-(![W,TH] : (-2*W^4*sin(TH) - 44*W^2*sin(TH)*cos(TH) + 24*sin(TH)^3 - 8*sin(TH)*cos(TH)^2 < 0))).
-
-include('Axioms/general.ax').
-include('Axioms/sin.ax').
-include('Axioms/cos.ax').
-include('Axioms/pi.ax').

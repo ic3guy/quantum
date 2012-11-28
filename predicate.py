@@ -27,18 +27,22 @@ def metitarski_pp(expr, **settings):
     return s
 
 class MetitEquation:
-    def __init__(self,equation,depvar,subs_dict,vars_dict):
+    def __init__(self,equation,depvar,subs_dict,vars_dict,is_lyapunov=False):
         self.equation = sympify(equation)
         self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
         self.depvar = depvar
         self.subs_dict = subs_dict
         self.vars_dict = vars_dict
+        self.is_lyapunov = is_lyapunov
         
     def __str__(self):
         return metitarski_pp(self.equation.subs(self.vars_dict))
 
     def print_derivative(self):
-        return metitarski_pp(self.derivative.subs(self.vars_dict))
+        if self.is_lyapunov:
+            return metitarski_pp(self.derivative.subs(self.vars_dict)) + '-10^-2'
+        else:
+            return metitarski_pp(self.derivative.subs(self.vars_dict))
         
     def plot_format(self, subs_dict):
         return self.equation.subs(subs_dict)

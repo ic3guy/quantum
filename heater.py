@@ -6,8 +6,8 @@ t = Symbol('t')
 X = Symbol('X') 
 x = Function('x')(t)
 
-deriv_dict = {'on' : {x.diff(t): -x+100},
-              'off' : {x.diff(t): -x}}
+deriv_dict = {('on',) : {x.diff(t): -x+100},
+              ('off',) : {x.diff(t): -x}}
 
 vars_dict = {x : X}
     

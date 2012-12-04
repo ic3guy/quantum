@@ -103,6 +103,10 @@ class State:
     def get_state_number(self):
         return str(self.number)
 
+    def derivative(self,pred):
+        return pred.equation.diff(pred.depvar).subs(pred.subs_dict(discrete_part))
+
+    
 if __name__ == '__main__':
 
     e1 = MetitEquation('x(t)','t',{},{})

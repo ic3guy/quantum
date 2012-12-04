@@ -145,7 +145,7 @@ def checkTransition2(state, pred, x):
                '-q',
                '-')
     
-    der = pred.derivative
+    der = str(state.derivative(pred))
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
     lteq = make_fof_rel_2(state,der,'<','=',subsdict={'e':'*10^'})

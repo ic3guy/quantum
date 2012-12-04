@@ -60,7 +60,7 @@ print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
-system_fd = make_discrete_system(system_f,['on','off'])
+system_fd = qutilities.make_discrete_system(system_f,['on','off'])
 
 print 'Press -ENTER- to continue'
 raw_input()
@@ -68,61 +68,59 @@ raw_input()
 def find_states(state_list, preds):
     for sta in preds:
         return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
-    
-for state in system:
-    pos_successors = []
-    
-    if state.is_feasible:
-        for x,pred in enumerate(state.state):
-            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,x)
-            print "In Q1 : %s" % Q1
-            print "In Q2 : %s" % Q2
-            print "In Q3 : %s" % Q3
 
-            pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
-            lt_pred = predicate.MetitPredicate(pre,'<')
-            gt_pred = predicate.MetitPredicate(pre,'>')
-            eq_pred = predicate.MetitPredicate(pre,'=')
+for state in system_fd:
+	pos_successors = []
+	for x,pred in enumerate(state.state):
+		Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,x)
+		print "In Q1 : %s" % Q1
+		print "In Q2 : %s" % Q2
+		print "In Q3 : %s" % Q3
 
-            if pred.operator == '>':
-                if state in Q1: 
-                    pos_successors.append([gt_pred])
-                else:
-                    pos_successors.append([gt_pred,eq_pred])
-            elif pred.operator == '<':
-                if state in Q3:
-                    pos_successors.append([lt_pred])
-                else:
-                    pos_successors.append([lt_pred,eq_pred])
-            else:
-                if state in Q1 and state in Q2:
-                    pos_successors.append([gt_pred])
-                elif state in Q3 and state in Q2:
-                    pos_successors.append([lt_pred])
-                elif state in Q1 and state in Q3:
-                    pos_successors.append([eq_pred])
-                else:
-                    pos_successors.append([eq_pred,lt_pred,gt_pred])
+		pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
+		lt_pred = predicate.MetitPredicate(pre,'<')
+		gt_pred = predicate.MetitPredicate(pre,'>')
+		eq_pred = predicate.MetitPredicate(pre,'=')
 
-        nstate = []
+		if pred.operator == '>':
+			if state in Q1: 
+				pos_successors.append([gt_pred])
+			else:
+				pos_successors.append([gt_pred,eq_pred])
+		elif pred.operator == '<':
+			if state in Q3:
+				pos_successors.append([lt_pred])
+			else:
+				pos_successors.append([lt_pred,eq_pred])
+		else:
+			if state in Q1 and state in Q2:
+				pos_successors.append([gt_pred])
+			elif state in Q3 and state in Q2:
+				pos_successors.append([lt_pred])
+			elif state in Q1 and state in Q3:
+				pos_successors.append([eq_pred])
+			else:
+				pos_successors.append([eq_pred,lt_pred,gt_pred])
+				
+		nstate = []
         
-        for state2 in product(*pos_successors):
+	for state2 in product(*pos_successors):
         #print state
-            ss = predicate.State('X',666,'None',*state2)
+		ss = predicate.State('X',666,state.discrete_part,*state2)
         #print ss
         
-            for s in system:
-                if s == ss and s.is_feasible:
-                    nstate.append(s.number)
+		for s in system_fd:
+			if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part:
+				nstate.append(s.number)
             #else:
                 #print 'no next state state found'
                 
-        if nstate: 
-            print "From State %s Next State %s" % (state.number,nstate)
-            state.next_states = nstate
-        else:
-            print 'no next state found, deleting'
-            state.is_feasible = False
+	if nstate: 
+		print "From State %s Next State %s" % (state.number,nstate)
+		state.next_states = nstate
+	else:
+		print 'no next state found, deleting'
+		state.is_feasible = False
    # print find_states(system_f,product(*pos_successors
 
 

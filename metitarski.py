@@ -38,7 +38,9 @@ def make_fof_inf(state, subsdict=None):
         pattern = re.compile("|".join(rep.keys()))
         equation = pattern.sub(lambda m: rep[m.group(0)], equation)
     
-    return 'fof(stdin, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) => ~(%s)))).' % (state.varstring, equation)
+        #return 'fof(stdin, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) => ~(%s)))).' % (state.varstring, equation)
+        return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (state.varstring, equation)
+
 
 def make_fof_rel(state, derivative, op, subsdict=None):
 
@@ -49,7 +51,8 @@ def make_fof_rel(state, derivative, op, subsdict=None):
         pattern = re.compile("|".join(rep.keys()))
         equation = pattern.sub(lambda m: rep[m.group(0)], equation)
     
-    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
+        #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
+        return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
 def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
 
@@ -60,7 +63,8 @@ def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
         pattern = re.compile("|".join(rep.keys()))
         derivative = pattern.sub(lambda m: rep[m.group(0)], derivative)
 
-    return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
+        #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
+        return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')

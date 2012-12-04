@@ -8,6 +8,7 @@ import nusmv
 #import timing
 import time
 from termcolor import colored, cprint
+import qutilities
 
 #abspath = os.path.abspath(__file__)
 #dname = os.path.dirname(abspath)
@@ -19,7 +20,7 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
-execfile('simplePendulum.py')
+execfile('heater.py')
 start_time = time.time()    
 
 feasible = 0
@@ -32,7 +33,7 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State('X1,X2',n,'None',*element) for n,element in enumerate(product(*inftest))]
+system = [predicate.State('X',n,'None',*element) for n,element in enumerate(product(*inftest))]
 
 now = datetime.datetime.now()
 directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
@@ -57,36 +58,10 @@ for state in system:
 print "Feasible %s" % feasible
 print "Infeasible %s" % infeasible
 
-'''print "Second Run"
-
-feasible = 0
-infeasible = 0
-
-options = ('metit', 
-           '--autoInclude', 
-           '--time','30',
-           '-')
-
-os.makedirs('/opt/quantum/'+ directory_name + '/secondpass/proved')
-os.makedirs('/opt/quantum/'+ directory_name + '/secondpass/unproved')
-
-for state in system:
-    #print metitarski.make_fof_inf(state)
-    if state.is_feasible:
-        print "checking state %s"  % state.get_state_number()
-        fof = metitarski.make_fof_inf(state)
-        rc = metitarski.send_to_metit(fof,output=False,tofile=False,metit_options=options)
-        if rc == 0:
-            infeasible = infeasible+1
-            state.is_feasible = False
-        else:
-            feasible = feasible+1
-            metitarski.send_to_file(fof, directory_name + '/secondpass/unproved', '%s' % state.number)
-
-print "Feasible %s" % feasible
-print "Infeasible %s" % infeasible
-'''
 system_f = [state for state in system if state.is_feasible]
+
+for state in system_f:
+	
 
 #print 'Press -ENTER- to continue'
 #raw_input()
@@ -134,7 +109,7 @@ for state in system:
         
         for state2 in product(*pos_successors):
         #print state
-            ss = predicate.State('X1,X2',666,*state2)
+            ss = predicate.State('X',666,'None',*state2)
         #print ss
         
             for s in system:
@@ -149,11 +124,18 @@ for state in system:
         else:
             print 'no next state found, deleting'
             state.is_feasible = False
-   # print find_states(system_f,product(*pos_successors))
+   # print find_states(system_f,product(*pos_successors
 
+
+   
 nusmv.construct_nusmv_input(system,23)
 end_time = time.time()
 
 print 40*'='
 print 'Time taken', secondsToStr(end_time-start_time)
 print 40*'='
+
+#for s in system:
+#	if s.is_feasible:
+#		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
+#			s.discrete_part = 'off'

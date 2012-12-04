@@ -75,17 +75,15 @@ def plot_format(equation, operator):
     else:
         return str(equation) + operator + '0'
         
-        
-        
-
 class State:
 
-    def __init__(self, varstring, number, *predicates):
+    def __init__(self, varstring, number, discrete_part, *predicates):
         self.is_feasible = True
         self.state = predicates
         self.varstring = varstring
         self.number = number
         self.next_states = [] #no variable args and keyword with default
+        self.discrete_part = discrete_part
 
     def __eq__(self, other):
         for pred in self.state:

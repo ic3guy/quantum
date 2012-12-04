@@ -60,11 +60,10 @@ print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
-for state in system_f:
-	
+system_fd = make_discrete_system(system_f,['on','off'])
 
-#print 'Press -ENTER- to continue'
-#raw_input()
+print 'Press -ENTER- to continue'
+raw_input()
 
 def find_states(state_list, preds):
     for sta in preds:

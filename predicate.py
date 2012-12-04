@@ -29,7 +29,7 @@ def metitarski_pp(expr, **settings):
 class MetitEquation:
     def __init__(self,equation,depvar,subs_dict,vars_dict,is_lyapunov=False):
         self.equation = sympify(equation)
-        self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
+        #self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
         self.depvar = depvar
         self.subs_dict = subs_dict
         self.vars_dict = vars_dict
@@ -55,7 +55,7 @@ class MetitPredicate:
     def __init__(self,equation,operator):
         self.equation = equation
         self.operator = operator
-        self.derivative = equation.print_derivative()
+        #self.derivative = equation.print_derivative()
         self.depvar = equation.depvar
         self.equation_string = str(equation) + operator + '0'
         self.plot_format_str = plot_format(equation,operator)
@@ -104,7 +104,7 @@ class State:
         return str(self.number)
 
     def derivative(self,pred):
-        return pred.equation.diff(pred.depvar).subs(pred.subs_dict(discrete_part))
+        return pred.equation.equation.diff(pred.equation.depvar).subs(pred.equation.subs_dict[self.discrete_part])
 
     
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ def transition_relation(cur_state,next_states,system):
             
 def construct_nusmv_input(system, init_state):
     case_block = construct_transition_case_block(system)
-    states = ','.join([s.get_state_number() for s in system if (s.is_feasible and not all(not(system[state].is_feasible) for state in s.next_states))])
+    states = ','.join([s.get_state_number() for key,s in system.iteritems() if (s.is_feasible and not all(not(system[state].is_feasible) for state in s.next_states))])
 
     nusmv_output = 'MODULE main\nVAR\n\t'
     nusmv_output += 'state : {%s};\nASSIGN\n\t' % states
@@ -28,7 +28,7 @@ def construct_nusmv_input(system, init_state):
 def construct_transition_case_block(system):
     case_block = '\tnext(state) := case\n'
     
-    for tr in system:
+    for state_num,tr in system.iteritems():
         #filter out next states that have been shown to have no next state (deleted)
         next_states = [n for n in tr.next_states if (system[n].is_feasible and not all(not(system[s].is_feasible) for s in system[n].next_states))]
         

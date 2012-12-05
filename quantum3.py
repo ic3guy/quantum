@@ -169,7 +169,7 @@ for state in system_fd:
 	
 	
    
-nusmv.construct_nusmv_input(system,23)
+nusmv.construct_nusmv_input(system_fd,2)
 end_time = time.time()
 
 print 40*'='
@@ -181,10 +181,13 @@ print 40*'='
 #		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
 #			s.discrete_part = 'off'
 
+system_fdd = {}
 
-
-    
+#convert from list to dictionary
 for s in system_fd:
+	system_fdd[s.number] = s
+    
+for s in system_fdd:
 	if s.is_feasible:
 		print "From State %s : %s-%s to States %s" % (s.number, s.get_state(),s.discrete_part,s.next_states)
 

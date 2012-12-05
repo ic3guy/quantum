@@ -145,7 +145,7 @@ for state in system_fd:
 	if state.discrete_part == ('on',):
 		for pred in state.state:           
 			if pred == g_pred_80gt or pred == g_pred_80eq:
-				print 'in 80'
+				#print 'in 80'
 				ss = predicate.State('X',666,('off',),*state.state)
 				for s in system_fd:
 					if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
@@ -154,7 +154,7 @@ for state in system_fd:
 		#print 'in off'
 		for pred in state.state:
 			if pred == g_pred_70lt or pred == g_pred_70eq:
-				print 'in 70'
+				#print 'in 70'
 				ss = predicate.State('X',666,('on',),*state.state)
 				for s in system_fd:
 					#print 'searching'
@@ -167,9 +167,10 @@ for state in system_fd:
 		print 'no next state found, no switching'
 		#tate.is_feasible = False
 	
-	
+for s in system_fd:
+	system_fdd[s.number] = s
    
-nusmv.construct_nusmv_input(system_fd,2)
+nusmv.construct_nusmv_input(system_fdd,2)
 end_time = time.time()
 
 print 40*'='
@@ -184,8 +185,6 @@ print 40*'='
 system_fdd = {}
 
 #convert from list to dictionary
-for s in system_fd:
-	system_fdd[s.number] = s
     
 for s in system_fdd:
 	if s.is_feasible:

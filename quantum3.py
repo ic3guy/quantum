@@ -67,12 +67,12 @@ raw_input()
 
 def find_states(state_list, preds):
     for sta in preds:
-        return [x for x,state in enumerate(state_list) if all(i in sta for i in state.state)]
+        return [z for z,state in enumerate(state_list) if all(i in sta for i in state.state)]
 
 for state in system_fd:
 	pos_successors = []
-	for x,pred in enumerate(state.state):
-		Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,x)
+	for z,pred in enumerate(state.state):
+		Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z)
 		print "In Q1 : %s" % Q1
 		print "In Q2 : %s" % Q2
 		print "In Q3 : %s" % Q3
@@ -106,11 +106,11 @@ for state in system_fd:
         
 	for state2 in product(*pos_successors):
         #print state
-		ss = predicate.State('X',666,state.discrete_part,*state2)
+		ss = predicate.State('X',666,state.discrete_part,*state2) #check only states within same discrete mode
         #print ss
         
 		for s in system_fd:
-			if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part:
+			if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
 				nstate.append(s.number)
             #else:
                 #print 'no next state state found'
@@ -123,7 +123,42 @@ for state in system_fd:
 		state.is_feasible = False
    # print find_states(system_f,product(*pos_successors
 
+pre = predicate.MetitEquation(x-80,'t',[],{x : X})
+g_pred_80gt = predicate.MetitPredicate(pre,'>')
+g_pred_80eq = predicate.MetitPredicate(pre,'=')
 
+pre = predicate.MetitEquation(x-70,'t',[],{x : X})	
+g_pred_70lt = predicate.MetitPredicate(pre,'<') 	
+g_pred_70eq = predicate.MetitPredicate(pre,'=') 
+   
+for state in system_fd:
+	nstate = []
+	if state.discrete_part == ('on',):
+		for pred in state.state:           
+			if pred == g_pred_80gt or pred == g_pred_80eq:
+				print 'in 80'
+				ss = predicate.State('X',666,('off',),*state.state)
+				for s in system_fd:
+					if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+						nstate.append(s.number)
+	elif state.discrete_part == ('off',):
+		#print 'in off'
+		for pred in state.state:
+			if pred == g_pred_70lt or pred == g_pred_70eq:
+				print 'in 70'
+				ss = predicate.State('X',666,('on',),*state.state)
+				for s in system_fd:
+					#print 'searching'
+					if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+						nstate.append(s.number)
+	if nstate: 
+		print "From State %s Next State %s" % (state.number,nstate)
+		state.next_states.extend(nstate)
+	else:
+		print 'no next state found, no switching'
+		#tate.is_feasible = False
+	
+	
    
 nusmv.construct_nusmv_input(system,23)
 end_time = time.time()
@@ -136,3 +171,12 @@ print 40*'='
 #	if s.is_feasible:
 #		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
 #			s.discrete_part = 'off'
+
+for s in system_fd:
+	if s.is_feasible:
+		print "From State %s : %s-%s to States %s" % (s.number, s.get_state(),s.discrete_part,s.next_states)
+
+
+
+
+    

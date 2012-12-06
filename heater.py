@@ -6,11 +6,22 @@ t = Symbol('t')
 X = Symbol('X') 
 x = Function('x')(t)
 
+q = [('on',),('off',)]
+
 deriv_dict = {('on',) : {x.diff(t): -x+100},
               ('off',) : {x.diff(t): -x}}
 
 vars_dict = {x : X}
-    
+
+pre = predicate.MetitEquation(x-80,'t',[],{x : X})
+g_pred_80gt = predicate.MetitPredicate(pre,'>')
+g_pred_80eq = predicate.MetitPredicate(pre,'=')
+
+pre = predicate.MetitEquation(x-70,'t',[],{x : X})	
+g_pred_70lt = predicate.MetitPredicate(pre,'<') 	
+g_pred_70eq = predicate.MetitPredicate(pre,'=') 
+
+
 equations = [predicate.MetitEquation(x-70,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(x-80,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(x-68,'t',deriv_dict,vars_dict),

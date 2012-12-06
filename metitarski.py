@@ -7,7 +7,7 @@ import uuid
 metit_options = ('metit', 
                  '--autoInclude', 
                  '--time','1',
-                 '-q', '--allowSF',
+                 '-q',
                  '-')
 
 process = None
@@ -141,7 +141,7 @@ def checkTransition2(state, pred, x):
 
     options = ('metit', 
                '--autoInclude', 
-               '--time','5','--allowSF',
+               '--time','1',
                '-q',
                '-')
     

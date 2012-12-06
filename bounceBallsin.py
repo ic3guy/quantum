@@ -2,8 +2,6 @@ from sympy import *
 from itertools import product
 #product is a name inside sympy, so we can't redefine it here. Otherwise import won't work
 
-#time taken Time taken 0:40:33.411
-
 t = Symbol('t')
 PX = Symbol('PX') #x1 = vx
 PY = Symbol('PY') #x2 = vy
@@ -15,15 +13,23 @@ py = Function('py')(t)
 vx = Function('vx')(t)
 vy = Function('vy')(t)
 
-deriv_dict = {px.diff(t): vx,
-              py.diff(t): vy,
-              vx.diff(t): 0,
-              vy.diff(t): -9.8 + 0.01*vy**2}
+q = [('falling',)] #can just get dictionary keys...
+
+deriv_dict = {('falling',) : {px.diff(t): vx,
+                              py.diff(t): vy,
+                              vx.diff(t): 0,
+                              vy.diff(t): -9.8 + 0.01*vy**2}}
 
 vars_dict = {px : PX, py : PY, vx : VX, vy: VY}
-    
-equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
-             predicate.MetitEquation(x2,'t',deriv_dict,vars_dict),
+
+guard_equation = predicate.MetitEquation(sin(px)-py,'t',deriv_dict,vars_dict)
+guard = predicate.MetitPredicate(guard_equation,'=')
+
+updates = {guard : {'vx' : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
+                    'vy' : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}
+
+equations = [predicate.MetitEquation(vx,'t',deriv_dict,vars_dict),
+             predicate.MetitEquation(vy,'t',deriv_dict,vars_dict),
 #predicate.MetitEquation(-9.8*sin(x1),'t',deriv_dict,vars_dict),
 #predicate.MetitEquation(x1-3.141592654,'t',deriv_dict,vars_dict),
 #predicate.MetitEquation(x2-15,'t',deriv_dict,vars_dict),

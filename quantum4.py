@@ -61,16 +61,16 @@ print "Infeasible %s" % infeasible
 
 system_f = [state for state in system if state.is_feasible]
 
-system_fd = qutilities.make_discrete_system(system_f,['on','off'])
+system_fd = qutilities.make_discrete_system(system_f,q)
 
-pre = predicate.MetitEquation(x-82,'t',[],{x : X})
-g_pred_82gt = predicate.MetitPredicate(pre,'>')
-pre = predicate.MetitEquation(x-68,'t',[],{x : X})
-g_pred_68lt = predicate.MetitPredicate(pre,'<')
+#pre = predicate.MetitEquation(x-82,'t',[],{x : X})
+#g_pred_82gt = predicate.MetitPredicate(pre,'>')
+#pre = predicate.MetitEquation(x-68,'t',[],{x : X})
+#g_pred_68lt = predicate.MetitPredicate(pre,'<')
 
-for s in system_fd:
-	if g_pred_82gt in s.state or g_pred_68lt in s.state:
-		s.is_feasible=False
+#for s in system_fd:
+#	if g_pred_82gt in s.state or g_pred_68lt in s.state:
+#		s.is_feasible=False
 
 #print 'Press -ENTER- to continue'
 #raw_input()
@@ -132,35 +132,19 @@ for state in system_fd:
 		print 'no next state found, deleting'
 		state.is_feasible = False
    # print find_states(system_f,product(*pos_successors
-
-pre = predicate.MetitEquation(x-80,'t',[],{x : X})
-g_pred_80gt = predicate.MetitPredicate(pre,'>')
-g_pred_80eq = predicate.MetitPredicate(pre,'=')
-
-pre = predicate.MetitEquation(x-70,'t',[],{x : X})	
-g_pred_70lt = predicate.MetitPredicate(pre,'<') 	
-g_pred_70eq = predicate.MetitPredicate(pre,'=') 
    
 for state in system_fd:
 	nstate = []
-	if state.discrete_part == ('on',):
-		for pred in state.state:           
-			if pred == g_pred_80gt or pred == g_pred_80eq:
+    for qn,discrete_q in enumerate(q):
+        if state.discrete_part == discrete_q:
+            for pred in state.state:           
+                if pred in state.guards: # or in guard for many
 				#print 'in 80'
-				ss = predicate.State('X',666,('off',),*state.state)
-				for s in system_fd:
-					if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-						nstate.append(s.number)
-	elif state.discrete_part == ('off',):
-		#print 'in off'
-		for pred in state.state:
-			if pred == g_pred_70lt or pred == g_pred_70eq:
-				#print 'in 70'
-				ss = predicate.State('X',666,('on',),*state.state)
-				for s in system_fd:
-					#print 'searching'
-					if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-						nstate.append(s.number)
+                for next_discrete_state in q[qn+1:]:
+                    ss = predicate.State('X',666,next_discrete_state,*state.state)
+                    for s in system_fd:
+                        if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+                            nstate.append(s.number)
 	if nstate: 
 		print "From State %s Next State %s" % (state.number,nstate)
 		state.next_states.extend(nstate)

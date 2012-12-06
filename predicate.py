@@ -84,6 +84,7 @@ class State:
         self.number = number
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
+        self.guards = []
 
     def __eq__(self, other):
         for pred in self.state:

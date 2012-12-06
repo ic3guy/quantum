@@ -35,7 +35,7 @@ def copy_state(state,discrete_part,number):
    return predicate.State('X',number,discrete_part,*state.state)
 
 def make_discrete_system(system, discrete_variables_q):
-
+    #add in the guards to the state, maybe make a guards variable
     system_fd = []
     
     for state in system:

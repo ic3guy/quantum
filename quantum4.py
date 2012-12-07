@@ -63,6 +63,12 @@ system_f = [state for state in system if state.is_feasible]
 
 system_fd = qutilities.make_discrete_system(system_f,q)
 
+for state in system_fd:
+	if [pred for pred in deriv_dict[state.discrete_part]['inv'] if pred in state.state]:
+		state.is_feasible = False
+
+system_fd = [state for state in system_fd if state.is_feasible]
+
 #pre = predicate.MetitEquation(x-82,'t',[],{x : X})
 #g_pred_82gt = predicate.MetitPredicate(pre,'>')
 #pre = predicate.MetitEquation(x-68,'t',[],{x : X})
@@ -138,13 +144,13 @@ for state in system_fd:
 	for qn,discrete_q in enumerate(q):
 		if state.discrete_part == discrete_q:
 			for pred in state.state:
-				for guard in deriv_dict[state.discrete_part]['t']:           
-					if pred in guard[0]: # or in guard for many
-				#print 'in 80'
+				for transition in deriv_dict[state.discrete_part]['t']:
+				    if pred in transition['guard']: # or in guard for many
+						#print 'in 80'
 						for next_discrete_state in q[qn+1:]:
-							ss = predicate.State('X',666,guard[1],*state.state)
-							for s in system_fd:
-								if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+							ss = predicate.State('X',666,transition['next_state'],*state.state)
+						for s in system_fd:
+							if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
 									nstate.append(s.number)
 	if nstate: 
 		print "From State %s Next State %s" % (state.number,nstate)
@@ -172,10 +178,7 @@ print 40*'='
 #		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
 #			s.discrete_part = 'off'
 
-
-
-
-    
+   
 for key,s in system_fdd.iteritems():
 	if s.is_feasible:
 		print "From State %s : %s-%s to States %s" % (s.number, s.get_state(),s.discrete_part,s.next_states)

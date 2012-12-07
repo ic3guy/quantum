@@ -20,8 +20,8 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
-#execfile('heater.py')
-execfile('/Users/will/Research/quantum/heater.py')
+execfile('heater.py')
+#execfile('/Users/will/Research/quantum/heater.py')
 start_time = time.time()    
 
 feasible = 0
@@ -135,16 +135,17 @@ for state in system_fd:
    
 for state in system_fd:
 	nstate = []
-    for qn,discrete_q in enumerate(q):
-        if state.discrete_part == discrete_q:
-            for pred in state.state:           
-                if pred in state.guards: # or in guard for many
+	for qn,discrete_q in enumerate(q):
+		if state.discrete_part == discrete_q:
+			for pred in state.state:
+				for guard in deriv_dict[state.discrete_part]['t']:           
+					if pred in guard[0]: # or in guard for many
 				#print 'in 80'
-                for next_discrete_state in q[qn+1:]:
-                    ss = predicate.State('X',666,next_discrete_state,*state.state)
-                    for s in system_fd:
-                        if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-                            nstate.append(s.number)
+						for next_discrete_state in q[qn+1:]:
+							ss = predicate.State('X',666,guard[1],*state.state)
+							for s in system_fd:
+								if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+									nstate.append(s.number)
 	if nstate: 
 		print "From State %s Next State %s" % (state.number,nstate)
 		state.next_states.extend(nstate)
@@ -152,6 +153,8 @@ for state in system_fd:
 		print 'no next state found, no switching'
 		#tate.is_feasible = False
 
+#convert from list to dictionary
+        
 system_fdd = {}
         
 for s in system_fd:
@@ -171,9 +174,9 @@ print 40*'='
 
 
 
-#convert from list to dictionary
+
     
-for s in system_fdd:
+for key,s in system_fdd.iteritems():
 	if s.is_feasible:
 		print "From State %s : %s-%s to States %s" % (s.number, s.get_state(),s.discrete_part,s.next_states)
 

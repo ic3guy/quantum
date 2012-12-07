@@ -105,7 +105,7 @@ class State:
         return str(self.number)
 
     def derivative(self,pred):
-        return pred.equation.equation.diff(pred.equation.depvar).subs(pred.equation.subs_dict[self.discrete_part]).subs(pred.equation.vars_dict)
+        return pred.equation.equation.diff(pred.equation.depvar).subs(pred.equation.subs_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict)
 
     
 if __name__ == '__main__':

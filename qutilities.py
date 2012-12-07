@@ -38,7 +38,7 @@ def make_discrete_system(system, discrete_variables_q):
     #add in the guards to the state, maybe make a guards variable
     system_fd = []
     
-    for state in system:
+    for state in system:    
         for n,discrete_state in enumerate(itertools.product(discrete_variables_q)):
             system_fd.append(copy_state(state,discrete_part=discrete_state,number=state.number+n*1000))
 

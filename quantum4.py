@@ -146,7 +146,8 @@ for state in system_fd:
 			for pred in state.state:
 				for transition in deriv_dict[state.discrete_part]['t']:
 				    if pred in transition['guard']: # or in guard for many
-						#print 'in 80'
+						#this is where we add assignment X:=F(X) as per tiwari algo
+						#and only do the discrete change if len(q) > 1
 						for next_discrete_state in q[qn+1:]:
 							ss = predicate.State('X',666,transition['next_state'],*state.state)
 						for s in system_fd:

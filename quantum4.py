@@ -63,6 +63,7 @@ system_f = [state for state in system if state.is_feasible]
 
 system_fd = qutilities.make_discrete_system(system_f,q)
 
+#removing states that violate the invariant
 for state in system_fd:
 	if [pred for pred in deriv_dict[state.discrete_part]['inv'] if pred in state.state]:
 		state.is_feasible = False
@@ -140,25 +141,72 @@ for state in system_fd:
    # print find_states(system_f,product(*pos_successors
    
 for state in system_fd:
-	nstate = []
-	for qn,discrete_q in enumerate(q):
-		if state.discrete_part == discrete_q:
-			for pred in state.state:
-				for transition in deriv_dict[state.discrete_part]['t']:
-				    if pred in transition['guard']: # or in guard for many
-						#this is where we add assignment X:=F(X) as per tiwari algo
-						#and only do the discrete change if len(q) > 1
-						for next_discrete_state in q[qn+1:]:
-							ss = predicate.State('X',666,transition['next_state'],*state.state)
-						for s in system_fd:
-							if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-									nstate.append(s.number)
-	if nstate: 
-		print "From State %s Next State %s" % (state.number,nstate)
-		state.next_states.extend(nstate)
-	else:
-		print 'no next state found, no switching'
-		#tate.is_feasible = False
+    nstate = []
+    for qn,discrete_q in enumerate(product(*q)):
+        if state.discrete_part == discrete_q:
+            for pred in state.state:
+                for transition in deriv_dict[state.discrete_part]['t']:
+                    if pred in transition['guard']:
+                        print 'found guard'
+                        pos_successors = []
+                        if deriv_dict[state.discrete_part]['updates']:
+                            print 'doing some updating'
+                            for z,pred2 in enumerate(state.state):
+                                Q1,Q2,Q3 = metitarski.checkTransition3(state,pred,z)
+                                print "In Q1 : %s" % Q1
+                                print "In Q2 : %s" % Q2
+                                print "In Q3 : %s" % Q3
+                        
+                                pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
+                                lt_pred = predicate.MetitPredicate(pre,'<')
+                                gt_pred = predicate.MetitPredicate(pre,'>')
+                                eq_pred = predicate.MetitPredicate(pre,'=')
+
+                                if state in Q1 and state in Q2: 
+                                    pos_successors.append([gt_pred])
+                                elif state in Q3 and state in Q2:
+                                    pos_successors.append([lt_pred])
+                                elif state in Q1 and state in Q3:
+                                    pos_successors.append([eq_pred])
+                                elif state in Q1:
+                                    pos_successors.append([gt_pred,eq_pred])
+                                elif state in Q2:
+                                    pos_successors.append([gt_pred,lt_pred])
+                                elif state in Q3:
+                                    pos_successors.append([lt_pred,eq_pred])
+                                else:
+                                    pos_successors.append([eq_pred,lt_pred,gt_pred])              
+
+                                for state2 in product(*pos_successors):
+                                    ss = predicate.State('X',666,transition['next_state'],*state2) 
+                                    for s in system_fd:
+                                        if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+                                            nstate.append(s.number)
+                                            print 'found new continuous abstract state'
+           
+                
+                                            if nstate: 
+                                                print "From State %s Next State %s" % (state.number,nstate)
+                                                state.next_states = nstate
+                                            else:
+                                                print 'no next state found, deleting'
+                                                state.is_feasible = False
+
+                        for next_discrete_state in q[qn:]: 
+                            #made it from qn+1 to qn
+                            print 'in here'
+                            ss = predicate.State('X',666,transition['next_state'],*state.state)
+                            for s in system_fd:
+                                if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+                                    nstate.append(s.number)
+                                    print nstate
+
+    if nstate: 
+        print "From State %s Next State %s" % (state.number,nstate)
+        state.next_states.extend(nstate)
+    else:
+        print 'no next state found, no switching'
+        #tate.is_feasible = False
 
 #convert from list to dictionary
         

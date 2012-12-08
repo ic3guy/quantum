@@ -20,8 +20,8 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
-execfile('heater.py')
-#execfile('/Users/will/Research/quantum/heater.py')
+#execfile('heater.py')
+execfile('/Users/will/Research/quantum/heater.py')
 start_time = time.time()    
 
 feasible = 0

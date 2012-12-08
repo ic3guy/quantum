@@ -39,7 +39,7 @@ def make_discrete_system(system, discrete_variables_q):
     system_fd = []
     
     for state in system:    
-        for n,discrete_state in enumerate(itertools.product(discrete_variables_q)):
+        for n,discrete_state in enumerate(itertools.product(*discrete_variables_q)):
             system_fd.append(copy_state(state,discrete_part=discrete_state,number=state.number+n*1000))
 
     return system_fd

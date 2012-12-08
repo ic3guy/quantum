@@ -192,7 +192,7 @@ for state in system_fd:
                                                 print 'no next state found, deleting'
                                                 state.is_feasible = False
 
-                        for next_discrete_state in q[qn:]: 
+                        for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn
                             print 'in here'
                             ss = predicate.State('X',666,transition['next_state'],*state.state)

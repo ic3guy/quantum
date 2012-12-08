@@ -21,7 +21,9 @@ def secondsToStr(t):
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
 #execfile('heater.py')
-execfile('/Users/will/Research/quantum/heater.py')
+#execfile('/Users/will/Research/quantum/heater.py')
+execfile('/Users/will/Research/quantum/bounceBallsin.py')
+
 start_time = time.time()    
 
 feasible = 0
@@ -34,7 +36,7 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State('X',n,'None',*element) for n,element in enumerate(product(*inftest))]
+system = [predicate.State('PX,PY,VX,VY',n,'None',*element) for n,element in enumerate(product(*inftest))]
 
 now = datetime.datetime.now()
 directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
@@ -149,10 +151,10 @@ for state in system_fd:
                     if pred in transition['guard']:
                         print 'found guard'
                         pos_successors = []
-                        if deriv_dict[state.discrete_part]['updates']:
+                        if transition['updates']:
                             print 'doing some updating'
                             for z,pred2 in enumerate(state.state):
-                                Q1,Q2,Q3 = metitarski.checkTransition3(state,pred,z)
+                                Q1,Q2,Q3 = metitarski.checkTransition3(state,pred,z,deriv_dict,transition)
                                 print "In Q1 : %s" % Q1
                                 print "In Q2 : %s" % Q2
                                 print "In Q3 : %s" % Q3

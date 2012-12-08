@@ -176,7 +176,7 @@ def checkTransition2(state, pred, x):
 
     return (Q1,Q2,Q3)
 
-def checkTransition3(state, pred, x, deriv_dict):
+def checkTransition3(state, pred, x, deriv_dict,transition):
     Q1,Q2,Q3 = [],[],[]
 
     options = ('metit', 
@@ -185,8 +185,8 @@ def checkTransition3(state, pred, x, deriv_dict):
                '-q',
                '-')
     
-    der = pred.equation.subs(deriv_dict[state.discrete_part]['t']['updates']).subs(pred.equations.vars_dict)
-                             
+    der = pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict)
+    print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
     lteq = make_fof_rel_2(state,der,'<','=',subsdict={'e':'*10^'})

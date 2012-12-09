@@ -22,7 +22,7 @@ def secondsToStr(t):
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
 #execfile('heater.py')
 #execfile('/Users/will/Research/quantum/heater.py')
-execfile('/Users/will/Research/quantum/bounceBallsin.py')
+execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
 
 start_time = time.time()    
 
@@ -36,7 +36,7 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State('PX,PY,VX,VY',n,'None',*element) for n,element in enumerate(product(*inftest))]
+system = [predicate.State('PX,PY,VX,VY',n,'None', deriv_dict,*element) for n,element in enumerate(product(*inftest))]
 
 now = datetime.datetime.now()
 directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
@@ -125,7 +125,7 @@ for state in system_fd:
         
 	for state2 in product(*pos_successors):
         #print state
-		ss = predicate.State('X',666,state.discrete_part,*state2) #check only states within same discrete mode
+		ss = predicate.State('X',666,state.discrete_part, deriv_dict,*state2) #check only states within same discrete mode
         #print ss
         
 		for s in system_fd:
@@ -180,7 +180,7 @@ for state in system_fd:
                                     pos_successors.append([eq_pred,lt_pred,gt_pred])              
 
                                 for state2 in product(*pos_successors):
-                                    ss = predicate.State('X',666,transition['next_state'],*state2) 
+                                    ss = predicate.State('X',666,transition['next_state'], deriv_dict,*state2) 
                                     for s in system_fd:
                                         if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
                                             nstate.append(s.number)
@@ -197,7 +197,7 @@ for state in system_fd:
                         for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn
                             print 'in here'
-                            ss = predicate.State('X',666,transition['next_state'],*state.state)
+                            ss = predicate.State('X',666,transition['next_state'], deriv_dict,*state.state)
                             for s in system_fd:
                                 if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
                                     nstate.append(s.number)

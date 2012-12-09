@@ -15,7 +15,9 @@ vy = Function('vy')(t)
 
 q = [('falling',)] #can just get dictionary keys...
 
-guard_equation = predicate.MetitEquation(sin(px)-py,'t',deriv_dict,vars_dict)
+vars_dict = {px : PX, py : PY, vx : VX, vy: VY}
+
+guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)
 guard = predicate.MetitPredicate(guard_equation,'=')
 
 deriv_dict = {('falling',) : {'flow' : {px.diff(t): vx,
@@ -28,7 +30,7 @@ deriv_dict = {('falling',) : {'flow' : {px.diff(t): vx,
                                                    'vy' : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}],
                               'inv' : []}}
 
-vars_dict = {px : PX, py : PY, vx : VX, vy: VY}
+
 
 equations = [predicate.MetitEquation(px,'t',deriv_dict,vars_dict),
              predicate.MetitEquation(py,'t',deriv_dict,vars_dict),

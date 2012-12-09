@@ -77,7 +77,7 @@ def plot_format(equation, operator):
         
 class State:
 
-    def __init__(self, varstring, number, discrete_part, *predicates):
+    def __init__(self, varstring, number, discrete_part, deriv_dict, *predicates):
         self.is_feasible = True
         self.state = predicates
         self.varstring = varstring
@@ -85,6 +85,7 @@ class State:
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
         self.guards = []
+        self.deriv_dict = deriv_dict
 
     def __eq__(self, other):
         for pred in self.state:
@@ -105,7 +106,7 @@ class State:
         return str(self.number)
 
     def derivative(self,pred):
-        return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(pred.equation.subs_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
+        return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
 
     
 if __name__ == '__main__':

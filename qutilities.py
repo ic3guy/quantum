@@ -32,7 +32,7 @@ def plot_state(state):
     plot_implicit(v,(X1,-pi,pi),(X2,-20,20),title='State %s' % state.number,linewidth=2,axis=False)
 
 def copy_state(state,discrete_part,number):
-   return predicate.State('X',number,discrete_part,*state.state)
+   return predicate.State('X',number,discrete_part,state.deriv_dict,*state.state)
 
 def make_discrete_system(system, discrete_variables_q):
     #add in the guards to the state, maybe make a guards variable

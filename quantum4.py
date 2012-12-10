@@ -22,7 +22,8 @@ def secondsToStr(t):
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
 #execfile('heater.py')
 #execfile('/Users/will/Research/quantum/heater.py')
-execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
+#execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
+execfile('bounceBallsin.py',globals())
 
 start_time = time.time()    
 
@@ -200,18 +201,25 @@ for state in system_fd:
                             ss = predicate.State('X',666,transition['next_state'], deriv_dict,*state.state)
                             for s in system_fd:
                                 if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-                                    nstate.append(s.number)
-                                    print nstate
-
-    if nstate: 
-        print "From State %s Next State %s" % (state.number,nstate)
-        state.next_states.extend(nstate)
+									if s.number not in state.next_states and s.number not in nstate: 
+										nstate.append(s.number)
+										print nstate
+									else:
+										print 'already in nstate or next_states'
+    if nstate:
+		#if [i for i in nstate if i in state.next_states]: 
+		print "From State %s Next State %s" % (state.number,nstate)
+		state.next_states.extend(nstate)
     else:
         print 'no next state found, no switching'
         #tate.is_feasible = False
 
+
+#remove duplicate next states.
+for s in system_fd:
+	s.next_states = list(set(s.next_states))
+
 #convert from list to dictionary
-        
 system_fdd = {}
         
 for s in system_fd:

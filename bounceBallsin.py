@@ -19,6 +19,7 @@ vars_dict = {px : PX, py : PY, vx : VX, vy: VY}
 
 guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)
 guard = predicate.MetitPredicate(guard_equation,'=')
+g_inv = predicate.MetitPredicate(guard_equation,'<')
 
 inv = predicate.MetitEquation(px,'t',[],vars_dict)
 inv_pred_pxlz = predicate.MetitPredicate(inv, '<')
@@ -41,7 +42,7 @@ deriv_dict = {('falling',) : {'flow' : {px.diff(t): vx,
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}],
-                              'inv' : (inv_pred_vylz, inv_pred_vxlz, inv_pred_pylz, inv_pred_pxlz)}}
+                              'inv' : (inv_pred_pylz, inv_pred_pxlz, g_inv)}}
 
 
 

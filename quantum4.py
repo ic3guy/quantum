@@ -20,11 +20,11 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
-execfile('simplePendulum2.py')
+#execfile('simplePendulum2.py')
 #execfile('heater.py')
 #execfile('/Users/will/Research/quantum/heater.py')
 #execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
-#execfile('bounceBallsin.py',globals())
+execfile('bounceBallsin.py')
 
 meti_vars = 'X1, X2'
 

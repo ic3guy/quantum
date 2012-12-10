@@ -185,7 +185,7 @@ def checkTransition3(state, pred, x, deriv_dict,transition):
                '-q',
                '-')
     
-    der = str(pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict))
+    der = predicate.metitarski_pp(pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict))
     print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 

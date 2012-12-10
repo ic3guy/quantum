@@ -6,7 +6,7 @@ import uuid
 
 metit_options = ('metit', 
                  '--autoInclude', 
-                 '--time','1',
+                 '--time','4','--allowSF',
                  '-q',
                  '-')
 
@@ -56,6 +56,7 @@ def make_fof_rel(state, derivative, op, subsdict=None):
 
 def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
 
+    print state.varstring
     equation = state.get_state()
     
     if subsdict:
@@ -141,7 +142,7 @@ def checkTransition2(state, pred, x):
 
     options = ('metit', 
                '--autoInclude', 
-               '--time','1',
+               '--time','4', '--allowSF',
                '-q',
                '-')
     

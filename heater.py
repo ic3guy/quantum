@@ -27,13 +27,11 @@ g_pred_68eq = predicate.MetitPredicate(pre,'=')
 q = [('on','off')]
 
 deriv_dict = {('on',) : {'flow' : {x.diff(t): -x+100},
-                           't' : [{'guard': (g_pred_80gt,g_pred_80eq), 'next_state' : ('off',)}],
-                           'inv' : (g_pred_82eq,g_pred_82gt),
-                           'updates' : []},  
+                           't' : [{'guard': (g_pred_80gt,g_pred_80eq), 'next_state' : ('off',), 'updates' : ()}],
+                           'inv' : (g_pred_82eq,g_pred_82gt)},  
               ('off',) : {'flow': {x.diff(t): -x},
-                            't' : [{'guard': (g_pred_70lt,g_pred_70eq), 'next_state' : ('on',)}],
-                            'inv' : (g_pred_68eq,g_pred_68lt),
-                            'updates' : []}}
+                            't' : [{'guard': (g_pred_70lt,g_pred_70eq), 'next_state' : ('on',), 'updates' : ()}],
+                            'inv' : (g_pred_68eq,g_pred_68lt)}}
 
 vars_dict = {x : X}
 

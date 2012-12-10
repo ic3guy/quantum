@@ -106,7 +106,12 @@ class State:
         return str(self.number)
 
     def derivative(self,pred):
-        return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
+        if pred.equation.is_lyapunov:
+            return  metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict)) + '-10^-2'
+        else:
+            return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
+
+       
 
     
 if __name__ == '__main__':

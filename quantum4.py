@@ -20,10 +20,13 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
            
 #execfile('/Users/will/Research/quantum/simplePendulum.py')
+execfile('simplePendulum2.py')
 #execfile('heater.py')
 #execfile('/Users/will/Research/quantum/heater.py')
 #execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
-execfile('bounceBallsin.py',globals())
+#execfile('bounceBallsin.py',globals())
+
+meti_vars = 'X1, X2'
 
 start_time = time.time()    
 
@@ -37,7 +40,7 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State('PX,PY,VX,VY',n,'None', deriv_dict,*element) for n,element in enumerate(product(*inftest))]
+system = [predicate.State(meti_vars,n,'None', deriv_dict,*element) for n,element in enumerate(product(*inftest))]
 
 now = datetime.datetime.now()
 directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
@@ -126,7 +129,7 @@ for state in system_fd:
         
 	for state2 in product(*pos_successors):
         #print state
-		ss = predicate.State('X',666,state.discrete_part, deriv_dict,*state2) #check only states within same discrete mode
+		ss = predicate.State(meti_vars,666,state.discrete_part, deriv_dict,*state2) #check only states within same discrete mode
         #print ss
         
 		for s in system_fd:
@@ -181,7 +184,7 @@ for state in system_fd:
                                     pos_successors.append([eq_pred,lt_pred,gt_pred])              
 
                                 for state2 in product(*pos_successors):
-                                    ss = predicate.State('X',666,transition['next_state'], deriv_dict,*state2) 
+                                    ss = predicate.State(meti_vars,666,transition['next_state'], deriv_dict,*state2) 
                                     for s in system_fd:
                                         if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
                                             nstate.append(s.number)
@@ -198,7 +201,7 @@ for state in system_fd:
                         for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn
                             print 'in here'
-                            ss = predicate.State('X',666,transition['next_state'], deriv_dict,*state.state)
+                            ss = predicate.State(meti_vars,666,transition['next_state'], deriv_dict,*state.state)
                             for s in system_fd:
                                 if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
 									if s.number not in state.next_states and s.number not in nstate: 

@@ -42,7 +42,7 @@ deriv_dict = {('falling',) : {'flow' : {px.diff(t): vx,
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}],
-                              'inv' : (inv_pred_pylz, inv_pred_pxlz, g_inv)}}
+                              'inv' : (g_inv,)}}
 
 
 

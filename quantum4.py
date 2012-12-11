@@ -26,7 +26,7 @@ def secondsToStr(t):
 #execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
 execfile('bounceBallsin.py')
 
-meti_vars = 'X1, X2'
+meti_vars = 'PX, PY, VX, VY'
 
 start_time = time.time()    
 

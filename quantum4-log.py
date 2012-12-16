@@ -21,7 +21,7 @@ def secondsToStr(t):
 
 exp_name = 'simplePendulum3.py'
 filename = '/Users/will/Research/quantum/' + exp_name
-bad = True
+bad = False
 
 execfile(filename)
 #execfile('simplePendulum2.py')
@@ -40,6 +40,11 @@ f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
 f.write(40*'*'+'\n')
 f.write(filename + '\n')
 f.write(40*'*' + '\n')
+
+eq_list = ','.join([str(eq) for eq in equations])
+
+f.write('Metit in Bad State : %s\n' % bad)
+f.write('Predicates : %s : %s\n' % (len(equations), eq_list))
 
 feasible = 0
 infeasible = 0

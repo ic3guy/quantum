@@ -21,4 +21,4 @@ equations = [predicate.MetitEquation(x1,'t',deriv_dict,vars_dict),
 #predicate.MetitEquation(1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.0084319171,'t',deriv_dict,vars_dict,is_lyapunov=True)]
 
 e5 = predicate.MetitEquation(deriv_dict[('cont',)]['flow'][x2.diff(t)],'t',deriv_dict,vars_dict)
-equations.extend(predicate.get_derivs(2,e5))
+equations.extend(predicate.get_derivs(3,e5))

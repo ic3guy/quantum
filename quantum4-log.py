@@ -31,7 +31,7 @@ execfile(filename)
 #execfile('bounceBallsin.py')
 
 
-meti_vars = 'PX, PY, VX, VY'
+meti_vars = ','.join(map(str,vars_dict.values()))
 
 start_time = time.time()    
 

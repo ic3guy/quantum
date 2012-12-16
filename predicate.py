@@ -13,7 +13,7 @@ def get_derivs(n, seed):
     derivatives = []
 
     for n in range(n):
-        dn = MetitEquation(seed.equation.diff(seed.depvar).subs(seed.subs_dict[('cont',)]['flow']).subs(seed.vars_dict),seed.depvar,seed.subs_dict,seed.vars_dict)
+        dn = MetitEquation(seed.equation.diff(seed.depvar).subs(seed.subs_dict[('cont',)]['flow']),'t',seed.subs_dict,seed.vars_dict)
         derivatives.append(dn)
         seed = dn
 

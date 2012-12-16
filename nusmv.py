@@ -23,7 +23,7 @@ def construct_nusmv_input(system, init_state):
     nusmv_output += 'init(state) := %s;\n' % str(init_state)
     nusmv_output += case_block
 
-    print nusmv_output
+    return nusmv_output
 
 def construct_transition_case_block(system):
     case_block = '\tnext(state) := case\n'

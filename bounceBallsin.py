@@ -15,6 +15,8 @@ vy = Function('vy')(t)
 
 q = [('falling',)] #can just get dictionary keys...
 
+bad = False
+
 vars_dict = {px : PX, py : PY, vx : VX, vy: VY}
 
 guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)

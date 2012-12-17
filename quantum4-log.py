@@ -19,9 +19,9 @@ def secondsToStr(t):
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(t*1000,),1000,60,60])
 
-exp_name = 'simplePendulum3.py'
+#exp_name = 'simplePendulum3.py'
 filename = '/Users/will/Research/quantum/' + exp_name
-bad = False
+#bad = True
 
 execfile(filename)
 #execfile('simplePendulum2.py')

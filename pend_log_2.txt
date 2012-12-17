@@ -1,0 +1,86 @@
+****************************************
+/Users/will/Research/quantum/simplePendulum.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : X1,X2,-9.8*X2*cos(X1)
+Number of initial abstract states : 27 
+Number of feasible 17, Number of infeasible 10 
+Abstract Feasibility took 0:00:29.220 
+Number of initial states in hybrid system abs : 17 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 17
+Cont abstraction took : 0:01:45.957
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 67
+Total number of states in final abstract system: 17
+Total Time taken : 0:02:15.179
+****************************************
+/Users/will/Research/quantum/simplePendulumbad.py
+****************************************
+Metit in Bad State : True
+Predicates : 3 : X1,X2,-9.8*X2*cos(X1)
+Number of initial abstract states : 27 
+Number of feasible 17, Number of infeasible 10 
+Abstract Feasibility took 0:00:29.025 
+Number of initial states in hybrid system abs : 17 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 17
+Cont abstraction took : 0:00:00.185
+Total Time for Discrete Abstraction: 0:00:00.044
+Total number of abstract transitions: 113
+Total number of states in final abstract system: 17
+Total Time taken : 0:00:29.256
+****************************************
+/Users/will/Research/quantum/simplePendulum1.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1)
+Number of initial abstract states : 81 
+Number of feasible 41, Number of infeasible 40 
+Abstract Feasibility took 0:01:21.730 
+Number of initial states in hybrid system abs : 41 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 41
+Cont abstraction took : 0:04:31.937
+Total Time for Discrete Abstraction: 0:00:00.021
+Total number of abstract transitions: 111
+Total number of states in final abstract system: 41
+Total Time taken : 0:05:53.691
+****************************************
+/Users/will/Research/quantum/simplePendulum1b.py
+****************************************
+Metit in Bad State : True
+Predicates : 4 : X1,X2,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1)
+Number of initial abstract states : 81 
+Number of feasible 41, Number of infeasible 40 
+Abstract Feasibility took 0:01:21.991 
+Number of initial states in hybrid system abs : 41 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 41
+Cont abstraction took : 0:00:00.734
+Total Time for Discrete Abstraction: 0:00:00.040
+Total number of abstract transitions: 433
+Total number of states in final abstract system: 41
+Total Time taken : 0:01:22.769
+****************************************
+/Users/will/Research/quantum/simplePendulum4.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 0.0084319171,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 4.3084319171,-9.8*X2*cos(X1)
+Number of initial abstract states : 243 
+Number of feasible 76, Number of infeasible 167 
+Abstract Feasibility took 0:03:54.820 
+Number of initial states in hybrid system abs : 76 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 75
+Cont abstraction took : 0:12:55.880
+Total Time for Discrete Abstraction: 0:00:00.119
+Total number of abstract transitions: 436
+Total number of states in final abstract system: 76
+Total Time taken : 0:16:50.823
+****************************************
+/Users/will/Research/quantum/simplePendulum4b.py
+****************************************
+Metit in Bad State : True
+Predicates : 5 : X1,X2,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 0.0084319171,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 4.3084319171,-9.8*X2*cos(X1)
+Number of initial abstract states : 243 

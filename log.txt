@@ -1,0 +1,80 @@
+****************************************
+/Users/will/Research/quantum/bounceBallsin2a.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:30.983 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:18:57.437
+Total Time for Discrete Abstraction: 0:18:11.146
+Total number of abstract transitions: 744
+Total number of states in final abstract system: 126
+Total Time taken : 0:43:39.574
+****************************************
+/Users/will/Research/quantum/bounceBallsin2b.py
+****************************************
+Metit in Bad State : True
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:30.689 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 126
+Cont abstraction took : 0:00:14.540
+Total Time for Discrete Abstraction: 0:05:18.909
+Total number of abstract transitions: 10290
+Total number of states in final abstract system: 126
+Total Time taken : 0:12:04.161
+****************************************
+/Users/will/Research/quantum/bounceBallsin.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:30.810 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:16:08.906
+Total Time for Discrete Abstraction: 0:18:11.081
+Total number of abstract transitions: 668
+Total number of states in final abstract system: 126
+Total Time taken : 0:40:50.806
+****************************************
+/Users/will/Research/quantum/bounceBallsinb.py
+****************************************
+Metit in Bad State : True
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:30.407 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 126
+Cont abstraction took : 0:00:14.856
+Total Time for Discrete Abstraction: 0:04:47.162
+Total number of abstract transitions: 10290
+Total number of states in final abstract system: 126
+Total Time taken : 0:11:32.448
+****************************************
+/Users/will/Research/quantum/bounceBallsin.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:31.416 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:16:08.895
+Total Time for Discrete Abstraction: 0:18:11.820
+Total number of abstract transitions: 668
+Total number of states in final abstract system: 126
+Total Time taken : 0:40:52.139

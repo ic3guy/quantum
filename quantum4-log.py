@@ -20,7 +20,9 @@ def secondsToStr(t):
             [(t*1000,),1000,60,60])
 
 #exp_name = 'simplePendulum3.py'
-filename = '/Users/will/Research/quantum/' + exp_name
+
+#filename = '/Users/will/Research/quantum/' + exp_name
+filename = exp_name
 #bad = True
 
 execfile(filename)
@@ -35,7 +37,8 @@ meti_vars = ','.join(map(str,vars_dict.values()))
 
 start_time = time.time()    
 
-f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
+#f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
+f = open('log.txt', 'a', 0)
 
 f.write(40*'*'+'\n')
 f.write(filename + '\n')
@@ -129,7 +132,7 @@ for state in system_fd:
         if bad:
             Q1,Q2,Q3 = ([],[],[])
         else:
-            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z)
+            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z,directory_name=filename+'.dir')
         
         print "In Q1 : %s" % Q1
         print "In Q2 : %s" % Q2
@@ -288,7 +291,8 @@ for s in system_fd:
 	system_fdd[s.number] = s
    
 
-SMV = open('/Users/will/Research/quantum/'+exp_name+'.smv','w')
+#SMV = open('/Users/will/Research/quantum/'+exp_name+'.smv','w')
+SMV = open(exp_name+'.smv','w')
 
 smv_output = nusmv.construct_nusmv_input(system_fdd,2)
 

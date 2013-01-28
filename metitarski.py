@@ -2,6 +2,7 @@ import subprocess
 import re
 import predicate
 import uuid
+import os
 #import predicates.State
 
 metit_options = ('metit', 
@@ -137,7 +138,10 @@ def pred_2_text(pred):
         return 'eq'
 
 
-def checkTransition2(state, pred, x):
+def checkTransition2(state, pred, x, directory_name):
+
+    #os.makedirs('/opt/quantum/'+ directory_name + '/unproved')
+    
     Q1,Q2,Q3 = [],[],[]
 
     options = ('metit', 
@@ -159,21 +163,21 @@ def checkTransition2(state, pred, x):
             Q1.append(state)
             #print 'In Q1'
         else: 
-            send_to_file(gteq,'unproved', 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gteq,directory_name+'/unproved', 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '<' or pred.operator == '=':
         if not send_to_metit(lteq, output=True,metit_options=options):
             Q3.append(state)
             #print 'In Q3'
         else:
-            send_to_file(lteq,'unproved', 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(lteq,directory_name+'/unproved', 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '=':
         if not send_to_metit(gt_or_lt,output=True,metit_options=options):
             Q2.append(state)
             #print 'In Q2'
         else:
-            send_to_file(gt_or_lt,'unproved', 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gt_or_lt,directory_name+'/unproved', 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

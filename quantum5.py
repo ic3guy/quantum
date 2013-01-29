@@ -91,7 +91,7 @@ os.makedirs(disc_trans_unproved_dir)
 for state in system:
     #print metitarski.make_fof_inf(state)
     print "checking state %s"  % state.get_state_number()
-    fof = metitarski.make_fof_inf(state,subsdict={'e':'*10^'})
+    fof = metitarski.make_fof_inf(state,subsdict={'exp':'*10^'})
     rc = metitarski.send_to_metit(fof,output=True)
     if rc == 0:
         infeasible = infeasible+1

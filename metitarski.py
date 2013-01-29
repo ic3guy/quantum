@@ -37,7 +37,7 @@ def make_fof_inf(state, subsdict=None):
         return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (state.varstring, equation)
 
 
-def make_fof_rel(state, derivative, op, subsdict=None):
+def make_fof_rel(state, derivative, op, subsdict={'exp':'*10^'}):
 
     equation = state.get_state()
     
@@ -49,7 +49,7 @@ def make_fof_rel(state, derivative, op, subsdict=None):
         #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
         return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
+def make_fof_rel_2(state, derivative, op1, op2, subsdict={'exp':'*10^'}):
 
     print state.varstring
     equation = state.get_state()
@@ -146,10 +146,10 @@ def checkTransition2(state, pred, x, directory='.'):
     der = str(state.derivative(pred))
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(state,der,'<','=',subsdict={'e':'*10^'})
-    gt_or_lt = make_fof_rel_2(state,der,'>', '<',subsdict={'e':'*10^'})
+    lteq = make_fof_rel_2(state,der,'<','=')
+    gt_or_lt = make_fof_rel_2(state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(state,der,'>', '=',subsdict={'e':'*10^'})
+    gteq = make_fof_rel_2(state,der,'>', '=')
 
     if pred.operator == '>' or pred.operator == '=':
         if not send_to_metit(gteq, output=True,metit_options=options):
@@ -187,10 +187,10 @@ def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
     print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(state,der,'<','=',subsdict={'e':'*10^'})
-    gt_or_lt = make_fof_rel_2(state,der,'>', '<',subsdict={'e':'*10^'})
+    lteq = make_fof_rel_2(state,der,'<')
+    gt_or_lt = make_fof_rel_2(state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(state,der,'>', '=',subsdict={'e':'*10^'})
+    gteq = make_fof_rel_2(state,der,'>', '=')
 
     if not send_to_metit(gteq, output=True,metit_options=options):
         Q1.append(state)

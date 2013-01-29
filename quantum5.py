@@ -32,7 +32,6 @@ execfile(exp_name)
 #execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
 #execfile('bounceBallsin.py')
 
-
 meti_vars = ','.join(map(str,vars_dict.values()))
 
 start_time = time.time()    
@@ -41,7 +40,7 @@ start_time = time.time()
 f = open('log.txt', 'a', 0)
 
 f.write(40*'*'+'\n')
-f.write(filename + '\n')
+f.write(exp_name + '\n')
 f.write(40*'*' + '\n')
 
 eq_list = ','.join([str(eq) for eq in equations])

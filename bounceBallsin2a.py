@@ -39,7 +39,7 @@ inv_pred_vylz = predicate.MetitPredicate(inv, '<')
 deriv_dict = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,
-                                        vy.diff(t): (-9.8 + 0.01*vy**2)*(1-1exp(-3*t))},
+                                        vy.diff(t): (-9.8 + 0.01*vy**2)*(1-exp(-3*t))},
                               't' : [{'guard':(guard,), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 

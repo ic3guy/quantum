@@ -22,10 +22,10 @@ def secondsToStr(t):
 #exp_name = 'simplePendulum3.py'
 
 #filename = '/Users/will/Research/quantum/' + exp_name
-filename = exp_name
+#filename = exp_name
 #bad = True
 
-execfile(filename)
+execfile(exp_name)
 #execfile('simplePendulum2.py')
 #execfile('heater.py')
 #execfile('/Users/will/Research/quantum/heater.py')
@@ -63,25 +63,46 @@ system = [predicate.State(meti_vars,n,'None', deriv_dict,*element) for n,element
 
 f.write('Number of initial abstract states : %s \n' % len(system))
 
-now = datetime.datetime.now()
-directory_name = now.strftime('%d-%m-%Y--%H:%M:%S')
 
-os.makedirs('/opt/quantum/'+ directory_name + '/firstpass/proved')
-os.makedirs('/opt/quantum/'+ directory_name + '/firstpass/unproved')
+# Create directories to store proved and unproved tptp files for later analysis
+now = datetime.datetime.now()
+experiment_dir = 'experiments/'+ file_name + now.strftime('--%d-%m-%Y--%H:%M:%S')
+# Try to enforce the current directory. Check to see how Emacs does this in OSX.
+
+feas_check_dir = experiment_dir + '/feasability/'
+feas_check_proved_dir = feas_check_dir + '/proved/'
+feas_check_unproved_dir = feas_check_dir + '/unproved/'
+
+trans_check_dir = experiment_dir + '/transitions/'
+cont_trans_proved_dir = trans_check_dir + 'continuous/proved'
+cont_trans_unproved_dir = trans_check_dir + 'continuous/unproved'
+
+disc_trans_proved_dir = trans_check_dir + 'discrete/proved'
+disc_trans_unproved_dir = trans_check_dir + 'discrete/unproved'
+
+os.makedirs(feas_check_proved_dir)
+os.makedirs(feas_check_unproved_dir)
+
+os.makedirs(cont_trans_proved_dir)
+os.makedirs(cont_trans_unproved_dir)
+
+os.makedirs(disc_trans_proved_dir)
+os.makedirs(disc_trans_unproved_dir)
 
 for state in system:
     #print metitarski.make_fof_inf(state)
     print "checking state %s"  % state.get_state_number()
     fof = metitarski.make_fof_inf(state,subsdict={'e':'*10^'})
-    rc = metitarski.send_to_metit(fof,output=True,tofile=False)
+    rc = metitarski.send_to_metit(fof,output=True)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
         cprint('it is not feasible, proved', 'green')
+        metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
     else:
         feasible = feasible+1
         print cprint('it is feasible, unproved', 'red')
-        metitarski.send_to_file(fof, directory_name + '/firstpass/unproved', '%s' % state.number)
+        metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
 
         #print "Feasible %s" % feasible
         #print "Infeasible %s" % infeasible
@@ -132,7 +153,7 @@ for state in system_fd:
         if bad:
             Q1,Q2,Q3 = ([],[],[])
         else:
-            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z,directory_name=filename+'.dir')
+            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z,cont_trans_unproved_dir)
         
         print "In Q1 : %s" % Q1
         print "In Q2 : %s" % Q2
@@ -212,7 +233,7 @@ for state in system_fd:
                                 if bad:
                                     Q1,Q2,Q3 = ([],[],[])
                                 else:
-                                    Q1,Q2,Q3 = metitarski.checkTransition3(state,pred2,z,state.deriv_dict,transition)
+                                    Q1,Q2,Q3 = metitarski.checkTransition3(state,pred2,z,state.deriv_dict,transition,directory=disc_trans_unproved_dir)
                                 print "In Q1 : %s" % Q1
                                 print "In Q2 : %s" % Q2
                                 print "In Q3 : %s" % Q3

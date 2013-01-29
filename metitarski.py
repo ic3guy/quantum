@@ -13,21 +13,15 @@ metit_options = ('metit',
 
 process = None
 
-def send_to_metit(fof,output=False,tofile=False,metit_options=metit_options):
+def send_to_metit(fof,output=False,metit_options=metit_options):
     if output:
-        
         print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
     else:
         process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
 
-    #print fof
     process.communicate(fof)
-
-    if tofile:
-        if process.returncode==0:
-            send_to_file(fof,'proved',uuid.uuid4())
-            
+    
     return process.returncode
 
 def make_fof_inf(state, subsdict=None):
@@ -69,10 +63,9 @@ def make_fof_rel_2(state, derivative, op1, op2, subsdict=None):
         return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (state.varstring, equation, derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
-    f = open('/opt/quantum/%s/%s.tptp' % (directory, name), 'wa')
+    f = open('%s/%s' % (directory, name), 'wa')
     f.write(formula)
-    f.close()
-        
+    f.close()        
     
 def checkTransition(state, pred):
     next_state_predicates = []
@@ -138,7 +131,7 @@ def pred_2_text(pred):
         return 'eq'
 
 
-def checkTransition2(state, pred, x, directory_name):
+def checkTransition2(state, pred, x, directory='.'):
 
     #os.makedirs('/opt/quantum/'+ directory_name + '/unproved')
     
@@ -163,25 +156,25 @@ def checkTransition2(state, pred, x, directory_name):
             Q1.append(state)
             #print 'In Q1'
         else: 
-            send_to_file(gteq,directory_name+'/unproved', 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '<' or pred.operator == '=':
         if not send_to_metit(lteq, output=True,metit_options=options):
             Q3.append(state)
             #print 'In Q3'
         else:
-            send_to_file(lteq,directory_name+'/unproved', 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '=':
         if not send_to_metit(gt_or_lt,output=True,metit_options=options):
             Q2.append(state)
             #print 'In Q2'
         else:
-            send_to_file(gt_or_lt,directory_name+'/unproved', 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gt_or_lt, directory, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 
-def checkTransition3(state, pred, x, deriv_dict,transition):
+def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
     Q1,Q2,Q3 = [],[],[]
 
     options = ('metit', 
@@ -203,19 +196,19 @@ def checkTransition3(state, pred, x, deriv_dict,transition):
         Q1.append(state)
             #print 'In Q1'
     else: 
-        send_to_file(gteq,'unproved', 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if not send_to_metit(lteq, output=True,metit_options=options):
         Q3.append(state)
             #print 'In Q3'
     else:
-        send_to_file(lteq,'unproved', 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
 
     if not send_to_metit(gt_or_lt,output=True,metit_options=options):
         Q2.append(state)
             #print 'In Q2'
     else:
-        send_to_file(gt_or_lt,'unproved', 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(gt_or_lt, directory, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

@@ -526,3 +526,23 @@ bounceBallsin2a.py
 Metit in Bad State : False
 Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
 Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:31.439 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+****************************************
+bounceBallsin.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:06:30.194 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:16:06.114
+Total Time for Discrete Abstraction: 0:18:07.739
+Total number of abstract transitions: 668
+Total number of states in final abstract system: 126
+Total Time taken : 0:40:44.057

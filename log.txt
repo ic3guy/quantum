@@ -584,3 +584,71 @@ Total Time for Discrete Abstraction: 0:50:57.015
 Total number of abstract transitions: 1408
 Total number of states in final abstract system: 252
 Total Time taken : 2:00:36.545
+****************************************
+simplePendulum.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : X1,X2,-9.8*X2*cos(X1)
+Number of initial abstract states : 27 
+Number of feasible 17, Number of infeasible 10 
+Abstract Feasibility took 0:00:20.785 
+Number of initial states in hybrid system abs : 17 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 17
+Cont abstraction took : 0:02:13.752
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 67
+Total number of states in final abstract system: 17
+Total Time taken : 0:02:34.541
+****************************************
+simplePendulum2.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1),9.8*X2^3*cos(X1) - 288.12*X2*sin(X1)^2 + 96.04*X2*cos(X1)^2
+Number of initial abstract states : 243 
+Number of feasible 105, Number of infeasible 138 
+Abstract Feasibility took 0:05:30.559 
+Number of initial states in hybrid system abs : 105 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 105
+Cont abstraction took : 0:21:57.302
+Total Time for Discrete Abstraction: 0:00:00.001
+Total number of abstract transitions: 401
+Total number of states in final abstract system: 105
+Total Time taken : 0:27:27.866
+****************************************
+simplePendulum3.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) + 0.3084319171,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1)
+Number of initial abstract states : 243 
+Number of feasible 119, Number of infeasible 124 
+Abstract Feasibility took 0:06:36.488 
+Number of initial states in hybrid system abs : 119 
+Number that violate the invariants : 0 
+****************************************
+simplePendulum.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : X1,X2,-9.8*X2*cos(X1)
+Number of initial abstract states : 27 
+Number of feasible 17, Number of infeasible 10 
+Abstract Feasibility took 0:00:20.714 
+Number of initial states in hybrid system abs : 17 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 17
+Cont abstraction took : 0:02:14.697
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 67
+Total number of states in final abstract system: 17
+Total Time taken : 0:02:35.414
+****************************************
+simplePendulum2.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1),9.8*X2^3*cos(X1) - 288.12*X2*sin(X1)^2 + 96.04*X2*cos(X1)^2
+Number of initial abstract states : 243 
+Number of feasible 105, Number of infeasible 138 
+Abstract Feasibility took 0:05:32.113 
+Number of initial states in hybrid system abs : 105 
+Number that violate the invariants : 0 

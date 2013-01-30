@@ -37,7 +37,7 @@ def make_fof_inf(state, subsdict=None):
         return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (state.varstring, equation)
 
 
-def make_fof_rel(state, derivative, op, subsdict={'exp':'*10^'}):
+def make_fof_rel(state, derivative, op, subsdict={'exp':'10^'}):
 
     equation = state.get_state()
     
@@ -49,7 +49,7 @@ def make_fof_rel(state, derivative, op, subsdict={'exp':'*10^'}):
         #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
         return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(state, derivative, op1, op2, subsdict={'exp':'*10^'}):
+def make_fof_rel_2(state, derivative, op1, op2, subsdict={'exp':'10^'}):
 
     print state.varstring
     equation = state.get_state()
@@ -187,7 +187,7 @@ def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
     print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(state,der,'<')
+    lteq = make_fof_rel_2(state,der,'<', '=')
     gt_or_lt = make_fof_rel_2(state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel_2(state,der,'>', '=')

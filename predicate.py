@@ -31,21 +31,22 @@ class MetitEquation:
         self.depvar = depvar
         #self.subs_dict = subs_dict
         self.is_lyapunov = is_lyapunov
+        self.var_list = [sympify(str(var).replace("("+str(self.depvar)+")","").upper()) for var in self.equation.atoms(AppliedUndef)]
         
     def __str__(self, subsdict={'e':'*10^', '**':'^'}):
 
         #this gives us the functions
-        var_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]
+        var_replace_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]
         #print var_list
         # any other variables
-        var_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
+        #var_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
         #print var_list
 
         #print into a format by metitarski)
         rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
         #print rep
         pattern = re.compile("|".join(rep.keys()))
-        equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(self.equation.subs(var_list)))
+        equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(self.equation.subs(var_replace_list)))
         
         return equation_out
 
@@ -73,6 +74,17 @@ class MetitPredicate(MetitEquation):
     
     def __eq__(self, other):
         return self.equation == other.equation and self.operator == other.operator
+
+
+def get_var_string(equations):
+
+    var_list = []
+    for equation in equations:
+        for variable in equation.var_list:
+            if str(variable) not in var_list:
+                var_list.append(str(variable))
+                
+    return ','.join(var_list)
     
 def plot_format(equation, operator):
     if operator == '=':
@@ -82,16 +94,17 @@ def plot_format(equation, operator):
         
 class State:
 
-    def __init__(self, varstring, number, discrete_part, deriv_dict, *predicates):
+    def __init__(self, var_string, number, discrete_part, deriv_dict, *predicates):
         self.is_feasible = True
         self.state = predicates
-        #self.varstring = varstring
         self.number = number
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
         self.guards = []
         self.deriv_dict = deriv_dict
 
+        self.var_string = var_string
+      
     def __eq__(self, other):
         for pred in self.state:
             #print self.state

@@ -4,7 +4,9 @@
 #filenames = ['bounceBallsin2a','bounceBallsin2b','bounceBallsin','bounceBallsinb']
 #filenames = ['bounceBallsin2a']
 
-filenames = ['simplePendulum', 'simplePendulum2', 'simplePendulum3', 'simplePendulum4', 'bounceBallsin', 'bounceBallsin2a']
+#filenames = ['simplePendulum', 'simplePendulum2', 'simplePendulum3', 'simplePendulum4', 'bounceBallsin', 'bounceBallsin2a']
+
+filenames = ['simplePendulum-new']
 
 for file_name in filenames:
     exp_name = file_name + '.py'

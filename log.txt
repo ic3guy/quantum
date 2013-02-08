@@ -722,3 +722,8 @@ Total Time for Discrete Abstraction: 0:48:04.327
 Total number of abstract transitions: 1484
 Total number of states in final abstract system: 252
 Total Time taken : 1:59:52.095
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)

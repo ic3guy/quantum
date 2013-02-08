@@ -32,7 +32,7 @@ execfile(exp_name)
 #execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
 #execfile('bounceBallsin.py')
 
-meti_vars = ','.join(map(str,vars_dict.values()))
+#meti_vars = ','.join(map(str,vars_dict.values()))
 
 start_time = time.time()    
 
@@ -61,7 +61,7 @@ for equation in equations:
 system = [predicate.State(meti_vars,n,'None', deriv_dict,*element) for n,element in enumerate(product(*inftest))]
 
 f.write('Number of initial abstract states : %s \n' % len(system))
-
+raw_input()
 
 # Create directories to store proved and unproved tptp files for later analysis
 now = datetime.datetime.now()

@@ -12,12 +12,12 @@ from sympy.core.function import AppliedUndef
 
 assert diff
 
-def get_derivs(n, seed):
-
+def get_derivs(n, seed, system, state):
+    #Input is a metit equation
     derivatives = []
 
     for n in range(n):
-        dn = MetitEquation(seed.equation.diff(seed.depvar).subs(seed.subs_dict[('cont',)]['flow']),'t',seed.subs_dict,seed.vars_dict)
+        dn = MetitEquation(seed.equation.diff(seed.depvar).subs(system[state]['flow']))
         derivatives.append(dn)
         seed = dn
 
@@ -85,7 +85,7 @@ class State:
     def __init__(self, varstring, number, discrete_part, deriv_dict, *predicates):
         self.is_feasible = True
         self.state = predicates
-        self.varstring = varstring
+        #self.varstring = varstring
         self.number = number
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
@@ -123,15 +123,20 @@ if __name__ == '__main__':
     x2 = Function('x2')(t)
     a = Symbol('a')
     
-    x = MetitEquation(-9.8*sin(x1(t)))
+    x = MetitEquation(-9.8*sin(x1))
     y = MetitEquation(x2(t)+a)
     z = MetitEquation(1.90843655*sin(x1(t))**2 + 1.90843655*cos(x1(t))**2 - 3.916868466*cos(x1(t)) + 0.19984*x2(t)**2 - 0.0084319171)
 
-    flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
-
-    z = MetitPredicate(-9.8*sin(x1(t)),'<')
-    zz = MetitPredicate(-9.8*sin(x1(t)),'<')
-    y = MetitEquation(-9.8*sin(x1(t)))
+    system_def = {('cont',): {'flow': {x1.diff(t): x2,
+                                   x2.diff(t): -9.8*sin(x1)},
+                              't': [],
+                              'inv': []}}
+    
+    #flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
+    
+    #z = MetitPredicate(-9.8*sin(x1(t)),'<')
+    #zz = MetitPredicate(-9.8*sin(x1(t)),'<')
+    #y = MetitEquation(-9.8*sin(x1(t)))
     
     print x
     print y

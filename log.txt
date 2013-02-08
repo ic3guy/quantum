@@ -652,3 +652,73 @@ Number of feasible 105, Number of infeasible 138
 Abstract Feasibility took 0:05:32.113 
 Number of initial states in hybrid system abs : 105 
 Number that violate the invariants : 0 
+Number of feasible states after cont abs : 105
+Cont abstraction took : 0:22:03.601
+Total Time for Discrete Abstraction: 0:00:00.001
+Total number of abstract transitions: 401
+Total number of states in final abstract system: 105
+Total Time taken : 0:27:35.719
+****************************************
+simplePendulum3.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) + 0.3084319171,-9.8*X2*cos(X1),9.8*X2^2*sin(X1) + 96.04*sin(X1)*cos(X1)
+Number of initial abstract states : 243 
+Number of feasible 119, Number of infeasible 124 
+Abstract Feasibility took 0:05:58.161 
+Number of initial states in hybrid system abs : 119 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 119
+Cont abstraction took : 0:26:43.259
+Total Time for Discrete Abstraction: 0:00:00.001
+Total number of abstract transitions: 505
+Total number of states in final abstract system: 119
+Total Time taken : 0:32:41.426
+****************************************
+simplePendulum4.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X1,X2,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 0.0084319171,0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) - 4.3084319171,-9.8*X2*cos(X1)
+Number of initial abstract states : 243 
+Number of feasible 107, Number of infeasible 136 
+Abstract Feasibility took 0:05:57.430 
+Number of initial states in hybrid system abs : 107 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 105
+Cont abstraction took : 0:27:28.732
+Total Time for Discrete Abstraction: 0:00:00.001
+Total number of abstract transitions: 626
+Total number of states in final abstract system: 107
+Total Time taken : 0:33:26.169
+****************************************
+bounceBallsin.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number of initial abstract states : 243 
+Number of feasible 189, Number of infeasible 54 
+Abstract Feasibility took 0:07:04.597 
+Number of initial states in hybrid system abs : 189 
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:20:52.347
+Total Time for Discrete Abstraction: 0:21:45.511
+Total number of abstract transitions: 668
+Total number of states in final abstract system: 126
+Total Time taken : 0:49:42.465
+****************************************
+bounceBallsin2a.py
+****************************************
+Metit in Bad State : False
+Predicates : 6 : PX,PY,VX,VY,T,-PY + sin(PX)
+Number of initial abstract states : 729 
+Number of feasible 567, Number of infeasible 162 
+Abstract Feasibility took 0:21:09.488 
+Number of initial states in hybrid system abs : 567 
+Number that violate the invariants : 315 
+Number of feasible states after cont abs : 234
+Cont abstraction took : 0:50:38.240
+Total Time for Discrete Abstraction: 0:48:04.327
+Total number of abstract transitions: 1484
+Total number of states in final abstract system: 252
+Total Time taken : 1:59:52.095

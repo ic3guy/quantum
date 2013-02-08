@@ -58,7 +58,7 @@ for equation in equations:
     predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State(meti_vars,n,'None', deriv_dict,*element) for n,element in enumerate(product(*inftest))]
+system = [predicate.State(get_var_string(equations),n,'None', system_def,*element) for n,element in enumerate(product(*inftest))]
 
 f.write('Number of initial abstract states : %s \n' % len(system))
 raw_input()

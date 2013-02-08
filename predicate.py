@@ -26,6 +26,7 @@ def get_derivs(n, seed):
     
 class MetitEquation:
     def __init__(self, equation, depvar=Symbol('t'), is_lyapunov=False):
+        #only accept a sympy function
         self.equation = equation
         #self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
         self.depvar = depvar
@@ -36,10 +37,10 @@ class MetitEquation:
 
         #this gives us the functions
         var_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]
-        print var_list
+        #print var_list
         # any other variables
         var_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
-        print var_list
+        #print var_list
 
         #print into a format by metitarski)
         rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
@@ -49,30 +50,25 @@ class MetitEquation:
         
         return equation_out
 
-    def print_derivative(self):
-        if self.is_lyapunov:
-            return str(self) + '-10^-2'
-        else:
-            return metitarski_pp(self.derivative.subs(self.vars_dict))
-        
     def plot_format(self, subs_dict):
         return self.equation.subs(subs_dict)
-
-    def get_derivative(self):
-        return self.derivative.subs(vars_dict)
         
-class MetitPredicate:
+class MetitPredicate(MetitEquation):
 
     def __init__(self,equation,operator):
-        self.equation = equation
+        super(MetitPredicate, self).__init__(equation)
         self.operator = operator
         #self.derivative = equation.print_derivative()
-        self.depvar = equation.depvar
-        self.equation_string = str(equation) + operator + '0'
-        self.plot_format_str = plot_format(equation,operator)
+        #self.depvar = equation.depvar
+        #self.equation_string = str(equation) + operator + '0'
+        #self.plot_format_str = plot_format(equation,operator)
         #self.subs_dict = equation.subs_dict
         #self.vars_dict = equation.vars_dict
-        
+
+    def __str__(self):
+        x = super(MetitPredicate, self).__str__() + self.operator + '0'
+        return x
+    
     def __eq__(self, other):
         return self.equation.equation == other.equation.equation and self.operator == other.operator
         
@@ -134,7 +130,9 @@ if __name__ == '__main__':
     z = MetitEquation(1.90843655*sin(x1(t))**2 + 1.90843655*cos(x1(t))**2 - 3.916868466*cos(x1(t)) + 0.19984*x2(t)**2 - 0.0084319171)
 
     flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
-    
+
+    z = MetitPredicate(-9.8*sin(x1(t)),'<')
+        
     print x
     print y
     print z

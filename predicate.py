@@ -12,7 +12,6 @@ from sympy.core.function import AppliedUndef
 
 assert diff
 
-
 def get_derivs(n, seed):
 
     derivatives = []
@@ -68,13 +67,12 @@ class MetitPredicate(MetitEquation):
     def __str__(self):
         x = super(MetitPredicate, self).__str__() + self.operator + '0'
         return x
+
+    def print_equation(self):
+        return super(MetitPredicate, self).__str__()
     
     def __eq__(self, other):
-        return self.equation.equation == other.equation.equation and self.operator == other.operator
-        
-    def get_equation(self):
-        #pred_equation = str(self.equation) + self.operator + '0'
-        return self.equation_string
+        return self.equation == other.equation and self.operator == other.operator
     
 def plot_format(equation, operator):
     if operator == '=':
@@ -132,7 +130,9 @@ if __name__ == '__main__':
     flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
 
     z = MetitPredicate(-9.8*sin(x1(t)),'<')
-        
+    zz = MetitPredicate(-9.8*sin(x1(t)),'<')
+    y = MetitEquation(-9.8*sin(x1(t)))
+    
     print x
     print y
     print z

@@ -24,18 +24,8 @@ def send_to_metit(fof,output=False,metit_options=metit_options):
     
     return process.returncode
 
-def make_fof_inf(state, subsdict=None):
-
-    equation = state.get_state()
-    
-    if subsdict:
-        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
-        pattern = re.compile("|".join(rep.keys()))
-        equation = pattern.sub(lambda m: rep[m.group(0)], equation)
-    
-        #return 'fof(stdin, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) => ~(%s)))).' % (state.varstring, equation)
-        return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (state.varstring, equation)
-
+def make_fof_inf(state, var_string): 
+    return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (var_string, str(state))
 
 def make_fof_rel(state, derivative, op, subsdict={'exp':'10^','e':'*10^'}):
 
@@ -213,4 +203,5 @@ def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
     return (Q1,Q2,Q3)
 
     
-if __name__ == '__main__': print 'hello world'
+if __name__ == '__main__':
+    print 'Hello World'

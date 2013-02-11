@@ -747,3 +747,97 @@ simplePendulum-new.py
 ****************************************
 Metit in Bad State : False
 Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 
+****************************************
+simplePendulum-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : X1,X2,-9.8*sin(X1),-9.8*X2*cos(X1)
+Number of initial abstract states : 81 

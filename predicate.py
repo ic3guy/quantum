@@ -94,16 +94,13 @@ def plot_format(equation, operator):
         
 class State:
 
-    def __init__(self, var_string, number, discrete_part, deriv_dict, *predicates):
+    def __init__(self, number, discrete_part, *predicates):
         self.is_feasible = True
         self.state = predicates
         self.number = number
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
         self.guards = []
-        self.deriv_dict = deriv_dict
-
-        self.var_string = var_string
       
     def __eq__(self, other):
         for pred in self.state:
@@ -117,30 +114,34 @@ class State:
     #def __iter__(self):
     #    return self
         
-    def get_state(self):
-        return " & ".join([x.get_equation() for x in self.state])
+    def __str__(self):
+        return " & ".join([str(x) for x in self.state])
 
-    def get_state_number(self):
+    def print_state_number(self):
         return str(self.number)
 
-    def derivative(self,pred):
-        if pred.equation.is_lyapunov:
-            return  metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict)) + '-10^-2'
-        else:
-            return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
+#    def derivative(self,pred):
+#        if pred.equation.is_lyapunov:
+#            return  metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict)) + '-10^-2'
+#        else:
+#            return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
 
-       
+def metit_derivative(metit_equation, state, system):
+    sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[state]['flow'])
+    return MetitEquation(sympy_equation)
+    
+    
 if __name__ == '__main__':
     t = Symbol('t')
     x1 = Function('x1')(t)
     x2 = Function('x2')(t)
     a = Symbol('a')
-    
+
     x = MetitEquation(-9.8*sin(x1))
     y = MetitEquation(x2(t)+a)
     z = MetitEquation(1.90843655*sin(x1(t))**2 + 1.90843655*cos(x1(t))**2 - 3.916868466*cos(x1(t)) + 0.19984*x2(t)**2 - 0.0084319171)
 
-    system_def = {('cont',): {'flow': {x1.diff(t): x2,
+    system_def_test = {('cont',): {'flow': {x1.diff(t): x2,
                                    x2.diff(t): -9.8*sin(x1)},
                               't': [],
                               'inv': []}}
@@ -154,3 +155,8 @@ if __name__ == '__main__':
     print x
     print y
     print z
+
+    for i in range(4):
+        xx = metit_derivative(x, ('cont',), system_def_test)
+        print x
+        x = xx

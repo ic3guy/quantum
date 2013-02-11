@@ -8,6 +8,18 @@
 
 filenames = ['simplePendulum-new']
 
+#globals() modifies the global level
+
 for file_name in filenames:
     exp_name = file_name + '.py'
-    execfile('quantum5.py')
+    execfile('quantum5.py',globals())
+
+
+
+
+
+
+
+
+
+

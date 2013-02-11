@@ -34,6 +34,7 @@ execfile(exp_name)
 
 #meti_vars = ','.join(map(str,vars_dict.values()))
 
+print system_def
 start_time = time.time()    
 
 #f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
@@ -55,12 +56,15 @@ inftest = []
 system = []
     
 for equation in equations:
-    predlist = [predicate.MetitPredicate(equation,op) for op in oplist]
+    predlist = [predicate.MetitPredicate(equation.equation,op) for op in oplist]
     inftest.append(predlist)
 
-system = [predicate.State(get_var_string(equations),n,'None', system_def,*element) for n,element in enumerate(product(*inftest))]
+var_string = predicate.get_var_string(equations)
+    
+system = [predicate.State(n,'None',*element) for n,element in enumerate(product(*inftest))]
 
 f.write('Number of initial abstract states : %s \n' % len(system))
+print 'Done system'
 raw_input()
 
 # Create directories to store proved and unproved tptp files for later analysis
@@ -90,8 +94,9 @@ os.makedirs(disc_trans_unproved_dir)
 
 for state in system:
     #print metitarski.make_fof_inf(state)
-    print "checking state %s"  % state.get_state_number()
-    fof = metitarski.make_fof_inf(state,subsdict={'exp':'*10^'})
+    print "checking state %s"  % state.print_state_number()
+    fof = metitarski.make_fof_inf(state, var_string)
+    print fof
     rc = metitarski.send_to_metit(fof,output=True)
     if rc == 0:
         infeasible = infeasible+1

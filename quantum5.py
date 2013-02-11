@@ -5,7 +5,7 @@ import predicate
 import datetime
 import os
 import nusmv
-#import timing
+import timing
 import time
 from termcolor import colored, cprint
 import qutilities
@@ -19,20 +19,7 @@ def secondsToStr(t):
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(t*1000,),1000,60,60])
 
-#exp_name = 'simplePendulum3.py'
-
-#filename = '/Users/will/Research/quantum/' + exp_name
-#filename = exp_name
-#bad = True
-
 execfile(exp_name)
-#execfile('simplePendulum2.py')
-#execfile('heater.py')
-#execfile('/Users/will/Research/quantum/heater.py')
-#execfile('/Users/will/Research/quantum/bounceBallsin.py',globals())
-#execfile('bounceBallsin.py')
-
-#meti_vars = ','.join(map(str,vars_dict.values()))
 
 print system_def
 start_time = time.time()    
@@ -63,9 +50,9 @@ var_string = predicate.get_var_string(equations)
     
 system = [predicate.State(n,'None',*element) for n,element in enumerate(product(*inftest))]
 
-f.write('Number of initial abstract states : %s \n' % len(system))
-print 'Done system'
-raw_input()
+#f.write('Number of initial abstract states : %s \n' % len(system))
+#print 'Done system'
+#raw_input()
 
 # Create directories to store proved and unproved tptp files for later analysis
 now = datetime.datetime.now()
@@ -96,7 +83,7 @@ for state in system:
     #print metitarski.make_fof_inf(state)
     print "checking state %s"  % state.print_state_number()
     fof = metitarski.make_fof_inf(state, var_string)
-    print fof
+    #print fof
     rc = metitarski.send_to_metit(fof,output=True)
     if rc == 0:
         infeasible = infeasible+1
@@ -126,10 +113,13 @@ xx = len(system_fd)
 
 #removing states that violate the invariant
 for state in system_fd:
-	if [pred for pred in deriv_dict[state.discrete_part]['inv'] if pred in state.state]:
+	if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
 		state.is_feasible = False
 
 system_fd = [state for state in system_fd if state.is_feasible]
+
+#print 'Done system'
+#raw_input()
 
 f.write('Number that violate the invariants : %s \n' % (xx - len(system_fd))) 
 
@@ -157,16 +147,16 @@ for state in system_fd:
         if bad:
             Q1,Q2,Q3 = ([],[],[])
         else:
-            Q1,Q2,Q3 = metitarski.checkTransition2(state,pred,z,cont_trans_unproved_dir)
+            Q1,Q2,Q3 = metitarski.checkTransition2(var_string, state,pred,z, system_def, cont_trans_unproved_dir)
         
         print "In Q1 : %s" % Q1
         print "In Q2 : %s" % Q2
         print "In Q3 : %s" % Q3
 
-        pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
-        lt_pred = predicate.MetitPredicate(pre,'<')
-        gt_pred = predicate.MetitPredicate(pre,'>')
-        eq_pred = predicate.MetitPredicate(pre,'=')
+        #pre = predicate.MetitEquation(pred.equation, pred.depvar, system_def, pred.equation)
+        lt_pred = predicate.MetitPredicate(pred.equation,'<')
+        gt_pred = predicate.MetitPredicate(pred.equation,'>')
+        eq_pred = predicate.MetitPredicate(pred.equation,'=')
 
         if pred.operator == '>':
             if state in Q1: 
@@ -192,7 +182,7 @@ for state in system_fd:
         
     for state2 in product(*pos_successors):
         #print state
-        ss = predicate.State(meti_vars,666,state.discrete_part, deriv_dict,*state2) #check only states within same discrete mode
+        ss = predicate.State(666, state.discrete_part, *state2) #check only states within same discrete mode
         #print ss
         
         for s in system_fd:
@@ -227,7 +217,7 @@ for state in system_fd:
     for qn,discrete_q in enumerate(product(*q)):
         if state.discrete_part == discrete_q:
             for pred in state.state:
-                for transition in state.deriv_dict[state.discrete_part]['t']:
+                for transition in system_def[state.discrete_part]['t']:
                     if pred in transition['guard']:
                         print 'found guard'
                         pos_successors = []
@@ -237,7 +227,7 @@ for state in system_fd:
                                 if bad:
                                     Q1,Q2,Q3 = ([],[],[])
                                 else:
-                                    Q1,Q2,Q3 = metitarski.checkTransition3(state,pred2,z,state.deriv_dict,transition,directory=disc_trans_unproved_dir)
+                                    Q1,Q2,Q3 = metitarski.checkTransition3(state,pred2,z,system_def,transition,directory=disc_trans_unproved_dir)
                                 print "In Q1 : %s" % Q1
                                 print "In Q2 : %s" % Q2
                                 print "In Q3 : %s" % Q3
@@ -263,7 +253,7 @@ for state in system_fd:
                                     pos_successors.append([eq_pred,lt_pred,gt_pred])              
 
                                 for state2 in product(*pos_successors):
-                                    ss = predicate.State(meti_vars,666,transition['next_state'], deriv_dict,*state2) 
+                                    ss = predicate.State(meti_vars,666,transition['next_state'], system_def,*state2) 
                                     for s in system_fd:
                                         if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
                                             nstate.append(s.number)
@@ -280,7 +270,7 @@ for state in system_fd:
                         for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn
                             print 'in here'
-                            ss = predicate.State(meti_vars,666,transition['next_state'], deriv_dict,*state.state)
+                            ss = predicate.State(meti_vars,666,transition['next_state'], system_def,*state.state)
                             for s in system_fd:
                                 if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
 									if s.number not in state.next_states and s.number not in nstate: 
@@ -335,7 +325,7 @@ f.write('Total Time taken : %s\n' % secondsToStr(end_time-start_time))
    
 for key,s in system_fdd.iteritems():
 	if s.is_feasible:
-		print "From State %s : %s-%s to States %s" % (s.number, s.get_state(),s.discrete_part,s.next_states)
+		print "From State %s : %s-%s to States %s" % (s.number, s, s.discrete_part,s.next_states)
 
 SMV.close()        
 f.close()

@@ -104,9 +104,7 @@ class State:
       
     def __eq__(self, other):
         for pred in self.state:
-            #print self.state
             if pred not in other.state:
-                #print other.state
                 return False
 
         return True
@@ -126,8 +124,8 @@ class State:
 #        else:
 #            return metitarski_pp(pred.equation.equation.diff(pred.equation.depvar).subs(self.deriv_dict[self.discrete_part]['flow']).subs(pred.equation.vars_dict))
 
-def metit_derivative(metit_equation, state, system):
-    sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[state]['flow'])
+def metit_derivative(metit_equation, discrete_state, system):
+    sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow'])
     return MetitEquation(sympy_equation)
     
     
@@ -148,7 +146,7 @@ if __name__ == '__main__':
     
     #flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
     
-    #z = MetitPredicate(-9.8*sin(x1(t)),'<')
+    z = MetitPredicate(-9.8*sin(x1(t)),'<')
     #zz = MetitPredicate(-9.8*sin(x1(t)),'<')
     #y = MetitEquation(-9.8*sin(x1(t)))
     

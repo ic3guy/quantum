@@ -13,10 +13,10 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
                          't': [],
                          'inv': []}}
 
-seed_predicates = [x1, x2, -9.8*sin(x1)]    
+seed_predicates = [x1, x2]    
 equations = [predicate.MetitEquation(n) for n in seed_predicates]
 
-equations.extend(predicate.get_derivs(1,equations[-1],system_def,('cont',)))
+#equations.extend(predicate.get_derivs(1,equations[-1],system_def,('cont',)))
 
 #equations = [predicate.MetitEquation(x1),
 #             predicate.MetitEquation(x2(t))]

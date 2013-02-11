@@ -12,6 +12,7 @@ metit_options = ('metit',
                  '-')
 
 extra_constraints = ['X1<3.14', 'X1>-3.14']
+#extra_constraints = []
 
 process = None
 
@@ -48,7 +49,7 @@ def make_fof_rel(state, derivative, op, subsdict={'exp':'10^','e':'*10^'}):
 def make_fof_rel_2(var_string, state, derivative, op1, op2):
     y = list(extra_constraints)
     y.extend([str(state)])
-    print y
+    #print y
     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):

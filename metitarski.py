@@ -11,8 +11,8 @@ metit_options = ('metit',
                  '-q',
                  '-')
 
-extra_constraints = ['X1<3.14', 'X1>-3.14']
-#extra_constraints = []
+#extra_constraints = ['X1<3.14', 'X1>-3.14']
+extra_constraints = []
 
 process = None
 
@@ -31,7 +31,7 @@ def make_fof_inf(state, var_string):
     #print [str(state)]
     y = list(extra_constraints)
     y.extend([str(state)])
-    print y
+    #print y
     return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (var_string, ' & '.join(y))
 
 def make_fof_rel(state, derivative, op, subsdict={'exp':'10^','e':'*10^'}):

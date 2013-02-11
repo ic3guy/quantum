@@ -1196,3 +1196,60 @@ Total Time for Discrete Abstraction: 0:00:00.000
 Total number of abstract transitions: 21
 Total number of states in final abstract system: 9
 Total Time taken : 0:00:30.041
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 2 : PX,PY
+Number of feasible 9, Number of infeasible 0 
+Abstract Feasibility took 0:00:17.461 
+Number of initial states in hybrid system abs : 9 
+Number that violate the invariants : 0 
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 2 : PX,PY
+Number of feasible 9, Number of infeasible 0 
+Abstract Feasibility took 0:00:19.990 
+Number of initial states in hybrid system abs : 9 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 9
+Cont abstraction took : 0:01:06.509
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 49
+Total number of states in final abstract system: 9
+Total Time taken : 0:01:26.501
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PX,PY,VX,VY
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PX,PY,VX,VY
+Number of feasible 81, Number of infeasible 0 
+Abstract Feasibility took 0:02:56.762 
+Number of initial states in hybrid system abs : 81 
+Number that violate the invariants : 0 
+Number of feasible states after cont abs : 81
+Cont abstraction took : 0:07:24.887
+Total Time for Discrete Abstraction: 0:00:00.002
+Total number of abstract transitions: 209
+Total number of states in final abstract system: 81
+Total Time taken : 0:10:21.654
+****************************************
+bounceBallsin-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PX,PY,VX,VY,-PY + sin(PX)
+Number that violate the invariants : 63 
+Number of feasible states after cont abs : 117
+Cont abstraction took : 0:12:58.329

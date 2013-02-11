@@ -6,7 +6,8 @@
 
 #filenames = ['simplePendulum', 'simplePendulum2', 'simplePendulum3', 'simplePendulum4', 'bounceBallsin', 'bounceBallsin2a']
 
-filenames = ['simplePendulum-new']
+#filenames = ['simplePendulum-new']
+filenames = ['bounceBallsin-new']
 
 #globals() modifies the global level
 

@@ -100,14 +100,14 @@ for state in system:
 
 end_time1 = time.time()
 
-f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
-f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
+#f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
+#f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
 
 system_f = [state for state in system if state.is_feasible]
 
 system_fd = qutilities.make_discrete_system(system_f,q)
 
-f.write('Number of initial states in hybrid system abs : %s \n' % len(system_fd))
+#f.write('Number of initial states in hybrid system abs : %s \n' % len(system_fd))
 
 xx = len(system_fd)
 
@@ -253,7 +253,7 @@ for state in system_fd:
                                     pos_successors.append([eq_pred,lt_pred,gt_pred])              
 
                                 for state2 in product(*pos_successors):
-                                    ss = predicate.State(meti_vars,666,transition['next_state'], system_def,*state2) 
+                                    ss = predicate.State(666,transition['next_state'],*state2) 
                                     for s in system_fd:
                                         if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
                                             nstate.append(s.number)
@@ -270,7 +270,7 @@ for state in system_fd:
                         for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn
                             print 'in here'
-                            ss = predicate.State(meti_vars,666,transition['next_state'], system_def,*state.state)
+                            ss = predicate.State(666,transition['next_state'],*state.state)
                             for s in system_fd:
                                 if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
 									if s.number not in state.next_states and s.number not in nstate: 

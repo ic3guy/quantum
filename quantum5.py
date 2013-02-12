@@ -195,8 +195,9 @@ for state in system_fd:
         print "From State %s Next State %s" % (state.number,nstate)
         state.next_states = nstate
     else:
-        print 'no next state found, deleting'
-        state.is_feasible = False
+        print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
+        #only delete the state at the end
+        #state.is_feasible = False
    # print find_states(system_f,product(*pos_successors
 
 fcount = 0
@@ -227,15 +228,15 @@ for state in system_fd:
                                 if bad:
                                     Q1,Q2,Q3 = ([],[],[])
                                 else:
-                                    Q1,Q2,Q3 = metitarski.checkTransition3(state,pred2,z,system_def,transition,directory=disc_trans_unproved_dir)
+                                    Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
                                 print "In Q1 : %s" % Q1
                                 print "In Q2 : %s" % Q2
                                 print "In Q3 : %s" % Q3
                         
-                                pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
-                                lt_pred = predicate.MetitPredicate(pre,'<')
-                                gt_pred = predicate.MetitPredicate(pre,'>')
-                                eq_pred = predicate.MetitPredicate(pre,'=')
+                                #pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
+                                lt_pred = predicate.MetitPredicate(pred2.equation,'<')
+                                gt_pred = predicate.MetitPredicate(pred2.equation,'>')
+                                eq_pred = predicate.MetitPredicate(pred2.equation,'=')
 
                                 if state in Q1 and state in Q2: 
                                     pos_successors.append([gt_pred])
@@ -264,7 +265,7 @@ for state in system_fd:
                                                 print "From State %s Next State %s" % (state.number,nstate)
                                                 state.next_states = nstate
                                             else:
-                                                print 'no next state found, deleting'
+                                                print 'no next state found with substitution' % (state.number)
                                                 state.is_feasible = False
 
                         for next_discrete_state in product(*q): 

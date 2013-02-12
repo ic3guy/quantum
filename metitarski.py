@@ -102,7 +102,7 @@ def checkTransition2(var_string, state, pred, x, system_def, directory='.'):
 
     return (Q1,Q2,Q3)
 
-def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
+def checkTransition3(var_string, state, pred, x, system_def, updates, directory='.'):
     Q1,Q2,Q3 = [],[],[]
 
     #options = ('metit', 
@@ -111,15 +111,19 @@ def checkTransition3(state, pred, x, deriv_dict,transition,directory='.'):
     #           '--allowSF',
     #           '-q',
     #           '-')
-    
-    der = predicate.metitarski_pp(pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict))
+
+    der = str(predicate.metit_substitution(pred, state.discrete_part, system_def, updates))
+    #der = predicate.metitarski_pp(pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict))
     print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(state,der,'<', '=')
-    gt_or_lt = make_fof_rel_2(state,der,'>', '<')
+    print state
+    print der
+    
+    lteq = make_fof_rel_2(var_string, state, der,'<', '=')
+    gt_or_lt = make_fof_rel_2(var_string, state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(state,der,'>', '=')
+    gteq = make_fof_rel_2(var_string, state,der,'>', '=')
 
     if not send_to_metit(gteq, output=True,metit_options=metit_options):
         Q1.append(state)

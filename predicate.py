@@ -128,6 +128,9 @@ def metit_derivative(metit_equation, discrete_state, system):
     sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow'])
     return MetitEquation(sympy_equation)
     
+def metit_substitution(metit_equation, discrete_state, system, updates):
+    sympy_equation = metit_equation.equation.subs(updates)
+    return MetitEquation(sympy_equation)
     
 if __name__ == '__main__':
     t = Symbol('t')

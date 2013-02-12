@@ -263,10 +263,10 @@ for state in system_fd:
                 
                                             if nstate: 
                                                 print "From State %s Next State %s" % (state.number,nstate)
-                                                state.next_states = nstate
+                                                state.next_states.extend(nstate)
                                             else:
                                                 print 'no next state found with substitution' % (state.number)
-                                                state.is_feasible = False
+                                                #state.is_feasible = False
 
                         for next_discrete_state in product(*q): 
                             #made it from qn+1 to qn

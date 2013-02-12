@@ -57,7 +57,7 @@ if __name__ == '__main__':
 def concrete_initial_to_abstract(system, *predicates):
     initial_states = []
     
-    initial_states = [state.number for state in system if all(p in [pred.equation_string for pred in state.state] for p in predicates) and state.is_feasible]
+    initial_states = [state.number for state in system if all(p in [str(pred) for pred in state.state] for p in predicates) and state.is_feasible]
 
     return initial_states
 

@@ -19,6 +19,20 @@ def secondsToStr(t):
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(t*1000,),1000,60,60])
 
+def more_than_one_diff(s1, s2):
+
+    num_same = 0
+    
+    for pred1 in s1.state:
+        for pred2 in s2.state:
+            if pred1 == pred2:
+                num_same += 1
+
+    if num_same < len(s1.state)-1:
+        return True
+    else:
+        return False
+
 execfile(exp_name)
 
 print system_def
@@ -186,7 +200,7 @@ for state in system_fd:
         #print ss
         
         for s in system_fd:
-            if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
+            if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part and not more_than_one_diff(s,ss): #check matching discrete parts
                 nstate.append(s.number)
             #else:
                 #print 'no next state state found'
@@ -199,7 +213,7 @@ for state in system_fd:
         #only delete the state at the end
         #state.is_feasible = False
    # print find_states(system_f,product(*pos_successors
-
+                   
 fcount = 0
    
 for s in system_fd:
@@ -263,6 +277,7 @@ for state in system_fd:
                 
                                             if nstate: 
                                                 print "From State %s Next State %s" % (state.number,nstate)
+                                                #is this ok, check alogorithm
                                                 state.next_states.extend(nstate)
                                             else:
                                                 print 'no next state found with substitution' % (state.number)

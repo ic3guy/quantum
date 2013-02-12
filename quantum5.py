@@ -26,6 +26,7 @@ def more_than_one_diff(s1, s2):
     for pred1 in s1.state:
         for pred2 in s2.state:
             if pred1 == pred2:
+                print 'found matching predicate'
                 num_same += 1
 
     if num_same < len(s1.state)-1:
@@ -200,7 +201,7 @@ for state in system_fd:
         #print ss
         
         for s in system_fd:
-            if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part and not more_than_one_diff(s,ss): #check matching discrete parts
+            if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part and not more_than_one_diff(s,state): #check matching discrete parts
                 nstate.append(s.number)
             #else:
                 #print 'no next state state found'

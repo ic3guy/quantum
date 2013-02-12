@@ -1479,3 +1479,4 @@ bounceBall.py
 ****************************************
 Metit in Bad State : False
 Predicates : 4 : PY,VY,PY - 5,PY - 6
+Number that violate the invariants : 3 

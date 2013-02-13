@@ -1533,3 +1533,295 @@ heater-new.py
 ****************************************
 Metit in Bad State : False
 Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,PY - 6
+Number that violate the invariants : 3 
+Number of feasible states after cont abs : 18
+Cont abstraction took : 0:01:18.011
+Total Time for Discrete Abstraction: 0:00:20.055
+Total number of abstract transitions: 30
+Total number of states in final abstract system: 18
+Total Time taken : 0:02:26.027
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 5,PY - 6,PY - 7
+Number that violate the invariants : 3 
+Number of feasible states after cont abs : 24
+Cont abstraction took : 0:02:04.508
+Total Time for Discrete Abstraction: 0:00:24.917
+Total number of abstract transitions: 39
+Total number of states in final abstract system: 24
+Total Time taken : 0:03:39.600
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,VY - 2
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:36.946
+Total Time for Discrete Abstraction: 0:00:43.734
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:17.434
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,VY + 2
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:42.690
+Total Time for Discrete Abstraction: 0:00:42.920
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:21.716
+****************************************
+bounceBall-2states.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,VY + 2
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:50.238
+Total Time for Discrete Abstraction: 0:00:42.899
+Total number of abstract transitions: 25
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:43.132
+****************************************
+bounceBall-2states.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,VY + 2
+****************************************
+bounceBall-2states.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 5,VY + 2
+Number that violate the invariants : 10 
+Number of feasible states after cont abs : 40
+Cont abstraction took : 0:03:25.399
+Total Time for Discrete Abstraction: 0:00:43.144
+Total number of abstract transitions: 65
+Total number of states in final abstract system: 40
+Total Time taken : 0:05:04.944
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 0.5,VY + 0.5
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:45.154
+Total Time for Discrete Abstraction: 0:00:43.352
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:25.081
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 0.5,VY - 0.5,VY + 0.5
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:02:57.010
+Total Time for Discrete Abstraction: 0:01:21.359
+Total number of abstract transitions: 51
+Total number of states in final abstract system: 28
+Total Time taken : 0:05:45.145
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 0.5,VY + 0.5,PY - 5
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 30
+Cont abstraction took : 0:03:05.608
+Total Time for Discrete Abstraction: 0:00:53.014
+Total number of abstract transitions: 50
+Total number of states in final abstract system: 30
+Total Time taken : 0:05:25.805
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 6 : PY,VY,PY - 0.5,VY - 0.5,VY + 0.5,PY - 5
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 42
+Cont abstraction took : 0:05:12.812
+Total Time for Discrete Abstraction: 0:01:37.056
+Total number of abstract transitions: 70
+Total number of states in final abstract system: 42
+Total Time taken : 0:09:16.227
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 1,VY + 1
+Number that violate the invariants : 5 
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 1,VY + 1
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:43.557
+Total Time for Discrete Abstraction: 0:00:43.594
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:23.220
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 1,VY + 9.8
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:44.738
+Total Time for Discrete Abstraction: 0:00:43.656
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:24.640
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:02:57.340
+Total Time for Discrete Abstraction: 0:01:21.949
+Total number of abstract transitions: 51
+Total number of states in final abstract system: 28
+Total Time taken : 0:05:46.369
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:03:25.519
+Total Time for Discrete Abstraction: 0:01:22.903
+Total number of abstract transitions: 51
+Total number of states in final abstract system: 28
+Total Time taken : 0:07:22.404
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:03:00.962
+Total Time for Discrete Abstraction: 0:01:21.540
+Total number of abstract transitions: 43
+Total number of states in final abstract system: 28
+Total Time taken : 0:05:49.223
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,VY,PY - 1
+Number that violate the invariants : 3 
+Number of feasible states after cont abs : 12
+Cont abstraction took : 0:00:41.438
+Total Time for Discrete Abstraction: 0:00:15.015
+Total number of abstract transitions: 21
+Total number of states in final abstract system: 12
+Total Time taken : 0:01:28.231
+****************************************
+bounceBall-work2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 1,VY + 9.8
+Number that violate the invariants : 5 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:49.410
+Total Time for Discrete Abstraction: 0:00:43.715
+Total number of abstract transitions: 32
+Total number of states in final abstract system: 20
+Total Time taken : 0:03:29.702
+****************************************
+bounceBall-work.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:02:57.720
+Total Time for Discrete Abstraction: 0:01:21.555
+Total number of abstract transitions: 43
+Total number of states in final abstract system: 28
+Total Time taken : 0:05:46.328
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,PY - 1,PY - 5
+Number that violate the invariants : 1 
+Number of feasible states after cont abs : 6
+Cont abstraction took : 0:00:54.202
+Total Time for Discrete Abstraction: 0:00:02.257
+Total number of abstract transitions: 16
+Total number of states in final abstract system: 6
+Total Time taken : 0:01:11.489
+****************************************
+bounceBall.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,PY - 1,PY - 5
+Number that violate the invariants : 3 
+Number of feasible states after cont abs : 18
+Cont abstraction took : 0:01:17.862
+Total Time for Discrete Abstraction: 0:00:19.636
+Total number of abstract transitions: 30
+Total number of states in final abstract system: 18
+Total Time taken : 0:02:25.259
+****************************************
+bounceBall-work.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,PY - 1,VY + 9.8,VY - 9.8
+Number that violate the invariants : 7 
+Number of feasible states after cont abs : 28
+Cont abstraction took : 0:03:00.033
+Total Time for Discrete Abstraction: 0:01:22.135
+Total number of abstract transitions: 43
+Total number of states in final abstract system: 28
+Total Time taken : 0:05:49.469
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.655
+Total Time for Discrete Abstraction: 0:00:00.003
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 16
+Total Time taken : 0:02:31.897
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:02:04.308
+Total Time for Discrete Abstraction: 0:00:00.003
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 16
+Total Time taken : 0:02:40.087

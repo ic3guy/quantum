@@ -7,7 +7,8 @@
 #filenames = ['simplePendulum', 'simplePendulum2', 'simplePendulum3', 'simplePendulum4', 'bounceBallsin', 'bounceBallsin2a']
 
 #filenames = ['simplePendulum-new']
-#filenames = ['bounceBall']
+#filenames = ['bounceBall-2states']
+#filenames = ['bounceBall-work']
 filenames = ['heater-new']
 
 

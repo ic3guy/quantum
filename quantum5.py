@@ -339,10 +339,12 @@ f.write('Total Time taken : %s\n' % secondsToStr(end_time-start_time))
 #	if s.is_feasible:
 #		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
 #			s.discrete_part = 'off'
-   
+
+print ""
+
 for key,s in system_fdd.iteritems():
-	if s.is_feasible:
-		print "From State %s : %s-%s to States %s" % (s.number, s, s.discrete_part,s.next_states)
+    if s.is_feasible:
+		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part,s.next_states)
 
 SMV.close()        
 f.close()

@@ -1516,3 +1516,20 @@ Total Time for Discrete Abstraction: 0:00:11.523
 Total number of abstract transitions: 30
 Total number of states in final abstract system: 18
 Total Time taken : 0:02:29.578
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.680
+Total Time for Discrete Abstraction: 0:00:00.003
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 16
+Total Time taken : 0:02:32.573
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68

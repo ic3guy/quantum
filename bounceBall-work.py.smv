@@ -1,0 +1,35 @@
+MODULE main
+VAR
+	state : {0,1,2,9,11,18,19,20,155,29,158,161,38,47,128,56,59,62,65,71,74,77,80,99,100,101};
+ASSIGN
+	init(state) := 47;
+	next(state) := case
+		state = 0: {0,1};
+		state = 1: 2;
+		state = 2: {2,29};
+		state = 9: 0;
+		state = 11: 2;
+		state = 18: {9,18,19};
+		state = 19: 20;
+		state = 20: {11,20,47};
+		state = 155: {155,101};
+		state = 29: 56;
+		state = 158: 158;
+		state = 161: 161;
+		state = 38: 65;
+		state = 47: 74;
+		state = 128: {128,155};
+		state = 56: {56,65,59};
+		state = 59: 62;
+		state = 62: {62,71};
+		state = 65: 74;
+		state = 71: 80;
+		state = 74: {74,155,77};
+		state = 77: 80;
+		state = 80: {80,161};
+		state = 99: {18,99};
+		state = 100: 100;
+		state = 101: {155,20,101};
+	esac;
+
+LTLSPEC G !(state=0|state=1|state=9|state=18|state=99|state=2)

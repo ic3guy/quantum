@@ -1837,3 +1837,103 @@ Total Time for Discrete Abstraction: 0:01:08.042
 Total number of abstract transitions: 40
 Total number of states in final abstract system: 20
 Total Time taken : 0:03:37.346
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:04:00.259
+Total Time for Discrete Abstraction: 0:03:07.683
+Total number of abstract transitions: 69
+Total number of states in final abstract system: 26
+Total Time taken : 0:08:33.645
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 9 
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,h,PY + 0.0510204081632653*VY^2 - h
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 9 
+Number of feasible states after cont abs : 11
+Cont abstraction took : 0:00:50.564
+Total Time for Discrete Abstraction: 0:00:41.475
+Total number of abstract transitions: 24
+Total number of states in final abstract system: 11
+Total Time taken : 0:02:19.563
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 11 
+Number of feasible states after cont abs : 9
+Cont abstraction took : 0:00:42.708
+Total Time for Discrete Abstraction: 0:00:34.694
+Total number of abstract transitions: 20
+Total number of states in final abstract system: 9
+Total Time taken : 0:01:59.483
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 11 
+Number of feasible states after cont abs : 9
+Cont abstraction took : 0:00:42.820
+Total Time for Discrete Abstraction: 0:00:35.301
+Total number of abstract transitions: 20
+Total number of states in final abstract system: 9
+Total Time taken : 0:02:00.140
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 12
+Cont abstraction took : 0:01:19.608
+Total Time for Discrete Abstraction: 0:00:42.604
+Total number of abstract transitions: 35
+Total number of states in final abstract system: 12
+Total Time taken : 0:02:40.555
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 12
+Cont abstraction took : 0:01:20.085
+Total Time for Discrete Abstraction: 0:00:41.977
+Total number of abstract transitions: 35
+Total number of states in final abstract system: 12
+Total Time taken : 0:02:40.516
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:58.196
+Total Time for Discrete Abstraction: 0:02:03.470
+Total number of abstract transitions: 53
+Total number of states in final abstract system: 26
+Total Time taken : 0:05:29.502

@@ -36,10 +36,11 @@ system_def = {('falling',) : {'flow' : {py.diff(t): vy,
                               't' : [{'guard':(guard,), 
                                       'next_state' : ('falling',),
                                       'updates' : {vy : -0.2*vy}}],
-                              'inv' : (g_inv,h_inv)}}
+                              'inv' : (g_inv,)}}
 
 
 equations = [predicate.MetitEquation(py),
-             predicate.MetitEquation(h),
+             predicate.MetitEquation(vy),
+             predicate.MetitEquation(py-h),
              predicate.MetitEquation(py-h+vy**2/(2*9.8))]
 

@@ -1,28 +1,16 @@
 MODULE main
 VAR
-	state : {0,33,34,3,6,7,8,9,44,17,18,35,52,21,24,25,26,53,51};
+	state : {0,1,2,3,9,10,11,12,13};
 ASSIGN
-	init(state) := {8,17,26,35,44,53};
+	init(state) := 2;
 	next(state) := case
 		state = 0: {0,9};
-		state = 33: {33,51,52,53,6};
-		state = 34: {34,53,7};
-		state = 3: 0;
-		state = 6: {3,6};
-		state = 7: 7;
-		state = 8: {8,17};
-		state = 9: 18;
-		state = 44: {44,53};
-		state = 17: 26;
-		state = 18: {18,21};
-		state = 35: {8,35,53};
-		state = 52: {35,52};
-		state = 21: 24;
-		state = 24: {24,51};
-		state = 25: {25,52};
-		state = 26: {26,53};
-		state = 53: {35,53};
-		state = 51: {33,34,35,51};
+		state = 1: {1,10};
+		state = 2: {2,11};
+		state = 3: {3,12};
+		state = 9: {0,9,10,11};
+		state = 10: {1,10,11};
+		state = 11: {2,11};
+		state = 12: {3,12};
+		state = 13: 13;
 	esac;
-
-LTLSPEC G !(state=0|state=9|state=18)

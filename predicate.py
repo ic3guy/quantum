@@ -39,7 +39,7 @@ class MetitEquation:
         var_replace_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]
         #print var_list
         # any other variables
-        #var_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
+        var_replace_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
         #print var_list
 
         #print into a format by metitarski)

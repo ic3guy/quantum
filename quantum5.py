@@ -78,7 +78,7 @@ os.makedirs(disc_trans_unproved_dir)
 for state in initial_abstract_system:
     #print "checking state %s"  % state.print_state_number()
     fof = metitarski.make_fof_inf(state, var_string)
-    #print fof
+    print fof
     rc = metitarski.send_to_metit(fof)
     if rc == 0:
         infeasible = infeasible+1

@@ -22,7 +22,7 @@ def secondsToStr(t):
 
 execfile(exp_name)
 
-print system_def
+#print system_def
 start_time = time.time()    
 
 #f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
@@ -75,10 +75,11 @@ os.makedirs(cont_trans_unproved_dir)
 os.makedirs(disc_trans_proved_dir)
 os.makedirs(disc_trans_unproved_dir)
 
+print '*'*10 + 'CONTINUOUS FEASABILITY' + '*'*10
+
 for state in initial_abstract_system:
-    #print "checking state %s"  % state.print_state_number()
     fof = metitarski.make_fof_inf(state, var_string)
-    print fof
+    #print "Sending: " + fof
     rc = metitarski.send_to_metit(fof)
     if rc == 0:
         infeasible = infeasible+1
@@ -113,7 +114,9 @@ system_feasible_disc_inv = [state for state in system_feasible_disc if state.is_
 f.write('Number that violate the invariants : %s \n' % (xx - len(system_feasible_disc_inv))) 
 
 start_abs = time.time()
-    
+
+print '*'*10 + 'CONTINUOUS ABSTRACTION' + '*'*10
+
 for state in system_feasible_disc_inv:
     pos_successors = []
     for z,pred in enumerate(state.state):
@@ -197,9 +200,9 @@ for state in system_fd:
                                     Q1,Q2,Q3 = ([],[],[])
                                 else:
                                     Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
-                                print "In Q1 : %s" % Q1
-                                print "In Q2 : %s" % Q2
-                                print "In Q3 : %s" % Q3
+                                #print "In Q1 : %s" % Q1
+                                #print "In Q2 : %s" % Q2
+                                #print "In Q3 : %s" % Q3
                         
                                 #pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
                                 lt_pred = predicate.MetitPredicate(pred2.equation,'<')

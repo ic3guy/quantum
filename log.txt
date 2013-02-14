@@ -1968,3 +1968,99 @@ bounceBall-plat2.py
 ****************************************
 Metit in Bad State : False
 Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 39, Number of infeasible 42 
+Abstract Feasibility took 0:01:26.175 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:57.522
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 20, Number of infeasible 7 
+Abstract Feasibility took 0:00:42.279 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:59.402
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 20, Number of infeasible 7 
+Abstract Feasibility took 0:00:44.286 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:57.901
+Total Time for Discrete Abstraction: 0:02:01.619
+Total number of abstract transitions: 53
+Total number of states in final abstract system: 26
+Total Time taken : 0:04:43.809
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 20, Number of infeasible 7 
+Abstract Feasibility took 0:00:42.504 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 20, Number of infeasible 7 
+Abstract Feasibility took 0:00:43.344 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:02:00.652
+Total Time for Discrete Abstraction: 0:02:00.207
+Total number of abstract transitions: 53
+Total number of states in final abstract system: 26
+Total Time taken : 0:04:44.206

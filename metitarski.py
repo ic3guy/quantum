@@ -80,21 +80,21 @@ def checkTransition2(var_string, state, pred, x, system_def, directory='.'):
     gteq = make_fof_rel_2(var_string, state,der,'>', '=')
 
     if pred.operator == '>' or pred.operator == '=':
-        if not send_to_metit(gteq, output=True,metit_options=metit_options):
+        if not send_to_metit(gteq,metit_options=metit_options):
             Q1.append(state)
             #print 'In Q1'
         else: 
             send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '<' or pred.operator == '=':
-        if not send_to_metit(lteq, output=True,metit_options=metit_options):
+        if not send_to_metit(lteq,metit_options=metit_options):
             Q3.append(state)
             #print 'In Q3'
         else:
             send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '=':
-        if not send_to_metit(gt_or_lt,output=True,metit_options=metit_options):
+        if not send_to_metit(gt_or_lt,metit_options=metit_options):
             Q2.append(state)
             #print 'In Q2'
         else:
@@ -114,30 +114,30 @@ def checkTransition3(var_string, state, pred, x, system_def, updates, directory=
 
     der = str(predicate.metit_substitution(pred, state.discrete_part, system_def, updates))
     #der = predicate.metitarski_pp(pred.equation.equation.subs(transition['updates']).subs(pred.equation.vars_dict))
-    print der
+    #print der
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    print state
-    print der
+    #print state
+    #print der
     
     lteq = make_fof_rel_2(var_string, state, der,'<', '=')
     gt_or_lt = make_fof_rel_2(var_string, state,der,'>', '<')
     #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel_2(var_string, state,der,'>', '=')
 
-    if not send_to_metit(gteq, output=True,metit_options=metit_options):
+    if not send_to_metit(gteq,metit_options=metit_options):
         Q1.append(state)
             #print 'In Q1'
     else: 
         send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
-    if not send_to_metit(lteq, output=True,metit_options=metit_options):
+    if not send_to_metit(lteq,metit_options=metit_options):
         Q3.append(state)
             #print 'In Q3'
     else:
         send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
 
-    if not send_to_metit(gt_or_lt,output=True,metit_options=metit_options):
+    if not send_to_metit(gt_or_lt,metit_options=metit_options):
         Q2.append(state)
             #print 'In Q2'
     else:

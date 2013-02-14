@@ -2064,3 +2064,125 @@ Total Time for Discrete Abstraction: 0:02:00.207
 Total number of abstract transitions: 53
 Total number of states in final abstract system: 26
 Total Time taken : 0:04:44.206
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.165 
+Number of initial states in hybrid system abs : 78 
+Number that violate the invariants : 0 
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.616 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:57.217
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 53
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.835
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.227 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:57.605
+Total Time for Discrete Abstraction: 0:00:00.000
+Total number of abstract transitions: 25
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.835
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.126 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:57.149
+Total Time for Discrete Abstraction: 0:00:00.006
+Total number of abstract transitions: 25
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.284
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.095 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:57.091
+Total Time for Discrete Abstraction: 0:00:00.006
+Total number of abstract transitions: 40
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.195
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.098 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:57.203
+Total Time for Discrete Abstraction: 0:00:00.006
+Total number of abstract transitions: 32
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.310
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.189 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.903
+Total Time for Discrete Abstraction: 0:00:00.006
+Total number of abstract transitions: 32
+Total number of states in final abstract system: 26
+Total Time taken : 0:02:33.102
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:36.333 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:35.927 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.917
+Total Time for Discrete Abstraction: 0:00:00.006
+Total number of abstract transitions: 40
+Total Time taken : 0:03:12.187

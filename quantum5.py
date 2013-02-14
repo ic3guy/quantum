@@ -96,7 +96,7 @@ end_time1 = time.time()
 f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
 f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
 
-system_feasible = [state for state in system if state.is_feasible]
+system_feasible = [state for state in initial_abstract_system if state.is_feasible]
 
 system_feasible_disc = qutilities.make_discrete_system(system_feasible,q)
 
@@ -173,7 +173,7 @@ for state in system_feasible_disc_inv:
                     
 fcount = 0
    
-for s in system_fd:
+for s in system_feasible_disc_inv:
     if s.is_feasible:
         fcount = fcount + 1 
 
@@ -184,98 +184,93 @@ f.write('Cont abstraction took : %s\n'  % secondsToStr(end_abs-start_abs))
 
 dis_abs = time.time()
 
-for state in system_fd:
-    nstate = []
-    for qn,discrete_q in enumerate(product(*q)):
+for state in system_feasible_disc_inv:
+    next_states = []
+    for qn, discrete_q in enumerate(product(*q)):
         if state.discrete_part == discrete_q:
-            for pred in state.state:
-                for transition in system_def[state.discrete_part]['t']:
-                    if pred in transition['guard']:
-                        print 'found guard'
-                        pos_successors = []
-                        if transition['updates']:
-                            print 'doing some updating'
-                            for z,pred2 in enumerate(state.state):
-                                if bad:
-                                    Q1,Q2,Q3 = ([],[],[])
-                                else:
-                                    Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
+            for transition in system_def[state.discrete_part]['t']:
+                if any(x in state.state for x in transition['guard']):
+                    print 'guard found and taken'
+                    pos_successors = []
+                    if transition['updates']:
+                        print 'doing some updating'
+                        for z,pred2 in enumerate(state.state):
+                            if bad:
+                                Q1,Q2,Q3 = ([],[],[])
+                            else:
+                                Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
                                 #print "In Q1 : %s" % Q1
                                 #print "In Q2 : %s" % Q2
                                 #print "In Q3 : %s" % Q3
                         
                                 #pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
-                                lt_pred = predicate.MetitPredicate(pred2.equation,'<')
-                                gt_pred = predicate.MetitPredicate(pred2.equation,'>')
-                                eq_pred = predicate.MetitPredicate(pred2.equation,'=')
+                            lt_pred = predicate.MetitPredicate(pred2.equation,'<')
+                            gt_pred = predicate.MetitPredicate(pred2.equation,'>')
+                            eq_pred = predicate.MetitPredicate(pred2.equation,'=')
 
-                                if state in Q1 and state in Q2: 
-                                    pos_successors.append([gt_pred])
-                                elif state in Q3 and state in Q2:
-                                    pos_successors.append([lt_pred])
-                                elif state in Q1 and state in Q3:
-                                    pos_successors.append([eq_pred])
-                                elif state in Q1:
-                                    pos_successors.append([gt_pred,eq_pred])
-                                elif state in Q2:
-                                    pos_successors.append([gt_pred,lt_pred])
-                                elif state in Q3:
-                                    pos_successors.append([lt_pred,eq_pred])
-                                else:
-                                    pos_successors.append([eq_pred,lt_pred,gt_pred])              
+                            if state in Q1 and state in Q2: 
+                                pos_successors.append([gt_pred])
+                            elif state in Q3 and state in Q2:
+                                pos_successors.append([lt_pred])
+                            elif state in Q1 and state in Q3:
+                                pos_successors.append([eq_pred])
+                            elif state in Q1:
+                                pos_successors.append([gt_pred,eq_pred])
+                            elif state in Q2:
+                                pos_successors.append([gt_pred,lt_pred])
+                            elif state in Q3:
+                                pos_successors.append([lt_pred,eq_pred])
+                            else:
+                                pos_successors.append([eq_pred,lt_pred,gt_pred])              
 
-                                for state2 in product(*pos_successors):
-                                    ss = predicate.State(666,transition['next_state'],*state2) 
-                                    for s in system_fd:
-                                        if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-                                            nstate.append(s.number)
-                                            print 'found new continuous abstract state'
+                            for possible_next_state in product(*pos_successors):
+                                found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
+
+                                if found_next_state:
+                                    next_states.append(found_next_state.number)
            
-                
-                                            if nstate: 
-                                                print "From State %s Next State %s" % (state.number,nstate)
-                                                #is this ok, check alogorithm
-                                                state.next_states.extend(nstate)
-                                            else:
-                                                print 'no next state found with substitution' % (state.number)
-                                                #state.is_feasible = False
+                        if next_states: 
+                            print "From State %s Next State %s" % (state.number,next_states)
+                            #is this ok, check alogorithm
+                            state.next_states.extend(next_states)
+                        else:
+                            print 'no next state found with substitution'
+                            #state.is_feasible = False
 
-                        for next_discrete_state in product(*q): 
-                            #made it from qn+1 to qn
-                            print 'in here'
-                            ss = predicate.State(666,transition['next_state'],*state.state)
-                            for s in system_fd:
-                                if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part: #check matching discrete parts
-									if s.number not in state.next_states and s.number not in nstate: 
-										nstate.append(s.number)
-										print nstate
-									else:
-										print 'already in nstate or next_states'
-    if nstate:
-		#if [i for i in nstate if i in state.next_states]: 
-		print "From State %s Next State %s" % (state.number,nstate)
-		state.next_states.extend(nstate)
+                print q
+                for next_discrete_state in product(*q): 
+                    #made it from qn+1 to qn
+                    #adding next state but just switching the discrete variable.
+                    print 'in here'
+                    found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,next_discrete_state,*state.state))
+
+                    if found_next_state:
+                        next_states.append(found_next_state.number)
+                       
+    if next_states:
+        print "From State %s Next State %s" % (state.number, next_states)
+        state.next_states.extend(next_states)
     else:
         print 'no next state found, no switching'
-        #tate.is_feasible = False
-
+        #tate.is_feasible = False                 
+                        
 dis_abs_end = time.time()
 
 f.write('Total Time for Discrete Abstraction: %s\n' % secondsToStr(dis_abs_end-dis_abs))
         
 total_next_states = 0
 #remove duplicate next states.
-for s in system_fd:
+for s in system_feasible_disc_inv:
     s.next_states = list(set(s.next_states))
     total_next_states = total_next_states + len(s.next_states)
 
 f.write('Total number of abstract transitions: %s\n' % total_next_states)
-f.write('Total number of states in final abstract system: %s\n' % len(system_fd))
+f.write('Total number of states in final abstract system: %s\n' % len(system_feasible_disc_inv))
     
 #convert from list to dictionary
 system_fdd = {}
         
-for s in system_fd:
+for s in system_feasible_disc_inv:
 	system_fdd[s.number] = s
    
 
@@ -300,7 +295,7 @@ print ""
 
 for key,s in system_fdd.iteritems():
     if s.is_feasible:
-		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part,s.next_states)
+		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part, s.next_states)
 
 SMV.close()        
 f.close()

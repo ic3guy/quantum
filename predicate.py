@@ -107,6 +107,9 @@ class State:
             if pred not in other.state:
                 return False
 
+        if self.disrete_part != other.discrete_part:
+            return False
+
         return True
 
     #def __iter__(self):

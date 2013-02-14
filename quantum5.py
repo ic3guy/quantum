@@ -2,6 +2,7 @@ from sympy import *
 import metitarski
 from itertools import product
 import predicate
+import abstraction
 import datetime
 import os
 import nusmv
@@ -18,21 +19,6 @@ def secondsToStr(t):
     return "%d:%02d:%02d.%03d" % \
         reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
             [(t*1000,),1000,60,60])
-
-def more_than_one_diff(s1, s2):
-
-    num_same = 0
-    
-    for pred1 in s1.state:
-        for pred2 in s2.state:
-            if pred1 == pred2:
-                print 'found matching predicate'
-                num_same += 1
-
-    if num_same < len(s1.state)-1:
-        return True
-    else:
-        return False
 
 execfile(exp_name)
 
@@ -55,19 +41,14 @@ feasible = 0
 infeasible = 0
 oplist = ['>','=','<']
 inftest = []
-system = []
+initial_abstract_system = []
     
 for equation in equations:
     predlist = [predicate.MetitPredicate(equation.equation,op) for op in oplist]
     inftest.append(predlist)
 
 var_string = predicate.get_var_string(equations)
-    
-system = [predicate.State(n,'None',*element) for n,element in enumerate(product(*inftest))]
-
-#f.write('Number of initial abstract states : %s \n' % len(system))
-#print 'Done system'
-#raw_input()
+initial_abstract_system = [predicate.State(n,'None',*element) for n,element in enumerate(product(*inftest))]
 
 # Create directories to store proved and unproved tptp files for later analysis
 now = datetime.datetime.now()
@@ -94,69 +75,46 @@ os.makedirs(cont_trans_unproved_dir)
 os.makedirs(disc_trans_proved_dir)
 os.makedirs(disc_trans_unproved_dir)
 
-for state in system:
-    #print metitarski.make_fof_inf(state)
-    print "checking state %s"  % state.print_state_number()
+for state in initial_abstract_system:
+    #print "checking state %s"  % state.print_state_number()
     fof = metitarski.make_fof_inf(state, var_string)
     #print fof
-    rc = metitarski.send_to_metit(fof,output=True)
+    rc = metitarski.send_to_metit(fof)
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
-        cprint('it is not feasible, proved', 'green')
+        cprint('State %s is not feasible. PROVED' % state.number, 'green')
         metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
     else:
         feasible = feasible+1
-        print cprint('it is feasible, unproved', 'red')
+        cprint('State %s is feasible. UNPROVED' % state.number, 'red')
         metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
-
-        #print "Feasible %s" % feasible
-        #print "Infeasible %s" % infeasible
 
 end_time1 = time.time()
 
-#f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
-#f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
+f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
+f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
 
-system_f = [state for state in system if state.is_feasible]
+system_feasible = [state for state in system if state.is_feasible]
 
-system_fd = qutilities.make_discrete_system(system_f,q)
+system_feasible_disc = qutilities.make_discrete_system(system_feasible,q)
 
-#f.write('Number of initial states in hybrid system abs : %s \n' % len(system_fd))
+f.write('Number of initial states in hybrid system abs : %s \n' % len(system_feasible_disc))
 
-xx = len(system_fd)
+xx = len(system_feasible_disc)
 
 #removing states that violate the invariant
-for state in system_fd:
+for state in system_feasible_disc:
 	if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
 		state.is_feasible = False
 
-system_fd = [state for state in system_fd if state.is_feasible]
+system_feasible_disc_inv = [state for state in system_feasible_disc if state.is_feasible]
 
-#print 'Done system'
-#raw_input()
-
-f.write('Number that violate the invariants : %s \n' % (xx - len(system_fd))) 
-
-#pre = predicate.MetitEquation(x-82,'t',[],{x : X})
-#g_pred_82gt = predicate.MetitPredicate(pre,'>')
-#pre = predicate.MetitEquation(x-68,'t',[],{x : X})
-#g_pred_68lt = predicate.MetitPredicate(pre,'<')
-
-#for s in system_fd:
-#	if g_pred_82gt in s.state or g_pred_68lt in s.state:
-#		s.is_feasible=False
-
-#print 'Press -ENTER- to continue'
-#raw_input()
-
-def find_states(state_list, preds):
-    for sta in preds:
-        return [z for z,state in enumerate(state_list) if all(i in sta for i in state.state)]
+f.write('Number that violate the invariants : %s \n' % (xx - len(system_feasible_disc_inv))) 
 
 start_abs = time.time()
     
-for state in system_fd:
+for state in system_feasible_disc_inv:
     pos_successors = []
     for z,pred in enumerate(state.state):
         if bad:
@@ -164,11 +122,10 @@ for state in system_fd:
         else:
             Q1,Q2,Q3 = metitarski.checkTransition2(var_string, state,pred,z, system_def, cont_trans_unproved_dir)
         
-        print "In Q1 : %s" % Q1
-        print "In Q2 : %s" % Q2
-        print "In Q3 : %s" % Q3
+        #print "In Q1 : %s" % Q1
+        #print "In Q2 : %s" % Q2
+        #print "In Q3 : %s" % Q3
 
-        #pre = predicate.MetitEquation(pred.equation, pred.depvar, system_def, pred.equation)
         lt_pred = predicate.MetitPredicate(pred.equation,'<')
         gt_pred = predicate.MetitPredicate(pred.equation,'>')
         eq_pred = predicate.MetitPredicate(pred.equation,'=')
@@ -193,28 +150,24 @@ for state in system_fd:
             else:
                 pos_successors.append([eq_pred,lt_pred,gt_pred])
                 
-        nstate = []
+    next_states = []
         
-    for state2 in product(*pos_successors):
-        #print state
-        ss = predicate.State(666, state.discrete_part, *state2) #check only states within same discrete mode
-        #print ss
-        
-        for s in system_fd:
-            if s == ss and s.is_feasible and s.discrete_part==ss.discrete_part and not more_than_one_diff(s,state): #check matching discrete parts
-                nstate.append(s.number)
-            #else:
-                #print 'no next state state found'
+    for possible_next_state in product(*pos_successors):
+        found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, state.discrete_part, *possible_next_state))
+
+        if found_next_state and not abstraction.more_than_one_diff(state, found_next_state):
+            next_states.append(found_next_state.number)
+        #else:
+            #print 'Multiple variable jumps'
                 
-    if nstate: 
-        print "From State %s Next State %s" % (state.number,nstate)
-        state.next_states = nstate
-    else:
-        print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
+    if next_states: 
+        print "From State %s Next State %s" % (state.number, next_states)
+        state.next_states = next_states
+    #else:
+        #print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
         #only delete the state at the end
         #state.is_feasible = False
-   # print find_states(system_f,product(*pos_successors
-                   
+                    
 fcount = 0
    
 for s in system_fd:

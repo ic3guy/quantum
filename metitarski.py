@@ -11,12 +11,14 @@ metit_options = ('metit',
                  '-q',
                  '-')
 
+metit_output = True
+
 #extra_constraints = ['X1<3.14', 'X1>-3.14']
 extra_constraints = []
 
 process = None
 
-def send_to_metit(fof,output=False,metit_options=metit_options):
+def send_to_metit(fof,output=metit_output,metit_options=metit_options):
     if output:
         print fof
         process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)

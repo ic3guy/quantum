@@ -14,7 +14,7 @@ bad = False
 
 #guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)
 
-guard_equation = sin(px)-py
+guard_equation = py-sin(px)
 guard = predicate.MetitPredicate(guard_equation,'=')
 g_inv = predicate.MetitPredicate(guard_equation,'<')
 
@@ -35,7 +35,7 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,
                                         vy.diff(t): -9.8 + 0.01*vy**2},
-                              't' : [{'guard':(guard,), 
+                              't' : [{'guard':([guard],), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}],

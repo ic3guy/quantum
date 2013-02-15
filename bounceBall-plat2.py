@@ -30,10 +30,12 @@ inv_pred_pylz = predicate.MetitPredicate(py, '<')
 #inv_pred_vylz = predicate.MetitPredicate(vy, '<')
 
 h_inv = predicate.MetitPredicate(h,'<')
+vy_lt = predicate.MetitPredicate(vy,'<')
+vy_eq = predicate.MetitPredicate(vy,'=')
 
 system_def = {('falling',) : {'flow' : {py.diff(t): vy,
                                         vy.diff(t): -9.8},
-                              't' : [{'guard':(guard,), 
+                              't' : [{'guard':([guard,vy_lt],[guard,vy_eq]), 
                                       'next_state' : ('falling',),
                                       'updates' : {vy : -0.2*vy}}],
                               'inv' : (g_inv,)}}

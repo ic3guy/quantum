@@ -187,7 +187,7 @@ dis_abs = time.time()
 for state in system_feasible_disc_inv:
     next_states = []
     for transition in system_def[state.discrete_part]['t']:
-        if any([x in state.state for x in transition['guard']]):
+        if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
             #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
             #print [x in state.state for x in transition['guard']]
             #print 'From State %s, %s, from guards %s' % (state.number, str(state), [str(x) for x in transition['guard']])
@@ -249,7 +249,6 @@ for state in system_feasible_disc_inv:
             state.next_states.extend(next_states)
         else:
             print 'no next state found, no switching'
-        #tate.is_feasible = False                 
                         
 dis_abs_end = time.time()
 

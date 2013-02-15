@@ -2276,3 +2276,85 @@ Total Time for Discrete Abstraction: 0:00:00.001
 Total number of abstract transitions: 27
 Total number of states in final abstract system: 16
 Total Time taken : 0:02:31.984
+****************************************
+bounceBall-plat.py
+****************************************
+Metit in Bad State : False
+Predicates : 3 : PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 20, Number of infeasible 7 
+Abstract Feasibility took 0:00:41.996 
+Number of initial states in hybrid system abs : 20 
+Number that violate the invariants : 11 
+Number of feasible states after cont abs : 9
+Cont abstraction took : 0:00:41.336
+Total Time for Discrete Abstraction: 0:00:35.559
+Total number of abstract transitions: 19
+Total number of states in final abstract system: 9
+Total Time taken : 0:01:58.894
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 39, Number of infeasible 42 
+Abstract Feasibility took 0:01:25.819 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:58.317
+Total Time for Discrete Abstraction: 0:01:59.660
+Total number of abstract transitions: 45
+Total number of states in final abstract system: 26
+Total Time taken : 0:05:23.799
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:35.780 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.395
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:35.721 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.941
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:35.752 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:56.857
+Total Time for Discrete Abstraction: 0:00:00.002
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 16
+Total Time taken : 0:02:32.613
+****************************************
+bounceBall-plat2.py
+****************************************
+Metit in Bad State : False
+Predicates : 4 : PY,VY,-H + PY,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 39, Number of infeasible 42 
+Abstract Feasibility took 0:01:26.118 
+Number of initial states in hybrid system abs : 39 
+Number that violate the invariants : 13 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:01:57.257
+Total Time for Discrete Abstraction: 0:01:10.000
+Total number of abstract transitions: 37
+Total number of states in final abstract system: 26
+Total Time taken : 0:04:33.379

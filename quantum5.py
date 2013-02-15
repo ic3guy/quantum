@@ -186,42 +186,42 @@ dis_abs = time.time()
 
 for state in system_feasible_disc_inv:
     next_states = []
-    for qn, discrete_q in enumerate(product(*q)):
-        if state.discrete_part == discrete_q:
-            for transition in system_def[state.discrete_part]['t']:
-                if any(x in state.state for x in transition['guard']):
-                    print 'guard found and taken'
-                    pos_successors = []
-                    if transition['updates']:
-                        print 'doing some updating'
-                        for z,pred2 in enumerate(state.state):
-                            if bad:
-                                Q1,Q2,Q3 = ([],[],[])
-                            else:
-                                Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
+    for transition in system_def[state.discrete_part]['t']:
+        if any([x in state.state for x in transition['guard']]):
+            #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
+            #print [x in state.state for x in transition['guard']]
+            #print 'From State %s, %s, from guards %s' % (state.number, str(state), [str(x) for x in transition['guard']])
+            pos_successors = []
+            if transition['updates']:
+                print 'doing some updating'
+                for z,pred2 in enumerate(state.state):
+                    if bad:
+                        Q1,Q2,Q3 = ([],[],[])
+                    else:
+                        Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
                                 #print "In Q1 : %s" % Q1
                                 #print "In Q2 : %s" % Q2
                                 #print "In Q3 : %s" % Q3
                         
                                 #pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
-                            lt_pred = predicate.MetitPredicate(pred2.equation,'<')
-                            gt_pred = predicate.MetitPredicate(pred2.equation,'>')
-                            eq_pred = predicate.MetitPredicate(pred2.equation,'=')
+                        lt_pred = predicate.MetitPredicate(pred2.equation,'<')
+                        gt_pred = predicate.MetitPredicate(pred2.equation,'>')
+                        eq_pred = predicate.MetitPredicate(pred2.equation,'=')
 
-                            if state in Q1 and state in Q2: 
-                                pos_successors.append([gt_pred])
-                            elif state in Q3 and state in Q2:
-                                pos_successors.append([lt_pred])
-                            elif state in Q1 and state in Q3:
-                                pos_successors.append([eq_pred])
-                            elif state in Q1:
-                                pos_successors.append([gt_pred,eq_pred])
-                            elif state in Q2:
-                                pos_successors.append([gt_pred,lt_pred])
-                            elif state in Q3:
-                                pos_successors.append([lt_pred,eq_pred])
-                            else:
-                                pos_successors.append([eq_pred,lt_pred,gt_pred])              
+                        if state in Q1 and state in Q2: 
+                            pos_successors.append([gt_pred])
+                        elif state in Q3 and state in Q2:
+                            pos_successors.append([lt_pred])
+                        elif state in Q1 and state in Q3:
+                            pos_successors.append([eq_pred])
+                        elif state in Q1:
+                            pos_successors.append([gt_pred,eq_pred])
+                        elif state in Q2:
+                            pos_successors.append([gt_pred,lt_pred])
+                        elif state in Q3:
+                            pos_successors.append([lt_pred,eq_pred])
+                        else:
+                            pos_successors.append([eq_pred,lt_pred,gt_pred])
 
                             for possible_next_state in product(*pos_successors):
                                 found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
@@ -237,21 +237,18 @@ for state in system_feasible_disc_inv:
                             print 'no next state found with substitution'
                             #state.is_feasible = False
 
-                print q
-                for next_discrete_state in product(*q): 
-                    #made it from qn+1 to qn
-                    #adding next state but just switching the discrete variable.
-                    print 'in here'
-                    found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,next_discrete_state,*state.state))
+            
 
-                    if found_next_state:
-                        next_states.append(found_next_state.number)
+            found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,transition['next_state'],*state.state))
+
+            if found_next_state:
+                next_states.append(found_next_state.number)
                        
-    if next_states:
-        print "From State %s Next State %s" % (state.number, next_states)
-        state.next_states.extend(next_states)
-    else:
-        print 'no next state found, no switching'
+        if next_states:
+            print "From State %s Next State %s" % (state.number, next_states)
+            state.next_states.extend(next_states)
+        else:
+            print 'no next state found, no switching'
         #tate.is_feasible = False                 
                         
 dis_abs_end = time.time()

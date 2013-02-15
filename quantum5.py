@@ -223,21 +223,19 @@ for state in system_feasible_disc_inv:
                         else:
                             pos_successors.append([eq_pred,lt_pred,gt_pred])
 
-                            for possible_next_state in product(*pos_successors):
-                                found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
+                for possible_next_state in product(*pos_successors):
+                    found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
 
-                                if found_next_state:
-                                    next_states.append(found_next_state.number)
+                    if found_next_state:
+                        next_states.append(found_next_state.number)
            
-                        if next_states: 
-                            print "From State %s Next State %s" % (state.number,next_states)
+                if next_states: 
+                    print "From State %s Next State %s" % (state.number,next_states)
                             #is this ok, check alogorithm
-                            state.next_states.extend(next_states)
-                        else:
-                            print 'no next state found with substitution'
+                    state.next_states.extend(next_states)
+                else:
+                    print 'no next state found with substitution'
                             #state.is_feasible = False
-
-            
 
             found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,transition['next_state'],*state.state))
 
@@ -290,7 +288,7 @@ f.write('Total Time taken : %s\n' % secondsToStr(end_time-start_time))
 print ""
 
 for key,s in system_fdd.iteritems():
-    if s.is_feasible:
+    if s.is_feasible and s.next_states:
 		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part, s.next_states)
 
 SMV.close()        

@@ -2358,3 +2358,48 @@ Total Time for Discrete Abstraction: 0:01:10.000
 Total number of abstract transitions: 37
 Total number of states in final abstract system: 26
 Total Time taken : 0:04:33.379
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:21.097 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 33 
+Number of feasible states after cont abs : 26
+Cont abstraction took : 0:02:06.465
+Total Time for Discrete Abstraction: 0:01:03.413
+Total number of abstract transitions: 36
+Total number of states in final abstract system: 26
+Total Time taken : 0:05:30.980
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:18.217 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 39 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:33.169
+Total Time for Discrete Abstraction: 0:00:48.234
+Total number of abstract transitions: 30
+Total number of states in final abstract system: 20
+Total Time taken : 0:04:39.626
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:19.363 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 39 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:31.116
+Total Time for Discrete Abstraction: 0:00:50.768
+Total number of abstract transitions: 32
+Total number of states in final abstract system: 20
+Total Time taken : 0:04:41.253

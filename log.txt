@@ -2472,3 +2472,33 @@ Total Time for Discrete Abstraction: 0:00:48.697
 Total number of abstract transitions: 32
 Total number of states in final abstract system: 20
 Total Time taken : 0:04:57.782
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:18.954 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 39 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:31.349
+Total Time for Discrete Abstraction: 0:00:48.750
+Total number of abstract transitions: 29
+Total number of states in final abstract system: 20
+Total Time taken : 0:04:39.059
+****************************************
+heater-new.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : X - 70,X - 80,X,X - 82,X - 68
+Number of feasible 11, Number of infeasible 232 
+Abstract Feasibility took 0:00:37.029 
+Number of initial states in hybrid system abs : 22 
+Number that violate the invariants : 6 
+Number of feasible states after cont abs : 16
+Cont abstraction took : 0:01:57.381
+Total Time for Discrete Abstraction: 0:00:00.002
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 16
+Total Time taken : 0:02:34.414

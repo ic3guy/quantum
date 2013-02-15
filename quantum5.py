@@ -158,7 +158,7 @@ for state in system_feasible_disc_inv:
             #print 'Multiple variable jumps'
                 
     if next_states: 
-        print "From State %s Next State %s" % (state.number, next_states)
+        print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, next_states)
         state.next_states = next_states
     #else:
         #print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
@@ -187,7 +187,7 @@ for state in system_feasible_disc_inv:
             #print 'From State %s, %s, from guards %s' % (state.number, str(state), [str(x) for x in transition['guard']])
             pos_successors = []
             if transition['updates']:
-                print 'doing some updating'
+                #print 'doing some updating'
                 for z,pred2 in enumerate(state.state):
                     if bad:
                         Q1,Q2,Q3 = ([],[],[])
@@ -218,23 +218,23 @@ for state in system_feasible_disc_inv:
                         next_states.append(found_next_state.number)
            
                 if next_states: 
-                    print "From State %s Next State %s" % (state.number,next_states)
+                    print "Updating State %s has produced Next States %s" % (state.number,next_states)
                             #is this ok, check alogorithm
                     state.next_states.extend(next_states)
                 else:
-                    print 'no next state found with substitution'
-                            #state.is_feasible = False
+                    print 'Substitution sends us to an infeasible state...possible error here.'
+                    #state.is_feasible = False
+            else:
+                found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,transition['next_state'],*state.state))
 
-            found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,transition['next_state'],*state.state))
-
-            if found_next_state:
-                next_states.append(found_next_state.number)
+                if found_next_state:
+                    next_states.append(found_next_state.number)
                        
         if next_states:
-            print "From State %s Next State %s" % (state.number, next_states)
+            print "Discrete Abstract Transition: From State %s Next State %s" % (state.number, next_states)
             state.next_states.extend(next_states)
-        else:
-            print 'no next state found, no switching'
+        #else:
+            #print 'No Next state found, No switching'
                         
 dis_abs_end = time.time()
 

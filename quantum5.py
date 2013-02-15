@@ -125,13 +125,7 @@ for state in system_feasible_disc_inv:
         else:
             Q1,Q2,Q3 = metitarski.checkTransition2(var_string, state,pred,z, system_def, cont_trans_unproved_dir)
         
-        #print "In Q1 : %s" % Q1
-        #print "In Q2 : %s" % Q2
-        #print "In Q3 : %s" % Q3
-
-        lt_pred = predicate.MetitPredicate(pred.equation,'<')
-        gt_pred = predicate.MetitPredicate(pred.equation,'>')
-        eq_pred = predicate.MetitPredicate(pred.equation,'=')
+        lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred.equation)
 
         if pred.operator == '>':
             if state in Q1: 
@@ -199,29 +193,23 @@ for state in system_feasible_disc_inv:
                         Q1,Q2,Q3 = ([],[],[])
                     else:
                         Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
-                                #print "In Q1 : %s" % Q1
-                                #print "In Q2 : %s" % Q2
-                                #print "In Q3 : %s" % Q3
-                        
-                                #pre = predicate.MetitEquation(pred2.equation.equation,pred2.equation.depvar,pred2.equation.subs_dict,pred2.equation.vars_dict)
-                        lt_pred = predicate.MetitPredicate(pred2.equation,'<')
-                        gt_pred = predicate.MetitPredicate(pred2.equation,'>')
-                        eq_pred = predicate.MetitPredicate(pred2.equation,'=')
 
-                        if state in Q1 and state in Q2: 
-                            pos_successors.append([gt_pred])
-                        elif state in Q3 and state in Q2:
-                            pos_successors.append([lt_pred])
-                        elif state in Q1 and state in Q3:
-                            pos_successors.append([eq_pred])
-                        elif state in Q1:
-                            pos_successors.append([gt_pred,eq_pred])
-                        elif state in Q2:
-                            pos_successors.append([gt_pred,lt_pred])
-                        elif state in Q3:
-                            pos_successors.append([lt_pred,eq_pred])
-                        else:
-                            pos_successors.append([eq_pred,lt_pred,gt_pred])
+                    lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred.equation)
+
+                    if state in Q1 and state in Q2: 
+                        pos_successors.append([gt_pred])
+                    elif state in Q3 and state in Q2:
+                        pos_successors.append([lt_pred])
+                    elif state in Q1 and state in Q3:
+                        pos_successors.append([eq_pred])
+                    elif state in Q1:
+                        pos_successors.append([gt_pred,eq_pred])
+                    elif state in Q2:
+                        pos_successors.append([gt_pred,lt_pred])
+                    elif state in Q3:
+                        pos_successors.append([lt_pred,eq_pred])
+                    else:
+                        pos_successors.append([eq_pred,lt_pred,gt_pred])
 
                 for possible_next_state in product(*pos_successors):
                     found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))

@@ -1,8 +1,20 @@
+import predicate
+
 def find_state(system, next_state):
     for state in system:
         if state == next_state and state.is_feasible:
             return state
 
+def update_next_states(pos_state, system, next_states, more_than_one=False):
+    found_next_state = find_state(system, pos_state)
+
+    if found_next_state:
+        if more_than_one:
+            if more_than_one_diff(pos_state, found_next_state):
+                next_states.append(found_next_state.number)
+        else:
+            next_states.append(found_next_state.number)
+                
 def more_than_one_diff(s1, s2):
 
     num_same = 0
@@ -17,3 +29,11 @@ def more_than_one_diff(s1, s2):
         return True
     else:
         return False
+
+def gen_pos_pred(equation):
+    
+    lt_pred = predicate.MetitPredicate(equation,'<')
+    gt_pred = predicate.MetitPredicate(equation,'>')
+    eq_pred = predicate.MetitPredicate(equation,'=')
+
+    return (lt_pred, eq_pred, gt_pred)

@@ -194,7 +194,7 @@ for state in system_feasible_disc_inv:
                     else:
                         Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
 
-                    lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred.equation)
+                    lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred2.equation)
 
                     if state in Q1 and state in Q2: 
                         pos_successors.append([gt_pred])

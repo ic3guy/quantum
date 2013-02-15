@@ -2442,3 +2442,33 @@ Number of feasible 59, Number of infeasible 184
 Abstract Feasibility took 0:02:18.764 
 Number of initial states in hybrid system abs : 59 
 Number that violate the invariants : 39 
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:26.453 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 39 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:02:44.674
+Total Time for Discrete Abstraction: 0:00:51.444
+Total number of abstract transitions: 27
+Total number of states in final abstract system: 20
+Total Time taken : 0:06:02.577
+****************************************
+bounceBall-plat2b.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VY,-H + PY,H,-H + PY + 0.0510204081632653*VY^2
+Number of feasible 59, Number of infeasible 184 
+Abstract Feasibility took 0:02:36.718 
+Number of initial states in hybrid system abs : 59 
+Number that violate the invariants : 39 
+Number of feasible states after cont abs : 20
+Cont abstraction took : 0:01:32.361
+Total Time for Discrete Abstraction: 0:00:48.697
+Total number of abstract transitions: 32
+Total number of states in final abstract system: 20
+Total Time taken : 0:04:57.782

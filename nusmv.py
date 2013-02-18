@@ -1,5 +1,17 @@
 import predicate
 
+def remove_inf_states(system):
+
+    while True:
+        system_copy = system.copy()
+        for state_number, state in system.iteritems():
+            if all([not(system[s].is_feasible) for s in state.next_states]) and state.is_feasible:
+                state.is_feasible=False
+                print "found infeasible state with no feasible next states"
+                
+        if system_copy==system:
+            return
+
 def transition_relation(cur_state,next_states,system):  
     if next_states:
         if len(next_states) == 1:
@@ -10,13 +22,12 @@ def transition_relation(cur_state,next_states,system):
         
         return '\t\tstate = %s: %s;\n' % (cur_state, next_states_str)
     else:
-        system[cur_state].is_feasible = False
+        #system[cur_state].is_feasible = False
         return '\n'
     
-            
 def construct_nusmv_input(system, init_state):
     case_block = construct_transition_case_block(system)
-    states = ','.join([s.print_state_number() for key,s in system.iteritems() if (s.is_feasible and not all(not(system[state].is_feasible) for state in s.next_states))])
+    states = ','.join([s.print_state_number() for key, s in system.iteritems() if (s.is_feasible and not all([not(system[state].is_feasible) for state in s.next_states]))])
 
     nusmv_output = 'MODULE main\nVAR\n\t'
     nusmv_output += 'state : {%s};\nASSIGN\n\t' % states
@@ -28,12 +39,12 @@ def construct_nusmv_input(system, init_state):
 def construct_transition_case_block(system):
     case_block = '\tnext(state) := case\n'
     
-    for state_num,tr in system.iteritems():
+    for state_num, state in system.iteritems():
         #filter out next states that have been shown to have no next state (deleted)
-        next_states = [n for n in tr.next_states if (system[n].is_feasible and not all(not(system[s].is_feasible) for s in system[n].next_states))]
+        next_states = [n for n in state.next_states if (system[n].is_feasible and not all([not(system[s].is_feasible) for s in system[n].next_states]))]
         
-        if tr.is_feasible and next_states:
-            case_block += transition_relation(tr.print_state_number(),next_states,system)
+        if state.is_feasible and next_states:
+            case_block += transition_relation(state.print_state_number(), next_states, system)
     
     case_block += '\tesac;\n'
     

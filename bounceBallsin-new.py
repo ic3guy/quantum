@@ -35,7 +35,7 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,
                                         vy.diff(t): -9.8 + 0.01*vy**2},
-                              't' : [{'guard':([guard],), 
+                              't' : [{'guard':([guard,inv_pred_vylz],), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)}}],
@@ -45,7 +45,8 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
 
 equations = [predicate.MetitEquation(px),
              predicate.MetitEquation(py),
-             predicate.MetitEquation(vx),
              predicate.MetitEquation(vy),
+             predicate.MetitEquation(vx),
+             predicate.MetitEquation(py+vy**2/(2*9.8)),
              predicate.MetitEquation(guard_equation)]
 

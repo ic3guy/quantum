@@ -11,10 +11,10 @@ metit_options = ('metit',
                  '-q',
                  '-')
 
-metit_output = True
+metit_output = False
 
-#extra_constraints = ['X1<3.14', 'X1>-3.14']
-extra_constraints = []
+extra_constraints = ['PX<3.14', 'PX>-3.14']
+#extra_constraints = []
 
 process = None
 

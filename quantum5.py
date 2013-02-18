@@ -84,11 +84,11 @@ for state in initial_abstract_system:
     if rc == 0:
         infeasible = infeasible+1
         state.is_feasible = False
-        cprint('State %s is not feasible. PROVED' % state.number, 'green')
+        cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
         metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
     else:
         feasible = feasible+1
-        cprint('State %s is feasible. UNPROVED' % state.number, 'red')
+        cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
         metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
 
 end_time1 = time.time()
@@ -262,6 +262,8 @@ SMV = open(exp_name+'.smv','w')
 smv_output = nusmv.construct_nusmv_input(system_fdd,2)
 
 SMV.write(smv_output)
+SMV.close()
+
 end_time = time.time()
 
 #print 40*'='
@@ -279,7 +281,7 @@ for key,s in system_fdd.iteritems():
     if s.is_feasible and s.next_states:
 		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part, s.next_states)
 
-SMV.close()        
+
 f.close()
 
 

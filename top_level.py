@@ -12,7 +12,9 @@
 #filenames = ['heater-new']
 #filenames = ['bounceBall-plat2b']
 
-filenames = ['bounceBallsin-new']
+#filenames = ['bounceBallsin-new']
+filenames = ['bounceBallsin-new2']
+
 
 #globals() modifies the global level
 
@@ -21,11 +23,5 @@ for file_name in filenames:
     execfile('quantum5.py',globals())
         
 #for i in *; do mv "$i" "$i".tptp; done
-
-
-
-
-
-
 
 

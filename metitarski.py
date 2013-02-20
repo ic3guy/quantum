@@ -11,8 +11,9 @@ metit_options = ('metit',
                  '-q','--allowSF',
                  '-')
 
-metit_output = False
+metit_output = True
 
+#extra_constraints = ['SS^2+C^2=1']
 extra_constraints = ['PX<3.14', 'PX>-3.14']
 #extra_constraints = []
 

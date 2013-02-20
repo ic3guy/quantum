@@ -8,7 +8,7 @@ import os
 metit_options = ('metit', 
                  '--autoInclude', 
                  '--time','1',
-                 '-q',
+                 '-q','--allowSF',
                  '-')
 
 metit_output = False

@@ -16,11 +16,11 @@ filenames = ['bounceBallsin-new']
 
 #globals() modifies the global level
 
-for file_name in filenames:
-    exp_name = file_name + '.py'
+for file_name in filenames:             
+    exp_name = file_name + '.py'        
     execfile('quantum5.py',globals())
-
-
+        
+#for i in *; do mv "$i" "$i".tptp; done
 
 
 

@@ -3119,3 +3119,22 @@ Total Time for Discrete Abstraction: 0:08:58.472
 Total number of abstract transitions: 551
 Total number of states in final abstract system: 129
 Total Time taken : 0:33:26.558
+****************************************
+bounceBallsin-new2.py
+****************************************
+Metit in Bad State : False
+Predicates : 6 : PX,PY,VX,VY,19.6*PY + VX^2 + VY^2 - 9.8,PY - sin(PX)
+****************************************
+bounceBallsin-new2.py
+****************************************
+Metit in Bad State : False
+Predicates : 6 : PX,PY,VX,VY,19.6*PY + VX^2 + VY^2 - 9.8,PY - sin(PX)
+****************************************
+bounceBallsin-new2.py
+****************************************
+Metit in Bad State : False
+Predicates : 5 : PY,VX,VY,19.6*PY + VX^2 + VY^2 - 9.8,PY - sin(PX)
+Number of feasible 210, Number of infeasible 33 
+Abstract Feasibility took 0:09:20.990 
+Number of initial states in hybrid system abs : 210 
+Number that violate the invariants : 77 

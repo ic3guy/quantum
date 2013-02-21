@@ -12,9 +12,10 @@ metit_options = ('metit',
                  '-')
 
 metit_output = True
+sc_heur = True
 
-extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
-#extra_constraints = ['PX<3.14', 'PX>-3.14']
+#extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
+extra_constraints = ['PX<3.14', 'PX>-3.14']
 #extra_constraints = []
 
 process = None
@@ -30,13 +31,21 @@ def send_to_metit(fof,output=metit_output,metit_options=metit_options):
     
     return process.returncode
 
-def make_fof_inf(state, var_string):
+def make_fof_inf(state, var_string,sc_heur=False):
     #print [str(state)]
     y = list(extra_constraints)
     y.extend([str(state)])
     #print y
-    return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (var_string, ' & '.join(y))
-
+    if sc_heur:
+        subsdict={'cos(PX)':'C','sin(PX)':'S'}
+        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+        pattern = re.compile("|".join(rep.keys()))
+        y = pattern.sub(lambda m: subsdict[m.group(0)], ' & '.join(y))
+    
+        return 'fof(stdin, conjecture, (![%s,S,C] : (~(%s & S^2+C^2=1)))).' % (var_string, y)
+    else:
+        return 'fof(stdin, conjecture, (![%s] : (~(%s)))).' % (var_string, ' & '.join(y))
+        
 def make_fof_rel(state, derivative, op, subsdict={'exp':'10^','e':'*10^'}):
 
     equation = state.get_state()
@@ -49,11 +58,23 @@ def make_fof_rel(state, derivative, op, subsdict={'exp':'10^','e':'*10^'}):
         #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
         return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(var_string, state, derivative, op1, op2):
+def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False):
     y = list(extra_constraints)
     y.extend([str(state)])
+    #y = ' & '.join(y)
     #print y
-    return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
+    #print y
+    if sc_heur:
+        subsdict={'cos(PX)':'C','sin(PX)':'S'}
+        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+        pattern = re.compile("|".join(rep.keys()))
+        #y = pattern.sub(lambda m: subsdict[m.group(0)], y)
+
+        fof_rel = 'fof(checkTransition, conjecture, (![%s,S,C] : (%s & S^2+C^2=1 => (%s %s 0 | %s %s 0)))).' % (var_string, ' & '.join(y), derivative, op1, derivative, op2)
+
+        return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
+    else:
+        return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string, y, derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('%s/%s' % (directory, name), 'wa')
@@ -77,10 +98,10 @@ def checkTransition2(var_string, state, pred, x, system_def, directory='.'):
     der = str(predicate.metit_derivative(pred, state.discrete_part, system_def))
     #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
 
-    lteq = make_fof_rel_2(var_string, state, der,'<','=')
-    gt_or_lt = make_fof_rel_2(var_string, state, der,'>', '<')
+    lteq = make_fof_rel_2(var_string, state, der,'<','=',sc_heur=sc_heur)
+    gt_or_lt = make_fof_rel_2(var_string, state, der,'>', '<',sc_heur=sc_heur)
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(var_string, state,der,'>', '=')
+    gteq = make_fof_rel_2(var_string, state,der,'>', '=',sc_heur=sc_heur)
 
     if pred.operator == '>' or pred.operator == '=':
         if not send_to_metit(gteq,metit_options=metit_options):
@@ -123,10 +144,10 @@ def checkTransition3(var_string, state, pred, x, system_def, updates, directory=
     #print state
     #print der
     
-    lteq = make_fof_rel_2(var_string, state, der,'<', '=')
-    gt_or_lt = make_fof_rel_2(var_string, state,der,'>', '<')
+    lteq = make_fof_rel_2(var_string, state, der,'<', '=',sc_heur=sc_heur)
+    gt_or_lt = make_fof_rel_2(var_string, state,der,'>', '<',sc_heur=sc_heur)
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(var_string, state,der,'>', '=')
+    gteq = make_fof_rel_2(var_string, state,der,'>', '=',sc_heur=sc_heur)
 
     if not send_to_metit(gteq,metit_options=metit_options):
         Q1.append(state)

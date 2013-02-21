@@ -13,7 +13,7 @@
 #filenames = ['bounceBall-plat2b']
 
 #filenames = ['bounceBallsin-new']
-filenames = ['bounceBallsin-new2']
+filenames = ['bounceBallsin-new3']
 
 
 #globals() modifies the global level
@@ -23,5 +23,6 @@ for file_name in filenames:
     execfile('quantum5.py',globals())
         
 #for i in *; do mv "$i" "$i".tptp; done
-
+#sed -i 's/PX<3.14 & PX>-3.14 & PX<0/S^2+C^2=1/g' ./*
+#sed -i 's/PX,/S,C,/g' ./*
 

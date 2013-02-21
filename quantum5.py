@@ -214,6 +214,9 @@ for state in system_feasible_disc_inv:
                 for possible_next_state in product(*pos_successors):
                     found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
 
+                    #print abstraction.get_true_guards(state, transition['guard'])
+                    #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
+                    
                     if found_next_state:
                         next_states.append(found_next_state.number)
            

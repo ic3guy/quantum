@@ -30,6 +30,14 @@ def more_than_one_diff(s1, s2):
     else:
         return False
 
+def get_true_guards(state, guards):
+    true_guards = list()
+    for guard_list in guards:
+        for guard in guard_list:
+            if guard in state.state:
+                true_guards.append(guard)
+    return true_guards
+                
 def gen_pos_pred(equation):
     
     lt_pred = predicate.MetitPredicate(equation,'<')

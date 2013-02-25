@@ -33,7 +33,7 @@ class MetitEquation:
         self.is_lyapunov = is_lyapunov
         self.var_list = [sympify(str(var).replace("("+str(self.depvar)+")","").upper()) for var in self.equation.atoms(AppliedUndef)]
         
-    def __str__(self, subsdict={'e':'*10^', '**':'^'}):
+    def __str__(self, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
 
         #this gives us the functions
         var_replace_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]

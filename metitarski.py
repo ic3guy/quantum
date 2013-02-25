@@ -15,7 +15,7 @@ metit_output = True
 sc_heur = True
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
-extra_constraints = ['PX<3.14', 'PX>-3.14']
+extra_constraints = ['PX<2*pi', 'PX>-2*pi']
 #extra_constraints = []
 
 process = None

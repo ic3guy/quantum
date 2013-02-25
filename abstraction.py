@@ -45,3 +45,17 @@ def gen_pos_pred(equation):
     eq_pred = predicate.MetitPredicate(equation,'=')
 
     return (lt_pred, eq_pred, gt_pred)
+
+def print_reach(system, state, depth):
+
+    #print state.number, state
+    #print '****'
+    
+    if depth==1:
+        print state.number, state
+        print '****'
+        #return
+    else:
+        for x in state.next_states:
+            #print state.number, state
+            print_reach(system, system[x], depth-1)

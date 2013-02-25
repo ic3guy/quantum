@@ -2,7 +2,7 @@ MODULE main
 VAR
 	state : {3,4,5,6,7,8,12,13,14,15,16,17,21,22,23,24,25,26,30,31,32,33,34,35,39,40,41,42,43,44,48,49,50,51,52,53,57,58,59,60,61,62,66,67,68,69,70,71,75,76,77,78,79,80};
 ASSIGN
-	init(state) := 52;
+	init(state) := 61;
 	next(state) := case
 		state = 3: {57,3,30,6};
 		state = 4: {58,31,4,7};
@@ -60,8 +60,5 @@ ASSIGN
 		state = 80: {80,77,53};
 	esac;
 
-LTLSPEC G !(state=33|state=35)
+SPEC EF (state=24|state=25|state=26|state=51|state=52|state=53|state=78|state=79|state=80)
 
-LTLSPEC G !(state=60|state=62)
-
-LTLSPEC G !(state=8|state=35|state=62)

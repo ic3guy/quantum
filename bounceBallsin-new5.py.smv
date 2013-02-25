@@ -60,4 +60,8 @@ ASSIGN
 		state = 127: 208;
 	esac;
 
-LTLSPEC G !(state=100|state=101|state=104|state=107|state=98|state=94)
+LTLSPEC G !(state=101|state=104|state=107|state=98)
+
+LTLSPEC G !(state=179|state=182|state=185|state=188)
+
+LTLSPEC G !(state=17|state=20|state=23|state=26)

@@ -48,22 +48,22 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         vy.diff(t): -9.8 + 0.01*vy**2,
                                         g.diff(t): cos(px)*vx-vy},
                                         #b.diff(t): 1},
-                              't' : [{'guard':([g2],), 
+                              't' : [{'guard':([g2,guard],), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)
                                                    }}],
-                              'inv' : (g_gt,)}}
+                              'inv' : (g_gt,g_inv)}}
 
 
 
 equations = [predicate.MetitEquation(vy),
              predicate.MetitEquation(py),
-             #predicate.MetitEquation(px),
-             #predicate.MetitEquation(vx),
+             predicate.MetitEquation(px),
+             predicate.MetitEquation(vx),
              predicate.MetitEquation(g),
              predicate.MetitEquation(sin(px)-py-g),
-             #predicate.MetitEquation(g),
+             predicate.MetitEquation(sin(px)-py),
              #sapredicate.MetitEquation(b),
              #predicate.MetitEquation(vy),
              #predicate.MetitEquation(h),

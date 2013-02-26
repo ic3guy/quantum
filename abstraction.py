@@ -150,8 +150,10 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
         
     for possible_next_state in product(*pos_successors):
         found_next_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
+
+        #not more_than_one_diff(state, found_next_state)
         
-        if found_next_state and not more_than_one_diff(state, found_next_state) and is_state_feasible(found_next_state, var_string):
+        if found_next_state and is_state_feasible(found_next_state, var_string):
             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'

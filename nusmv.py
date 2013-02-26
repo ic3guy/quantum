@@ -5,9 +5,10 @@ def remove_inf_states(system):
     while True:
         system_copy = system.copy()
         for state_number, state in system.iteritems():
-            if all([not(system[s].is_feasible) for s in state.next_states]) and state.is_feasible:
-                state.is_feasible=False
-                print "found infeasible state with no feasible next states"
+            if state.next_states:
+                if all([not(system[s].is_feasible) for s in state.next_states]) and state.is_feasible:
+                    state.is_feasible=False
+                    print "found infeasible state with no feasible next states"
                 
         if system_copy==system:
             return
@@ -28,7 +29,7 @@ def transition_relation(cur_state,next_states,system):
 def construct_nusmv_input(system, init_state):
     remove_inf_states(system)
     case_block = construct_transition_case_block(system)
-    states = ','.join([s.print_state_number() for key, s in system.iteritems() if s.is_feasible]) 
+    states = ','.join([s.print_state_number() for key, s in system.iteritems() if s.is_feasible and s.feasabiliy_checked]) 
 
     nusmv_output = 'MODULE main\nVAR\n\t'
     nusmv_output += 'state : {%s};\nASSIGN\n\t' % states

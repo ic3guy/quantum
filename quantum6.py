@@ -11,6 +11,11 @@ import time
 from termcolor import colored, cprint
 import qutilities
 
+def secondsToStr(t):
+    return "%d:%02d:%02d.%03d" % \
+        reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
+            [(t*1000,),1000,60,60])
+
 # Create directories to store proved and unproved tptp files for later analysis
 now = datetime.datetime.now()
 experiment_dir = 'experiments/'+ file_name + now.strftime('--%d-%m-%Y--%H:%M:%S')
@@ -38,192 +43,35 @@ os.makedirs(disc_trans_unproved_dir)
 
 execfile(exp_name)
 
+start_time = time.time()    
+f = open('log.txt', 'a', 0)
+f.write(40*'*'+'\n')
+f.write(exp_name + '\n')
+f.write(40*'*' + '\n')
+
 hybrid_system = abstraction.initial_abstract_system_setup(equations, q, system_def)
 var_string = predicate.get_var_string(equations)
 
-initial_state_numbers = abstraction.conc_to_abs(hybrid_system,'X - 70>0','X - 80<0')
+initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
 
 next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string)]
     
 ## LAZY QUAL ABS ##
 
-abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir)
+abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir)
 
-
-
-
-print '*'*10 + 'CONTINUOUS ABSTRACTION' + '*'*10
-
-for state in system_feasible_disc_inv:
-    pos_successors = []
-    for z,pred in enumerate(state.state):
-        if bad:
-            Q1,Q2,Q3 = ([],[],[])
-        else:
-            Q1,Q2,Q3 = metitarski.checkTransition2(var_string, state,pred,z, system_def, cont_trans_unproved_dir)
-        
-        lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred.equation)
-
-        if pred.operator == '>':
-            if state in Q1: 
-                pos_successors.append([gt_pred])
-            else:
-                pos_successors.append([gt_pred,eq_pred])
-        elif pred.operator == '<':
-            if state in Q3:
-                pos_successors.append([lt_pred])
-            else:
-                pos_successors.append([lt_pred,eq_pred])
-        else:
-            if state in Q1 and state in Q2:
-                pos_successors.append([gt_pred])
-            elif state in Q3 and state in Q2:
-                pos_successors.append([lt_pred])
-            elif state in Q1 and state in Q3:
-                pos_successors.append([eq_pred])
-            else:
-                pos_successors.append([eq_pred,lt_pred,gt_pred])
-                
-    next_states = []
-        
-    for possible_next_state in product(*pos_successors):
-        found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, state.discrete_part, *possible_next_state))
-
-        if found_next_state and not abstraction.more_than_one_diff(state, found_next_state):
-            next_states.append(found_next_state.number)
-        #else:
-            #print 'Multiple variable jumps'
-                
-    if next_states: 
-        print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, next_states)
-        state.next_states = next_states
-    #else:
-        #print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
-        #only delete the state at the end
-        #state.is_feasible = False
-                    
-fcount = 0
-   
-for s in system_feasible_disc_inv:
-    if s.is_feasible:
-        fcount = fcount + 1 
-
-end_abs = time.time()
-
-f.write('Number of feasible states after cont abs : %s\n' % fcount)
-f.write('Cont abstraction took : %s\n'  % secondsToStr(end_abs-start_abs))
-
-dis_abs = time.time()
-
-for state in system_feasible_disc_inv:
-    next_states = []
-    for transition in system_def[state.discrete_part]['t']:
-        if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
-            #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
-            #print [x in state.state for x in transition['guard']]
-            #print 'From State %s, %s, from guards %s' % (state.number, str(state), [str(x) for x in transition['guard']])
-            pos_successors = []
-            if transition['updates']:
-                #print 'doing some updating'
-                for z,pred2 in enumerate(state.state):
-                    if bad:
-                        Q1,Q2,Q3 = ([],[],[])
-                    else:
-                        Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
-
-                    lt_pred, eq_pred, gt_pred = abstraction.gen_pos_pred(pred2.equation)
-
-                    if state in Q1 and state in Q2: 
-                        pos_successors.append([gt_pred])
-                    elif state in Q3 and state in Q2:
-                        pos_successors.append([lt_pred])
-                    elif state in Q1 and state in Q3:
-                        pos_successors.append([eq_pred])
-                    elif state in Q1:
-                        pos_successors.append([gt_pred,eq_pred])
-                    elif state in Q2:
-                        pos_successors.append([gt_pred,lt_pred])
-                    elif state in Q3:
-                        pos_successors.append([lt_pred,eq_pred])
-                    else:
-                        pos_successors.append([eq_pred,lt_pred,gt_pred])
-
-                for possible_next_state in product(*pos_successors):
-                    found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666, transition['next_state'], *possible_next_state))
-
-                    #print abstraction.get_true_guards(state, transition['guard'])
-                    #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
-                    
-                    if found_next_state:
-                        next_states.append(found_next_state.number)
-           
-                if next_states: 
-                    print "Updating State %s has produced Next States %s" % (state.number,next_states)
-                            #is this ok, check alogorithm
-                    state.next_states.extend(next_states)
-                else:
-                    print 'Substitution sends us to an infeasible state...possible error here.'
-                    #state.is_feasible = False
-            else:
-                found_next_state = abstraction.find_state(system_feasible_disc_inv, predicate.State(666,transition['next_state'],*state.state))
-
-                if found_next_state:
-                    next_states.append(found_next_state.number)
-                       
-        if next_states:
-            print "Discrete Abstract Transition: From State %s Next State %s" % (state.number, next_states)
-            state.next_states.extend(next_states)
-        #else:
-            #print 'No Next state found, No switching'
-                        
-dis_abs_end = time.time()
-
-f.write('Total Time for Discrete Abstraction: %s\n' % secondsToStr(dis_abs_end-dis_abs))
-        
-total_next_states = 0
-#remove duplicate next states.
-for s in system_feasible_disc_inv:
-    s.next_states = list(set(s.next_states))
-    total_next_states = total_next_states + len(s.next_states)
-
-f.write('Total number of abstract transitions: %s\n' % total_next_states)
-f.write('Total number of states in final abstract system: %s\n' % len(system_feasible_disc_inv))
-    
-#convert from list to dictionary
-system_fdd = {}
-        
-for s in system_feasible_disc_inv:
-	system_fdd[s.number] = s
-   
-
-#SMV = open('/Users/will/Research/quantum/'+exp_name+'.smv','w')
 SMV = open(exp_name+'.smv','w')
 
-smv_output = nusmv.construct_nusmv_input(system_fdd,2)
+smv_output = nusmv.construct_nusmv_input(hybrid_system,2)
 
 SMV.write(smv_output)
 SMV.close()
 
 end_time = time.time()
 
-#print 40*'='
 f.write('Total Time taken : %s\n' % secondsToStr(end_time-start_time))
-#print 40*'='
-
-#for s in system:
-#	if s.is_feasible:
-#		if 'X - 80>0' in [pred.equation_string for pred in s.state]:
-#			s.discrete_part = 'off'
-
-print ""
-
-for key,s in system_fdd.iteritems():
-    if s.is_feasible and s.next_states:
-		print "From State {:>5} : {} - {} \tto States {}".format(s.number, s, s.discrete_part, s.next_states)
-
-
 f.close()
 
-
+abstraction.print_system(hybrid_system)
 
     

@@ -64,8 +64,8 @@ def print_reach(system, state, depth):
             #print state.number, state
             print_reach(system, system[x], depth-1)
 
-def conc_to_abs(system, *predicates):
-    return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates])]
+def conc_to_abs(system, discrete_part, *predicates):
+    return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
 
 def initial_abstract_system_setup(equations, q, system_def):
     oplist = ['>','=','<']
@@ -88,24 +88,33 @@ def initial_abstract_system_setup(equations, q, system_def):
 
     return {state.number:state for state in hybrid_system.values() if state.is_feasible}
 
-def print_system(system):
+def print_system(system, feasible_only=True):
     for key, s in system.items():
-        print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
+        if s.is_feasible and s.feasability_checked and feasible_only:
+            print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
+        elif feasible_only==False:
+            print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
 
 def is_state_feasible(state, var_string):
-    fof = metitarski.make_fof_inf(state, var_string)
-    #print "Sending: " + fof
-    rc = metitarski.send_to_metit(fof)
-    if rc == 0:
-        state.is_feasible = False
-        cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
-        return False
+    if not(state.feasability_checked):
+        fof = metitarski.make_fof_inf(state, var_string)
+        #print "Sending: " + fof
+        rc = metitarski.send_to_metit(fof)
+        state.feasability_checked = True
+        if rc == 0:
+            state.is_feasible = False
+            cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
+            return False
         #metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
-    else:
-        #feasible = feasible+1
-        cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
-        return True
+        else:
+            #feasible = feasible+1
+            cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
+            return True
         #metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
+
+        
+    else:
+        return state.is_feasible
 
 def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_dir, bad=False):
     pos_successors = []
@@ -157,7 +166,70 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
         #only delete the state at the end
         #state.is_feasible = False
 
-def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir):
+def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_dir, bad=False):
+    next_states = []
+    for transition in system_def[state.discrete_part]['t']:
+        if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
+            #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
+            #print [x in state.state for x in transition['guard']]
+            #print 'From State %s, %s, from guards %s' % (state.number, str(state), [str(x) for x in transition['guard']])
+            pos_successors = []
+            if transition['updates']:
+                #print 'doing some updating'
+                for z,pred2 in enumerate(state.state):
+                    if bad:
+                        Q1,Q2,Q3 = ([],[],[])
+                    else:
+                        Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], directory=disc_trans_unproved_dir)
+
+                    lt_pred, eq_pred, gt_pred = gen_pos_pred(pred2.equation)
+
+                    if state in Q1 and state in Q2: 
+                        pos_successors.append([gt_pred])
+                    elif state in Q3 and state in Q2:
+                        pos_successors.append([lt_pred])
+                    elif state in Q1 and state in Q3:
+                        pos_successors.append([eq_pred])
+                    elif state in Q1:
+                        pos_successors.append([gt_pred,eq_pred])
+                    elif state in Q2:
+                        pos_successors.append([gt_pred,lt_pred])
+                    elif state in Q3:
+                        pos_successors.append([lt_pred,eq_pred])
+                    else:
+                        pos_successors.append([eq_pred,lt_pred,gt_pred])
+
+                for possible_next_state in product(*pos_successors):
+                    found_next_state = find_state(system, predicate.State(666, transition['next_state'], *possible_next_state))
+
+                    #print abstraction.get_true_guards(state, transition['guard'])
+                    #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
+                    
+                    if found_next_state:
+                        next_states.append(found_next_state.number)
+           
+                if next_states: 
+                    print "Updating State %s has produced Next States %s" % (state.number,next_states)
+                            #is this ok, check alogorithm
+                    state.next_states.extend(next_states)
+                else:
+                    print 'Substitution sends us to an infeasible state...possible error here.'
+                    #state.is_feasible = False
+            else:
+                found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
+
+                if found_next_state:
+                    next_states.append(found_next_state.number)
+                       
+        if next_states:
+            print "Discrete Abstract Transition: From State %s Next State %s" % (state.number, next_states)
+            state.next_states.extend(next_states)
+        #else:
+            #print 'No Next state found, No switching'
+
+    return next_states
+            
+def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir):
     new_next_states = list(initial_states)
     old_next_states = []
 
@@ -168,8 +240,11 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
         for state_num in old_next_states:
             if not system[state_num].next_states:
                 new_next_states.extend([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir)])
-        
+                new_next_states.extend([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir)])
+                
         new_next_states = list(set(new_next_states))
-
+        print 'iterating again'
         print 'new_next_states %s' % new_next_states
     
+
+        

@@ -101,6 +101,7 @@ class State:
         self.next_states = [] #no variable args and keyword with default
         self.discrete_part = discrete_part
         self.guards = []
+        self.feasability_checked = False
       
     def __eq__(self, other):
         for pred in self.state:

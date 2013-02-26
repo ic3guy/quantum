@@ -208,7 +208,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
-                    if found_next_state:
+                    if found_next_state and is_state_feasible(found_next_state, var_string) :
                         next_states.append(found_next_state.number)
            
                 if next_states: 
@@ -221,7 +221,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
             else:
                 found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
 
-                if found_next_state:
+                if found_next_state and is_state_feasible(found_next_state, var_string):
                     next_states.append(found_next_state.number)
                        
         if next_states:
@@ -248,6 +248,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
                 
         new_next_states = list(set(new_next_states))
         print 'iterating again'
+        print 'number of new states %s' % (len(new_next_states)-len(old_next_states))
         print 'new_next_states %s' % new_next_states
     
 

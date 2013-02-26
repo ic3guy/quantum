@@ -11,45 +11,6 @@ import time
 from termcolor import colored, cprint
 import qutilities
 
-#abspath = os.path.abspath(__file__)
-#dname = os.path.dirname(abspath)
-#os.chdir(dname)
-
-def secondsToStr(t):
-    return "%d:%02d:%02d.%03d" % \
-        reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
-            [(t*1000,),1000,60,60])
-
-execfile(exp_name)
-
-#print system_def
-start_time = time.time()    
-
-#f = open('/Users/will/Research/quantum/log.txt', 'a', 0)
-f = open('log.txt', 'a', 0)
-
-f.write(40*'*'+'\n')
-f.write(exp_name + '\n')
-f.write(40*'*' + '\n')
-
-eq_list = ','.join([str(eq) for eq in equations])
-
-f.write('Metit in Bad State : %s\n' % bad)
-f.write('Predicates : %s : %s\n' % (len(equations), eq_list))
-
-feasible = 0
-infeasible = 0
-oplist = ['>','=','<']
-inftest = []
-initial_abstract_system = []
-    
-for equation in equations:
-    predlist = [predicate.MetitPredicate(equation.equation,op) for op in oplist]
-    inftest.append(predlist)
-
-var_string = predicate.get_var_string(equations)
-initial_abstract_system = [predicate.State(n,'None',*element) for n,element in enumerate(product(*inftest))]
-
 # Create directories to store proved and unproved tptp files for later analysis
 now = datetime.datetime.now()
 experiment_dir = 'experiments/'+ file_name + now.strftime('--%d-%m-%Y--%H:%M:%S')
@@ -75,45 +36,21 @@ os.makedirs(cont_trans_unproved_dir)
 os.makedirs(disc_trans_proved_dir)
 os.makedirs(disc_trans_unproved_dir)
 
-print '*'*10 + 'CONTINUOUS FEASABILITY' + '*'*10
+execfile(exp_name)
 
-for state in initial_abstract_system:
-    fof = metitarski.make_fof_inf(state, var_string)
-    #print "Sending: " + fof
-    rc = metitarski.send_to_metit(fof)
-    if rc == 0:
-        infeasible = infeasible+1
-        state.is_feasible = False
-        cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
-        metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
-    else:
-        feasible = feasible+1
-        cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
-        metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
+hybrid_system = abstraction.initial_abstract_system_setup(equations, q, system_def)
+var_string = predicate.get_var_string(equations)
 
-end_time1 = time.time()
+initial_state_numbers = abstraction.conc_to_abs(hybrid_system,'X - 70>0','X - 80<0')
 
-f.write('Number of feasible %s, Number of infeasible %s \n' % (feasible,infeasible))
-f.write('Abstract Feasibility took %s \n' % secondsToStr(end_time1-start_time))
+next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string)]
+    
+## LAZY QUAL ABS ##
 
-system_feasible = [state for state in initial_abstract_system if state.is_feasible]
+abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir)
 
-system_feasible_disc = qutilities.make_discrete_system(system_feasible,q)
 
-f.write('Number of initial states in hybrid system abs : %s \n' % len(system_feasible_disc))
 
-xx = len(system_feasible_disc)
-
-#removing states that violate the invariant
-for state in system_feasible_disc:
-	if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
-		state.is_feasible = False
-
-system_feasible_disc_inv = [state for state in system_feasible_disc if state.is_feasible]
-
-f.write('Number that violate the invariants : %s \n' % (xx - len(system_feasible_disc_inv))) 
-
-start_abs = time.time()
 
 print '*'*10 + 'CONTINUOUS ABSTRACTION' + '*'*10
 

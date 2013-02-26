@@ -9,18 +9,18 @@
 #filenames = ['simplePendulum-new']
 #filenames = ['bounceBall-2states']
 #filenames = ['bounceBall-work']
-#filenames = ['heater-new']
+filenames = ['heater-new']
 #filenames = ['bounceBall-plat2b']
 
 #filenames = ['bounceBallsin-new']
-filenames = ['bounceBallsin-new5']
+#filenames = ['bounceBallsin-new5']
 
 
 #globals() modifies the global level
 
 for file_name in filenames:             
     exp_name = file_name + '.py'        
-    execfile('quantum5.py',globals())
+    execfile('quantum6.py',globals())
         
 #for i in *; do mv "$i" "$i".tptp; done
 #sed -i 's/PX<3.14 & PX>-3.14 & PX<0/S^2+C^2=1/g' ./*

@@ -29,7 +29,7 @@ def transition_relation(cur_state,next_states,system):
 def construct_nusmv_input(system, init_state):
     remove_inf_states(system)
     case_block = construct_transition_case_block(system)
-    states = ','.join([s.print_state_number() for key, s in system.iteritems() if s.is_feasible and s.feasabiliy_checked]) 
+    states = ','.join([s.print_state_number() for key, s in system.iteritems() if s.is_feasible and s.feasability_checked]) 
 
     nusmv_output = 'MODULE main\nVAR\n\t'
     nusmv_output += 'state : {%s};\nASSIGN\n\t' % states

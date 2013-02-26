@@ -12,7 +12,7 @@ metit_options = ('metit',
                  '-')
 
 metit_output = False
-sc_heur = False
+sc_heur = True
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
 #extra_constraints = ['PX<2*pi', 'PX>-2*pi']

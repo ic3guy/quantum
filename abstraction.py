@@ -159,6 +159,7 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
     if next_states: 
         print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, next_states)
         state.next_states = next_states
+        list(set(state.next_states))
 
     return next_states
     #else:
@@ -224,6 +225,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
         if next_states:
             print "Discrete Abstract Transition: From State %s Next State %s" % (state.number, next_states)
             state.next_states.extend(next_states)
+            state.next_states = list(set(state.next_states))
         #else:
             #print 'No Next state found, No switching'
 

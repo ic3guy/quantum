@@ -39,3 +39,5 @@ equations = [predicate.MetitEquation(x-70),
              predicate.MetitEquation(x-68)]
 #             predicate.MetitEquation(x-100,'t',deriv_dict,vars_dict)]
 #'
+
+#initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')

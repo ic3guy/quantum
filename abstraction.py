@@ -153,7 +153,7 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
 
         #not more_than_one_diff(state, found_next_state)
         
-        if found_next_state and is_state_feasible(found_next_state, var_string):
+        if found_next_state and is_state_feasible(found_next_state, var_string) and not more_than_one_diff(state, found_next_state) :
             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
@@ -233,7 +233,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
 
     return next_states
             
-def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir):
+def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir, bad_predicate=''):
     new_next_states = list(initial_states)
     old_next_states = []
 
@@ -245,6 +245,11 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
             if not system[state_num].next_states:
                 new_next_states.extend([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir)])
                 new_next_states.extend([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir)])
+
+            for to_state_num in new_next_states:
+                if bad_predicate in system[to_state_num].state:
+                    print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
+                    return
                 
         new_next_states = list(set(new_next_states))
         print 'iterating again'

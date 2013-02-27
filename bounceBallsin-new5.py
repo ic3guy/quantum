@@ -1,6 +1,7 @@
 from sympy import *
 from itertools import product
 #product is a name inside sympy, so we can't redefine it here. Otherwise import won't work
+import abstraction
 
 t = Symbol('t')
 h = Symbol('h')
@@ -48,30 +49,31 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         vy.diff(t): -9.8 + 0.01*vy**2,
                                         g.diff(t): cos(px)*vx-vy},
                                         #b.diff(t): 1},
-                              't' : [{'guard':([g2,],), 
+                              't' : [{'guard':([g2,guard],), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)
                                                    }}],
-                              'inv' : (g_gt,)}}
+                              'inv' : (g_gt,g_inv)}}
 
 
 
-equations = [predicate.MetitEquation(vy),
+equations = [#predicate.MetitEquation(vy),
+             predicate.MetitEquation(py-1),
              predicate.MetitEquation(py),
              predicate.MetitEquation(px),
+             predicate.MetitEquation(vy),
              predicate.MetitEquation(vx),
-             predicate.MetitEquation(g),
              predicate.MetitEquation(sin(px)-py-g),
              #predicate.MetitEquation(sin(px)-py),
              #sapredicate.MetitEquation(b),
-             #predicate.MetitEquation(vy),
+             predicate.MetitEquation(g),
              #predicate.MetitEquation(h),
-             #predicate.MetitEquation(vx**2-2*9.8),
+             predicate.MetitEquation(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8),
              #predicate.MetitEquation(vx**2-vy**2),
              #predicate.MetitEquation(vx**2+vy**2+2*9.8*(py-sin(px))-2*9.8),
              #predicate.MetitEquation(vx**2+vy**2+2*9.8*py),
-             #predicate.MetitEquation(guard_equation)
+             predicate.MetitEquation(guard_equation)
              ]
 
 

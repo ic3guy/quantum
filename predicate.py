@@ -24,7 +24,7 @@ def get_derivs(n, seed, system, state):
     return derivatives
     
 class MetitEquation:
-    def __init__(self, equation, depvar=Symbol('t'), is_lyapunov=False):
+    def __init__(self, equation, var_id=0, depvar=Symbol('t'), is_lyapunov=False):
         #only accept a sympy function
         self.equation = equation
         #self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
@@ -32,6 +32,7 @@ class MetitEquation:
         #self.subs_dict = subs_dict
         self.is_lyapunov = is_lyapunov
         self.var_list = [sympify(str(var).replace("("+str(self.depvar)+")","").upper()) for var in self.equation.atoms(AppliedUndef)]
+        self.var_id = var_id
         
     def __str__(self, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
 
@@ -55,8 +56,8 @@ class MetitEquation:
         
 class MetitPredicate(MetitEquation):
 
-    def __init__(self,equation,operator):
-        super(MetitPredicate, self).__init__(equation)
+    def __init__(self,equation,operator,var_id=0):
+        super(MetitPredicate, self).__init__(equation,var_id=var_id)
         self.operator = operator
         #self.derivative = equation.print_derivative()
         #self.depvar = equation.depvar

@@ -56,9 +56,9 @@ var_string = predicate.get_var_string(equations)
 
 #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0')
 
-initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'PY<0','PX<0','19.6*PY + 0.5*VX^2 + 0.5*VY^2 - 19.6*sin(PX) - 9.8<0','VY=0','VX=0','-G - PY + sin(PX)=0')
+#initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'PY - 1<0','PX<0','VY=0','VX=0')
 
-#initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
+initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
 
 
 next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string)]
@@ -68,7 +68,7 @@ next_states = [state_num for state_num in initial_state_numbers if abstraction.i
 bad = predicate.MetitPredicate(py-1,'>')
 bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
 
-abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir,bad_predicate=bad2)
+abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir,bad_predicate=bad)
 
 SMV = open(exp_name+'.smv','w')
 

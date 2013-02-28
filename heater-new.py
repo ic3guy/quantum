@@ -32,11 +32,11 @@ system_def = {('on',) : {'flow' : {x.diff(t): -x+100},
                             't' : [{'guard': [[g_pred_70lt],[g_pred_70eq]], 'next_state' : ('on',), 'updates' : ()}],
                             'inv' : (g_pred_68eq,g_pred_68lt)}}
  
-equations = [predicate.MetitEquation(x-70),
-             predicate.MetitEquation(x-80),
-             predicate.MetitEquation(x),
-             predicate.MetitEquation(x-82),
-             predicate.MetitEquation(x-68)]
+equations = [predicate.MetitEquation(x-70,var_id=1),
+             predicate.MetitEquation(x-80,var_id=1),
+             predicate.MetitEquation(x,var_id=1),
+             predicate.MetitEquation(x-82,var_id=1),
+             predicate.MetitEquation(x-68,var_id=1)]
 #             predicate.MetitEquation(x-100,'t',deriv_dict,vars_dict)]
 #'
 

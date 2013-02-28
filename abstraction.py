@@ -20,16 +20,15 @@ def update_next_states(pos_state, system, next_states, more_than_one=False):
             next_states.append(found_next_state.number)
                 
 def more_than_one_diff(s1, s2):
+    id_dict = {p.var_id:0 for p in s1.state}
+    import pdb; pdb.set_trace()
+    comp_list = zip(s1.state,s2.state)
 
-    num_same = 0
-    
-    for pred1 in s1.state:
-        for pred2 in s2.state:
-            if pred1 == pred2:
-                #print 'found matching predicate'
-                num_same += 1
+    for t in comp_list:
+        if t[0]!=t[1]:
+            id_dict[t[0].var_id] += 1
 
-    if num_same < len(s1.state)-1:
+    if [diffs for diffs in id_dict.values() if diffs>1]:
         return True
     else:
         return False
@@ -73,7 +72,7 @@ def initial_abstract_system_setup(equations, q, system_def):
 
     ## For each continous equation, create a predicate
     for equation in equations:
-        predicates.append([predicate.MetitPredicate(equation.equation,op) for op in oplist])
+        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
     
     ## Create an abstract state for each combination of the predicates
     initial_abstract_system = {n:predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates))}
@@ -90,7 +89,7 @@ def initial_abstract_system_setup(equations, q, system_def):
 
 def print_system(system, feasible_only=True):
     for key, s in system.items():
-        if s.is_feasible and s.feasability_checked and feasible_only:
+        if s.is_feasible and s.feasability_checked and s.next_states and feasible_only:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
         elif feasible_only==False:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
@@ -111,8 +110,6 @@ def is_state_feasible(state, var_string):
             cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
             return True
         #metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
-
-        
     else:
         return state.is_feasible
 
@@ -234,24 +231,24 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
     return next_states
             
 def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir, bad_predicate=''):
-    new_next_states = list(initial_states)
-    old_next_states = []
+    new_next_states = set(initial_states)
+    old_next_states = set()
 
     print 'trying states %s' % new_next_states
     
     while new_next_states != old_next_states:
-        old_next_states = list(new_next_states)
+        old_next_states = set(new_next_states)
         for state_num in old_next_states:
             if not system[state_num].next_states:
-                new_next_states.extend([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir)])
-                new_next_states.extend([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir)])
+                new_next_states.update([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir)])
+                new_next_states.update([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir)])
 
             for to_state_num in new_next_states:
                 if bad_predicate in system[to_state_num].state:
                     print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
                     return
                 
-        new_next_states = list(set(new_next_states))
+        #new_next_states = set(new_next_states)
         print 'iterating again'
         print 'number of new states %s' % (len(new_next_states)-len(old_next_states))
         print 'new_next_states %s' % new_next_states

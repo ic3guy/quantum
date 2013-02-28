@@ -43,38 +43,50 @@ b_gt = predicate.MetitPredicate(b,'>')
 g2 = predicate.MetitPredicate(g,'=')
 g_gt = predicate.MetitPredicate(g,'>')
 
+#energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
+
+energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(1-sin(px)),'>')
+
 system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,
-                                        vy.diff(t): -9.8 + 0.01*vy**2,
-                                        g.diff(t): cos(px)*vx-vy},
+                                        vy.diff(t): -9.8 + 0.01*vy**2},
+                                        #g.diff(t): cos(px)*vx-vy},
                                         #b.diff(t): 1},
-                              't' : [{'guard':([g2,guard],), 
+                              't' : [{'guard':([guard],), 
                                       'next_state' : ('falling',),
                                       'updates' : {vx : ((1-0.8*cos(px)**2)*vx + 1.8*cos(px)*vy)/(1+cos(px)**2), 
                                                    vy : (1.8*cos(px)*vx + (-0.8+cos(px)**2)*vy)/(1+cos(px)**2)
                                                    }}],
-                              'inv' : (g_gt,g_inv)}}
+                              'inv' : (g_inv,energy_inv)}}
 
 
 
 equations = [#predicate.MetitEquation(vy),
              predicate.MetitEquation(py-1),
-             predicate.MetitEquation(py),
              predicate.MetitEquation(px),
              predicate.MetitEquation(vy),
              predicate.MetitEquation(vx),
-             predicate.MetitEquation(sin(px)-py-g),
+             predicate.MetitEquation(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(1-sin(px))),
+             predicate.MetitEquation(guard_equation)]
+
+#predicate.MetitEquation(py),
+             
+             #predicate.MetitEquation(sin(px)-py-g),
              #predicate.MetitEquation(sin(px)-py),
              #sapredicate.MetitEquation(b),
-             predicate.MetitEquation(g),
+             #predicate.MetitEquation(g),
              #predicate.MetitEquation(h),
-             predicate.MetitEquation(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8),
-             #predicate.MetitEquation(vx**2-vy**2),
+             #predicate.MetitEquation(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8),
+             
+
+
+
+    #predicate.MetitEquation(vx**2-vy**2),
              #predicate.MetitEquation(vx**2+vy**2+2*9.8*(py-sin(px))-2*9.8),
              #predicate.MetitEquation(vx**2+vy**2+2*9.8*py),
-             predicate.MetitEquation(guard_equation)
-             ]
+             
+             
 
 
 

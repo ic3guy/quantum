@@ -9,11 +9,11 @@
 #filenames = ['simplePendulum-new']
 #filenames = ['bounceBall-2states']
 #filenames = ['bounceBall-work']
-filenames = ['heater-new']
+#filenames = ['heater-new']
 #filenames = ['bounceBall-plat2b']
 
 #filenames = ['bounceBallsin-new']
-#filenames = ['bounceBallsin-new5']
+filenames = ['bounceBallsin-new5']
 
 
 #globals() modifies the global level

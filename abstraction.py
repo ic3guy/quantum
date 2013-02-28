@@ -25,11 +25,11 @@ def more_than_one_diff(s1, s2):
     comp_list = zip(s1.state,s2.state)
 
     for t in comp_list:
-        if t[0]!=t[1]:
+        if t[0]!=t[1] and t[0].var_id!=0:
             id_dict[t[0].var_id] += 1
 
     if [diffs for diffs in id_dict.values() if diffs>1]:
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         return True
     else:
         return False
@@ -95,26 +95,29 @@ def print_system(system, feasible_only=True):
         elif feasible_only==False:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
 
-def is_state_feasible(state, var_string):
+def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir):
     if not(state.feasability_checked):
         fof = metitarski.make_fof_inf(state, var_string)
         #print "Sending: " + fof
         rc = metitarski.send_to_metit(fof)
         state.feasability_checked = True
         if rc == 0:
+            metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
             state.is_feasible = False
             cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
             return False
-        #metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
+        
         else:
+            metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)    
             #feasible = feasible+1
             cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
             return True
-        #metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)
+        
     else:
+        cprint('State %s Already Checked : It is %s' % (state.number, ('Possibly Feasible' if state.is_feasible else 'Not Feasible')), 'blue')
         return state.is_feasible
 
-def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_dir, bad=False):
+def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir,  bad=False):
     pos_successors = []
     for z, pred in enumerate(state.state):
         if bad:
@@ -151,7 +154,7 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
 
         #not more_than_one_diff(state, found_next_state)
         
-        if found_next_state and is_state_feasible(found_next_state, var_string) and not more_than_one_diff(state, found_next_state) :
+        if found_next_state and is_state_feasible(found_next_state, var_string, feas_check_proved_dir, feas_check_unproved_dir) and not more_than_one_diff(state, found_next_state) :
             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
@@ -167,7 +170,7 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
         #only delete the state at the end
         #state.is_feasible = False
 
-def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_dir, bad=False):
+def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir, bad=False):
     next_states = []
     for transition in system_def[state.discrete_part]['t']:
         if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
@@ -206,7 +209,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
-                    if found_next_state and is_state_feasible(found_next_state, var_string) :
+                    if found_next_state and is_state_feasible(found_next_state, var_string, feas_check_proved_dir, feas_check_unproved_dir) :
                         next_states.append(found_next_state.number)
            
                 if next_states: 
@@ -219,7 +222,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
             else:
                 found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
 
-                if found_next_state and is_state_feasible(found_next_state, var_string):
+                if found_next_state and is_state_feasible(found_next_state, var_string, feas_check_proved_dir, feas_check_unproved_dir):
                     next_states.append(found_next_state.number)
                        
         if next_states:
@@ -231,7 +234,7 @@ def next_disc_states(state, system, system_def, var_string, disc_trans_unproved_
 
     return next_states
             
-def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir, bad_predicate=''):
+def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unproved_dir, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir,bad_predicate=''):
     new_next_states = set(initial_states)
     old_next_states = set()
 
@@ -241,8 +244,8 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
         old_next_states = set(new_next_states)
         for state_num in old_next_states:
             if not system[state_num].next_states:
-                new_next_states.update([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir)])
-                new_next_states.update([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir)])
+                new_next_states.update([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)])
+                new_next_states.update([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)])
 
             for to_state_num in new_next_states:
                 if bad_predicate in system[to_state_num].state:

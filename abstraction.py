@@ -21,7 +21,7 @@ def update_next_states(pos_state, system, next_states, more_than_one=False):
                 
 def more_than_one_diff(s1, s2):
     id_dict = {p.var_id:0 for p in s1.state}
-    import pdb; pdb.set_trace()
+    
     comp_list = zip(s1.state,s2.state)
 
     for t in comp_list:
@@ -29,6 +29,7 @@ def more_than_one_diff(s1, s2):
             id_dict[t[0].var_id] += 1
 
     if [diffs for diffs in id_dict.values() if diffs>1]:
+        import pdb; pdb.set_trace()
         return True
     else:
         return False

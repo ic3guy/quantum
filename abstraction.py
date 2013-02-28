@@ -238,12 +238,13 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
     new_next_states = set(initial_states)
     old_next_states = set()
 
-    print 'trying states %s' % new_next_states
+    print 'Initial states are %s' % new_next_states
     
     while new_next_states != old_next_states:
         old_next_states = set(new_next_states)
         for state_num in old_next_states:
             if not system[state_num].next_states:
+                print 'Analyzing state %s' % state_num
                 new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)]
                 new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)]
 

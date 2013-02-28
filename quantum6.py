@@ -56,7 +56,7 @@ var_string = predicate.get_var_string(equations)
 
 #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0')
 
-initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'PY<0','VY=0')
+initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'-H + PY<0','VY=0','VX=0')
 
 #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
 
@@ -65,7 +65,7 @@ next_states = [state_num for state_num in initial_state_numbers if abstraction.i
     
 ## LAZY QUAL ABS ##
 
-bad = predicate.MetitPredicate(py-1,'>')
+bad = predicate.MetitPredicate(py-h,'>')
 bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
 
 abstraction.lazy_cont_abs(hybrid_system, next_states, system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir,feas_check_proved_dir, feas_check_unproved_dir,bad_predicate=bad)

@@ -68,7 +68,7 @@ equations = [#predicate.MetitEquation(vy),
              #predicate.MetitEquation(h-1),
              #predicate.MetitEquation(px),
              predicate.MetitEquation(vy),
-             #predicate.MetitEquation(vx),
+             predicate.MetitEquation(vx),
              predicate.MetitEquation(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(1-sin(px))),
              predicate.MetitEquation(guard_equation)]
 

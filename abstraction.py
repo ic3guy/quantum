@@ -244,14 +244,17 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
         old_next_states = set(new_next_states)
         for state_num in old_next_states:
             if not system[state_num].next_states:
-                new_next_states.update([x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)])
-                new_next_states.update([x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)])
+                new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, cont_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)]
+                new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)]
 
-            for to_state_num in new_next_states:
-                if bad_predicate in system[to_state_num].state:
-                    print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
-                    return
-                
+                for to_state_num in new_cont_states+new_disc_states:
+                    if bad_predicate in system[to_state_num].state:
+                        print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
+                        return
+
+                new_next_states.update(new_cont_states+new_disc_states)
+                #new_next_states.anew_disc_states)
+                    
         #new_next_states = set(new_next_states)
         print 'iterating again'
         print 'number of new states %s' % (len(new_next_states)-len(old_next_states))

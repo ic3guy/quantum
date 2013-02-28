@@ -56,7 +56,7 @@ var_string = predicate.get_var_string(equations)
 
 #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0')
 
-initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'PY - 1<0','PX<0')
+initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'PY<0','VY=0')
 
 #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
 

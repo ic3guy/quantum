@@ -3,6 +3,13 @@ from sympy import *
 from sympy.plotting.plot import Plot
 import predicate
 import itertools
+#import experiment
+#import cfg
+
+def secondsToStr(t):
+    return "%d:%02d:%02d.%03d" % \
+        reduce(lambda ll,b : divmod(ll[0],b) + ll[1:],
+            [(t*1000,),1000,60,60])
 
 def save_system(system, filename):
     
@@ -31,8 +38,11 @@ def plot_state(state):
    
     plot_implicit(v,(X1,-pi,pi),(X2,-20,20),title='State %s' % state.number,linewidth=2,axis=False)
 
-def copy_state(state, discrete_part, number):
-   return predicate.State(number, discrete_part, *state.state)
+def copy_state(state, discrete_part, number, system_def):
+    if any([invariant in system_def[discrete_part]['inv'] for invariant in state.state]):
+        return 'invariant violated'
+    else:
+        return predicate.State(number, discrete_part, *state.state)
 
 def make_discrete_system(system, discrete_variables_q):
     #add in the guards to the state, maybe make a guards variable
@@ -40,7 +50,7 @@ def make_discrete_system(system, discrete_variables_q):
     
     for state_number, state in system.items():    
         for n, discrete_state in enumerate(itertools.product(*discrete_variables_q)):
-            system_fd[str(state_number+n*1000)]=copy_state(state,discrete_part=discrete_state,number=state.number+n*1000)
+            system_fd[str(state_number+n*1000)]=copy_state(state,discrete_part=discrete_state,number=state.number+n*1000,system_def=cfg.system_def)
 
     return system_fd
            

@@ -1,6 +1,7 @@
 from sympy import *
 from itertools import product
 #product is a name inside sympy, so we can't redefine it here. Otherwise import won't work
+import predicate
 
 t = Symbol('t')
 x = Function('x')(t)

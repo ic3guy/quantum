@@ -79,14 +79,14 @@ def initial_abstract_system_setup(equations, q, system_def):
     initial_abstract_system = {n:predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates))}
     
     ## For each discrete variable, make a copy of the state
-    hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q)
+    hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)
 
     ## Delete any states that violate their respective invariant
-    for state_number, state in hybrid_system.items():
-        if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
-            state.is_feasible = False
+    #for state_number, state in hybrid_system.items():
+    #    if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
+    #        state.is_feasible = False
 
-    return {state.number:state for state in hybrid_system.values() if state.is_feasible}
+    return {state.number:state for state in hybrid_system.values() if state!='invariant violated' and state.is_feasible}
 
 def print_system(system, feasible_only=True):
     for key, s in system.items():
@@ -249,7 +249,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
                 new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, disc_trans_unproved_dir, feas_check_proved_dir, feas_check_unproved_dir)]
 
                 for to_state_num in new_cont_states+new_disc_states:
-                    if bad_predicate in system[to_state_num].state:
+                    if bad_predicate and bad_predicate in system[to_state_num].state:
                         print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
                         return
 

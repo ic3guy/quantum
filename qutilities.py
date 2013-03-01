@@ -44,13 +44,13 @@ def copy_state(state, discrete_part, number, system_def):
     else:
         return predicate.State(number, discrete_part, *state.state)
 
-def make_discrete_system(system, discrete_variables_q):
+def make_discrete_system(system, discrete_variables_q, system_def):
     #add in the guards to the state, maybe make a guards variable
     system_fd = {}
     
     for state_number, state in system.items():    
         for n, discrete_state in enumerate(itertools.product(*discrete_variables_q)):
-            system_fd[str(state_number+n*1000)]=copy_state(state,discrete_part=discrete_state,number=state.number+n*1000,system_def=cfg.system_def)
+            system_fd[str(state_number+n*1000)]=copy_state(state,discrete_part=discrete_state,number=state.number+n*1000,system_def=system_def)
 
     return system_fd
            

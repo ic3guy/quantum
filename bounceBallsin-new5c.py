@@ -48,6 +48,9 @@ g_gt = predicate.MetitPredicate(g,'>')
 
 energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(h-sin(px)),'>')
 
+initial_state = {'d':('falling',),'c':['-H + PY<0','VY=0','VX=0']}
+bad_state = predicate.MetitPredicate(py-h,'>')
+
 system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,

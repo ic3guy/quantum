@@ -12,8 +12,8 @@ from termcolor import colored, cprint
 import qutilities
 import experiment
 
-#filenames = ['bounceBallsin-new5c']
-filenames = ['heater-new']
+filenames = ['bounceBallsin-new5c']
+#filenames = ['heater-new']
 
 for file_name in filenames:             
     cur_exp = experiment.Experiment(file_name)        
@@ -54,7 +54,7 @@ for file_name in filenames:
     #bad = predicate.MetitPredicate(py-h,'>')
     #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
 
-    abstraction.lazy_cont_abs(hybrid_system, next_states, cur_exp.system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir,feas_check_proved_dir, feas_check_unproved_dir)
+    abstraction.lazy_cont_abs(hybrid_system, next_states, cur_exp.system_def, var_string, cont_trans_unproved_dir,disc_trans_unproved_dir,feas_check_proved_dir, feas_check_unproved_dir,bad_predicate=cur_exp.bad_state)
 
     SMV = open(cur_exp.filename + '.smv','w')
 

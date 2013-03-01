@@ -64,7 +64,7 @@ def print_reach(system, state, depth):
             #print state.number, state
             print_reach(system, system[x], depth-1)
 
-def conc_to_abs(system, discrete_part, *predicates):
+def conc_to_abs(system, discrete_part, predicates):
     return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
 
 def initial_abstract_system_setup(equations, q, system_def):

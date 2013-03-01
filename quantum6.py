@@ -45,8 +45,7 @@ for file_name in filenames:
 
     #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'-H + PY<0','VY=0','VX=0')
 
-    initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
-
+    initial_state_numbers = abstraction.conc_to_abs(hybrid_system,cur_exp.initial_state['d'],cur_exp.initial_state['c'])
 
     next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir)]
     

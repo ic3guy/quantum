@@ -41,4 +41,5 @@ equations = [predicate.MetitEquation(x-70,var_id=1),
 #             predicate.MetitEquation(x-100,'t',deriv_dict,vars_dict)]
 #'
 
-#initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('on',),'X - 70>0','X - 80<0')
+initial_state = {'d':('on',),'c':['X - 70>0','X - 80<0']}
+#initial_state = {'d':('falling',),'c':['VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0']}

@@ -76,7 +76,7 @@ def initial_abstract_system_setup(equations, q, system_def):
         predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
     
     ## Create an abstract state for each combination of the predicates
-    initial_abstract_system = [predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates))]
+    initial_abstract_system = (predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates)))
     
     ## For each discrete variable, make a copy of the state
     hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)
@@ -255,11 +255,16 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, cont_trans_unp
 
                 new_next_states.update(new_cont_states+new_disc_states)
                 #new_next_states.anew_disc_states)
+            else:
+                cprint('Next states of state %s already computed' % state_num, 'yellow')
                     
         #new_next_states = set(new_next_states)
         print 'iterating again'
         print 'number of new states %s' % (len(new_next_states)-len(old_next_states))
         print 'new_next_states %s' % new_next_states
     
-
-        
+def ex_state(system, state_num):
+    print '%s : %s' % (state_num, system[state_num])
+    print '-'*10
+    for s in system[state_num].next_states:
+        print '%s : %s' % (system[s].number, system[s])

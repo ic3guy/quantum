@@ -76,7 +76,7 @@ def initial_abstract_system_setup(equations, q, system_def):
         predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
     
     ## Create an abstract state for each combination of the predicates
-    initial_abstract_system = {n:predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates))}
+    initial_abstract_system = [predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates))]
     
     ## For each discrete variable, make a copy of the state
     hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)

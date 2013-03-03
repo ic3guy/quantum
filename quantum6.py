@@ -12,7 +12,7 @@ from termcolor import colored, cprint
 import qutilities
 import experiment
 
-filenames = ['bounceBallsin-new5d']
+filenames = ['twotanks']
 #filenames = ['heater-new']
 
 for file_name in filenames:             

@@ -70,13 +70,15 @@ def conc_to_abs(system, discrete_part, predicates):
 def initial_abstract_system_setup(equations, q, system_def):
     oplist = ['>','=','<']
     predicates = []
-
+    import pdb; pdb.set_trace()
     ## For each continous equation, create a predicate
     for equation in equations:
         predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
     
     ## Create an abstract state for each combination of the predicates
     initial_abstract_system = (predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates)))
+    #should create a state here everytime!!
+
     
     ## For each discrete variable, make a copy of the state
     hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)
@@ -86,8 +88,8 @@ def initial_abstract_system_setup(equations, q, system_def):
     #    if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
     #        state.is_feasible = False
 
-    return {state.number:state for state in hybrid_system.values() if state!='invariant violated' and state.is_feasible}
-
+    #return {state.number:state for state in hybrid_system.values() if state!='invariant violated' and state.is_feasible}
+    return hybrid_system
 def print_system(system, feasible_only=True):
     for key, s in system.items():
         if s.is_feasible and s.feasability_checked and s.next_states and feasible_only:
@@ -159,10 +161,11 @@ def next_cont_states(state, system, system_def, var_string, cont_trans_unproved_
         #else:
             #print 'Multiple variable jumps'
                 
-    if next_states: 
+    if next_states:
+        next_states = list(set(next_states))
         print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, next_states)
         state.next_states = next_states
-        list(set(state.next_states))
+        
 
     return next_states
     #else:

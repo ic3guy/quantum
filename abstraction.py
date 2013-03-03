@@ -65,31 +65,39 @@ def print_reach(system, state, depth):
             print_reach(system, system[x], depth-1)
 
 def conc_to_abs(system, discrete_part, predicates):
-    return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
+    return [state.number for state in system if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
 
 def initial_abstract_system_setup(equations, q, system_def):
     oplist = ['>','=','<']
     predicates = []
-    import pdb; pdb.set_trace()
+    
     ## For each continous equation, create a predicate
     for equation in equations:
         predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
+
+    predicates.append(product(*q))
     
+    print predicates
+
     ## Create an abstract state for each combination of the predicates
-    initial_abstract_system = (predicate.State(n,'None',*element) for n, element in enumerate(product(*predicates)))
+    import pdb; pdb.set_trace()
+    
+    initial_abstract_system = [predicate.State(n,element[-1],*element[:-2]) for n, element in enumerate(product(*predicates)) if not any([invariant in system_def[element[-1]]['inv'] for invariant in element[:-2]])]
+                               
     #should create a state here everytime!!
 
     
     ## For each discrete variable, make a copy of the state
-    hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)
+    #hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)
 
     ## Delete any states that violate their respective invariant
     #for state_number, state in hybrid_system.items():
     #    if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
     #        state.is_feasible = False
 
-    #return {state.number:state for state in hybrid_system.values() if state!='invariant violated' and state.is_feasible}
-    return hybrid_system
+    #return {state.number:state for state in initial_abstract_system}
+    return initial_abstract_system
+
 def print_system(system, feasible_only=True):
     for key, s in system.items():
         if s.is_feasible and s.feasability_checked and s.next_states and feasible_only:

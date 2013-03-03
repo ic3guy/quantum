@@ -74,7 +74,7 @@ class MetitPredicate(MetitEquation):
         return super(MetitPredicate, self).__str__()
     
     def __eq__(self, other):
-        return self.equation == other.equation and self.operator == other.operator
+        return str(self) == str(other)
 
 
 def get_var_string(equations):

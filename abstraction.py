@@ -65,7 +65,7 @@ def print_reach(system, state, depth):
             print_reach(system, system[x], depth-1)
 
 def conc_to_abs(system, discrete_part, predicates):
-    return [state.number for state in system if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
+    return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
 
 def initial_abstract_system_setup(equations, q, system_def):
     oplist = ['>','=','<']
@@ -80,9 +80,9 @@ def initial_abstract_system_setup(equations, q, system_def):
     print predicates
 
     ## Create an abstract state for each combination of the predicates
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     
-    initial_abstract_system = [predicate.State(n,element[-1],*element[:-2]) for n, element in enumerate(product(*predicates)) if not any([invariant in system_def[element[-1]]['inv'] for invariant in element[:-2]])]
+    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1]) for n, element in enumerate(product(*predicates)) if not any([invariant in system_def[element[-1]]['inv'] for invariant in element[:-1]])]
                                
     #should create a state here everytime!!
 
@@ -95,8 +95,8 @@ def initial_abstract_system_setup(equations, q, system_def):
     #    if [pred for pred in system_def[state.discrete_part]['inv'] if pred in state.state]:
     #        state.is_feasible = False
 
-    #return {state.number:state for state in initial_abstract_system}
-    return initial_abstract_system
+    return {state.number:state for state in initial_abstract_system}
+    #return initial_abstract_system
 
 def print_system(system, feasible_only=True):
     for key, s in system.items():

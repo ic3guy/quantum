@@ -74,7 +74,7 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False):
 
         return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
     else:
-        return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string, y, derivative, op1, derivative, op2)
+        return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
     f = open('%s/%s' % (directory, name), 'wa')

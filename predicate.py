@@ -22,7 +22,22 @@ def get_derivs(n, seed, system, state):
         seed = dn
 
     return derivatives
-    
+
+def gen_meti_string(cls, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
+        var_replace_list = [[var, sympify(str(var).replace("("+str(cls.depvar)+")","").upper())] for var in cls.equation.atoms(AppliedUndef)]
+        #print var_list
+        # any other variables
+        var_replace_list.extend([[var, sympify(str(var).upper())] for var in cls.equation.free_symbols])
+        #print var_list
+
+        #print into a format by metitarski)
+        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+        #print rep
+        pattern = re.compile("|".join(rep.keys()))
+        equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(cls.equation.subs(var_replace_list)))
+
+        return equation_out
+
 class MetitEquation:
     def __init__(self, equation, var_id=0, depvar=Symbol('t'), is_lyapunov=False):
         #only accept a sympy function
@@ -33,27 +48,16 @@ class MetitEquation:
         self.is_lyapunov = is_lyapunov
         self.var_list = [sympify(str(var).replace("("+str(self.depvar)+")","").upper()) for var in self.equation.atoms(AppliedUndef)]
         self.var_id = var_id
+        self.meti_string = gen_meti_string(self)
         
-    def __str__(self, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
+    def __str__(self):
+        return self.meti_string
 
-        #this gives us the functions
-        var_replace_list = [[var, sympify(str(var).replace("("+str(self.depvar)+")","").upper())] for var in self.equation.atoms(AppliedUndef)]
-        #print var_list
-        # any other variables
-        var_replace_list.extend([[var, sympify(str(var).upper())] for var in self.equation.free_symbols])
-        #print var_list
 
-        #print into a format by metitarski)
-        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
-        #print rep
-        pattern = re.compile("|".join(rep.keys()))
-        equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(self.equation.subs(var_replace_list)))
-        
-        return equation_out
-
+    
     def plot_format(self, subs_dict):
         return self.equation.subs(subs_dict)
-        
+    
 class MetitPredicate(MetitEquation):
 
     def __init__(self,equation,operator,var_id=0):

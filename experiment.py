@@ -11,16 +11,16 @@ class Experiment:
         self.initial_state = experiment.initial_state
 
         now = datetime.datetime.now()
-        experiment_dir = 'experiments/'+ self.filename + now.strftime('--%d-%m-%Y--%H:%M:%S')
-        feas_check_dir = experiment_dir + '/feasability/'
-        trans_check_dir = experiment_dir + '/transitions/'
+        self.experiment_dir = 'experiments/'+ self.filename + now.strftime('--%d-%m-%Y--%H:%M:%S')
+        self.feas_check_dir = self.experiment_dir + '/feasability/'
+        self.trans_check_dir = self.experiment_dir + '/transitions/'
         
-        self.feas_check_proved_dir = feas_check_dir + '/proved/'
-        self.feas_check_unproved_dir = feas_check_dir + '/unproved/'
-        self.cont_trans_proved_dir = trans_check_dir + 'continuous/proved'
-        self.cont_trans_unproved_dir = trans_check_dir + 'continuous/unproved'
-        self.disc_trans_proved_dir = trans_check_dir + 'discrete/proved'
-        self.disc_trans_unproved_dir = trans_check_dir + 'discrete/unproved'
+        self.feas_check_proved_dir = self.feas_check_dir + '/proved/'
+        self.feas_check_unproved_dir = self.feas_check_dir + '/unproved/'
+        self.cont_trans_proved_dir = self.trans_check_dir + 'continuous/proved'
+        self.cont_trans_unproved_dir = self.trans_check_dir + 'continuous/unproved'
+        self.disc_trans_proved_dir = self.trans_check_dir + 'discrete/proved'
+        self.disc_trans_unproved_dir = self.trans_check_dir + 'discrete/unproved'
 
         self.bad_state = experiment.bad_state
         

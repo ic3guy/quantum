@@ -89,14 +89,11 @@ def pred_2_text(pred):
     elif pred == '=':
         return 'eq'
 
-def checkTransition2(var_string, state, pred, x, system_def, directory='.'):
+def cont_abs_trans_rel(var_string, state, pred, x, exp):
 
-    #os.makedirs('/opt/quantum/'+ directory_name + '/unproved')
-    
     Q1,Q2,Q3 = [],[],[]
      
-    der = str(predicate.metit_derivative(pred, state.discrete_part, system_def))
-    #pre = predicate.MetitEquation(pred.equation.equation,pred.equation.depvar,pred.equation.subs_dict,pred.equation.vars_dict)
+    der = str(predicate.metit_derivative(pred, state.discrete_part, exp.system_def))
 
     lteq = make_fof_rel_2(var_string, state, der,'<','=',sc_heur=sc_heur)
     gt_or_lt = make_fof_rel_2(var_string, state, der,'>', '<',sc_heur=sc_heur)
@@ -107,26 +104,29 @@ def checkTransition2(var_string, state, pred, x, system_def, directory='.'):
         if not send_to_metit(gteq,metit_options=metit_options):
             Q1.append(state)
             #print 'In Q1'
+            send_to_file(gteq, exp.cont_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
         else: 
-            send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gteq, exp.cont_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '<' or pred.operator == '=':
         if not send_to_metit(lteq,metit_options=metit_options):
             Q3.append(state)
             #print 'In Q3'
+            send_to_file(lteq, exp.cont_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
         else:
-            send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(lteq, exp.cont_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if pred.operator == '=':
         if not send_to_metit(gt_or_lt,metit_options=metit_options):
             Q2.append(state)
+            send_to_file(gt_or_lt, exp.cont_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
             #print 'In Q2'
         else:
-            send_to_file(gt_or_lt, directory, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+            send_to_file(gt_or_lt, exp.cont_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 
-def checkTransition3(var_string, state, pred, x, system_def, updates, directory='.'):
+def checkTransition3(var_string, state, pred, x, system_def, updates, exp):
     Q1,Q2,Q3 = [],[],[]
 
     #options = ('metit', 
@@ -152,20 +152,23 @@ def checkTransition3(var_string, state, pred, x, system_def, updates, directory=
     if not send_to_metit(gteq,metit_options=metit_options):
         Q1.append(state)
             #print 'In Q1'
+        send_to_file(gteq, exp.disc_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     else: 
-        send_to_file(gteq, directory, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(gteq, exp.disc_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
     if not send_to_metit(lteq,metit_options=metit_options):
         Q3.append(state)
             #print 'In Q3'
+        send_to_file(lteq, exp.disc_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     else:
-        send_to_file(lteq, directory, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(lteq, exp.disc_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
 
     if not send_to_metit(gt_or_lt,metit_options=metit_options):
         Q2.append(state)
             #print 'In Q2'
+        send_to_file(gt_or_lt, exp.disc_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
     else:
-        send_to_file(gt_or_lt, directory, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+        send_to_file(gt_or_lt, exp.disc_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

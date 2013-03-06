@@ -13,8 +13,8 @@ import qutilities
 import experiment
 
 #filenames = ['twotanks']
-#filenames = ['heater-new']
-filenames = ['bounceBallsin-new5c']
+filenames = ['heater-new-timed']
+#filenames = ['bounceBallsin-new5c']
 
 for file_name in filenames:             
     cur_exp = experiment.Experiment(file_name)        

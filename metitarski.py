@@ -11,7 +11,7 @@ metit_options = ('metit',
                  '-q',
                  '-')
 
-metit_output = False
+metit_output = True
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']

@@ -85,7 +85,6 @@ def initial_abstract_system_setup(equations, q, system_def):
     initial_abstract_system = [predicate.State(n,element[-1],*element[:-1]) for n, element in enumerate(product(*predicates)) if not any([invariant in system_def[element[-1]]['inv'] for invariant in element[:-1]])]
                                
     #should create a state here everytime!!
-
     
     ## For each discrete variable, make a copy of the state
     #hybrid_system =  qutilities.make_discrete_system(initial_abstract_system,q, system_def)

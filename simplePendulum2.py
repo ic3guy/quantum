@@ -1,6 +1,8 @@
 from sympy import *
 from itertools import product
 
+import predicate
+
 t = Symbol('t')
 X1 = Symbol('X1')
 X2 = Symbol('X2')

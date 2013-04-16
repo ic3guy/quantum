@@ -27,6 +27,8 @@ class Experiment:
         self.trans_unproved = 0
         self.infeas_proved = 0
         self.infeas_unproved = 0
+
+        self.metit_options = experiment.metit_options
         
         
 def create_exp_dirs(exp):

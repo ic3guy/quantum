@@ -6,10 +6,10 @@ import os
 #import predicates.State
 
 metit_options = ('metit', 
-                 '--autoInclude', 
-                 '--time','1',
-                 '-q',
-                 '-')
+                  '--autoInclude', 
+                  '--time','1',
+                  '-q',
+                  '-')
 
 metit_output = True
 sc_heur = False
@@ -90,7 +90,8 @@ def pred_2_text(pred):
         return 'eq'
 
 def cont_abs_trans_rel(var_string, state, pred, x, exp):
-
+    
+    metit_options = exp.metit_options
     Q1,Q2,Q3 = [],[],[]
      
     der = str(predicate.metit_derivative(pred, state.discrete_part, exp.system_def))

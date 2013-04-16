@@ -40,3 +40,28 @@ simplePendulum4-new.py
 ****************************************
 Number of Abstraction Functions : 5
 Number of Initial Abstract States : 243
+****************************************
+simplePendulum-new.py
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+****************************************
+simplePendulum-new.py
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+****************************************
+simplePendulum-new.py
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+****************************************
+simplePendulum-new.py
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+****************************************
+simplePendulum-new.py
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27

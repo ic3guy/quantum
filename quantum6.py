@@ -15,8 +15,7 @@ import experiment
 #filenames = ['twotanks']
 #filenames = ['heater-new-timed']
 #filenames = ['bounceBallsin-new5c']
-filenames = ['simplePendulum2-new']
-
+filenames = ['simplePendulum4-new']
 
 for file_name in filenames:             
     cur_exp = experiment.Experiment(file_name)        

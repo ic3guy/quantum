@@ -15,7 +15,7 @@ import experiment
 #filenames = ['twotanks']
 #filenames = ['heater-new-timed']
 #filenames = ['bounceBallsin-new5c']
-filenames = ['simplePendulum4-new']
+filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 for file_name in filenames:             
     cur_exp = experiment.Experiment(file_name)        
@@ -49,7 +49,10 @@ for file_name in filenames:
 
     initial_state_numbers = abstraction.conc_to_abs(hybrid_system,cur_exp.initial_state['d'],cur_exp.initial_state['c'])
 
-    next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir)]
+    f.write('Number of Abstraction Functions : %s\n' % len(cur_exp.equations))
+    f.write('Number of Initial Abstract States : %s\n' % len(hybrid_system))
+    
+    next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir,cur_exp)]
     
 ## LAZY QUAL ABS ##
 
@@ -67,9 +70,16 @@ for file_name in filenames:
 
     end_time = time.time()
 
+    
+    f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible]))
+    f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
+    f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)        
     f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
     f.close()
 
     abstraction.print_system(hybrid_system)
 
     
+
+
+

@@ -104,7 +104,7 @@ def print_system(system, feasible_only=True):
         elif feasible_only==False:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
 
-def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir):
+def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir,exp):
     if not(state.feasability_checked):
         fof = metitarski.make_fof_inf(state, var_string)
         #print "Sending: " + fof
@@ -114,11 +114,13 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
             metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
             state.is_feasible = False
             cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
+            exp.infeas_proved += 1
             return False
         
         else:
             metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)    
             #feasible = feasible+1
+            exp.infeas_unproved += 1
             cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')
             return True
         
@@ -163,7 +165,7 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
 
         #not more_than_one_diff(state, found_next_state)
         
-        if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir) and not more_than_one_diff(state, found_next_state) :
+        if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment) and not more_than_one_diff(state, found_next_state) :
             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
@@ -219,7 +221,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False):
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
-                    if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir) :
+                    if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp) :
                         next_states.append(found_next_state.number)
            
                 if next_states: 
@@ -232,7 +234,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False):
             else:
                 found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
 
-                if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir):
+                if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp):
                     next_states.append(found_next_state.number)
                        
         if next_states:
@@ -264,6 +266,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                         return
 
                 new_next_states.update(new_cont_states+new_disc_states)
+                #exp.trans_proved += len(new_cont_states) +len(new_disc_states)
                 #new_next_states.anew_disc_states)
             else:
                 cprint('Next states of state %s already computed' % state_num, 'yellow')

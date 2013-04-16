@@ -23,6 +23,11 @@ class Experiment:
         self.disc_trans_unproved_dir = self.trans_check_dir + 'discrete/unproved'
 
         self.bad_state = experiment.bad_state
+        self.trans_proved = 0
+        self.trans_unproved = 0
+        self.infeas_proved = 0
+        self.infeas_unproved = 0
+        
         
 def create_exp_dirs(exp):
     os.makedirs(exp.feas_check_proved_dir)

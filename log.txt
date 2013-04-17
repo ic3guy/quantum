@@ -1,67 +1,200 @@
 ****************************************
-simplePendulum-new.py
+simplePendulum-new.py-1-
 ****************************************
 Number of Abstraction Functions : 3
 Number of Initial Abstract States : 27
+Number of Final Abstract States : 20
+Number of Proved Infeasible : 7
+Number of Proved Transitions : 30
+Number of UnProved Transitions : 57
+Total Time taken : 0:00:05.175
 ****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
-****************************************
-simplePendulum-new.py
+simplePendulum-new.py-10-
 ****************************************
 Number of Abstraction Functions : 3
 Number of Initial Abstract States : 27
 Number of Final Abstract States : 21
 Number of Proved Infeasible : 6
-Number of Proved Transitions : 36
-Total Time taken : 0:00:05.631
+Number of Proved Transitions : 40
+Number of UnProved Transitions : 52
+Total Time taken : 0:00:06.734
 ****************************************
-simplePendulum2-new.py
+simplePendulum-new.py-1000-
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+Number of Final Abstract States : 21
+Number of Proved Infeasible : 6
+Number of Proved Transitions : 40
+Number of UnProved Transitions : 52
+Total Time taken : 0:01:13.213
+****************************************
+simplePendulum-new.py-10000-
+****************************************
+Number of Abstraction Functions : 3
+Number of Initial Abstract States : 27
+Number of Final Abstract States : 21
+Number of Proved Infeasible : 6
+Number of Proved Transitions : 40
+Number of UnProved Transitions : 52
+Total Time taken : 0:08:34.798
+****************************************
+simplePendulum2-new.py-1-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 132
+Number of Proved Infeasible : 111
+Number of Proved Transitions : 453
+Number of UnProved Transitions : 537
+Total Time taken : 0:01:02.816
+****************************************
+simplePendulum2-new.py-10-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 132
+Number of Proved Infeasible : 111
+Number of Proved Transitions : 600
+Number of UnProved Transitions : 392
+Total Time taken : 0:01:11.994
+****************************************
+simplePendulum2-new.py-1000-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 132
+Number of Proved Infeasible : 111
+Number of Proved Transitions : 644
+Number of UnProved Transitions : 350
+Total Time taken : 0:15:49.187
+****************************************
+simplePendulum2-new.py-10000-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+****************************************
+simplePendulum3-new.py-1-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 141
+Number of Proved Infeasible : 102
+Number of Proved Transitions : 366
+Number of UnProved Transitions : 709
+Total Time taken : 0:01:11.215
+****************************************
+simplePendulum3-new.py-10-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 145
+Number of Proved Infeasible : 98
+Number of Proved Transitions : 769
+Number of UnProved Transitions : 523
+Total Time taken : 0:01:33.925
+****************************************
+simplePendulum3-new.py-1000-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+****************************************
+simplePendulum3-new.py-10-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 147
+Number of Proved Infeasible : 96
+Number of Proved Transitions : 786
+Number of UnProved Transitions : 530
+Total Time taken : 0:01:35.045
+****************************************
+simplePendulum3-new.py-100-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 147
+Number of Proved Infeasible : 96
+Number of Proved Transitions : 789
+Number of UnProved Transitions : 508
+Total Time taken : 0:03:03.389
+****************************************
+simplePendulum3-new.py-1000-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 145
+Number of Proved Infeasible : 98
+Number of Proved Transitions : 687
+Number of UnProved Transitions : 508
+Total Time taken : 0:14:30.546
+****************************************
+simplePendulum4-new.py-10-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 176
+Number of Proved Infeasible : 67
+Number of Proved Transitions : 625
+Number of UnProved Transitions : 777
+Total Time taken : 0:04:10.362
+****************************************
+simplePendulum4-new.py-100-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 169
+Number of Proved Infeasible : 74
+Number of Proved Transitions : 582
+Number of UnProved Transitions : 751
+Total Time taken : 0:04:10.608
+****************************************
+simplePendulum4-new.py-1000-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 173
+Number of Proved Infeasible : 70
+Number of Proved Transitions : 630
+Number of UnProved Transitions : 751
+Total Time taken : 0:20:23.281
+****************************************
+simplePendulum2-new.py-100-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 134
+Number of Proved Infeasible : 109
+Number of Proved Transitions : 673
+Number of UnProved Transitions : 350
+Total Time taken : 0:02:13.835
+****************************************
+simplePendulum2-new.py-10-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 131
+Number of Proved Infeasible : 112
+Number of Proved Transitions : 591
+Number of UnProved Transitions : 390
+Total Time taken : 0:01:15.772
+****************************************
+simplePendulum2-new.py-100-
+****************************************
+Number of Abstraction Functions : 5
+Number of Initial Abstract States : 243
+Number of Final Abstract States : 132
+Number of Proved Infeasible : 111
+Number of Proved Transitions : 642
+Number of UnProved Transitions : 350
+Total Time taken : 0:02:17.745
+****************************************
+simplePendulum2-new.py-1000-
 ****************************************
 Number of Abstraction Functions : 5
 Number of Initial Abstract States : 243
 Number of Final Abstract States : 133
 Number of Proved Infeasible : 110
-Number of Proved Transitions : 465
-Total Time taken : 0:01:02.403
-****************************************
-simplePendulum3-new.py
-****************************************
-Number of Abstraction Functions : 5
-Number of Initial Abstract States : 243
-Number of Final Abstract States : 146
-Number of Proved Infeasible : 97
-Number of Proved Transitions : 386
-Total Time taken : 0:01:13.545
-****************************************
-simplePendulum4-new.py
-****************************************
-Number of Abstraction Functions : 5
-Number of Initial Abstract States : 243
-****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
-****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
-****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
-****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
-****************************************
-simplePendulum-new.py
-****************************************
-Number of Abstraction Functions : 3
-Number of Initial Abstract States : 27
+Number of Proved Transitions : 644
+Number of UnProved Transitions : 350
+Total Time taken : 0:10:19.379

@@ -3,7 +3,7 @@ from itertools import product
 
 import predicate
 
-timeout = 10
+timeout = 100
 
 metit_options = ('metit', 
                  '--autoInclude', 

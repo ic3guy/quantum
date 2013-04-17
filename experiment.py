@@ -2,7 +2,7 @@ import os
 import datetime
 
 class Experiment:
-    def __init__(self, name):
+    def __init__(self, name, metit_timeout=1):
         self.filename = name + '.py'
         experiment = __import__(name)
         self.system_def = experiment.system_def
@@ -11,7 +11,7 @@ class Experiment:
         self.initial_state = experiment.initial_state
 
         now = datetime.datetime.now()
-        self.experiment_dir = 'experiments/'+ self.filename + now.strftime('--%d-%m-%Y--%H:%M:%S')
+        self.experiment_dir = 'experiments/'+ name + '-' + str(metit_timeout) + '-' + now.strftime('--%d-%m-%Y--%H:%M:%S')
         self.feas_check_dir = self.experiment_dir + '/feasability/'
         self.trans_check_dir = self.experiment_dir + '/transitions/'
         
@@ -21,14 +21,14 @@ class Experiment:
         self.cont_trans_unproved_dir = self.trans_check_dir + 'continuous/unproved'
         self.disc_trans_proved_dir = self.trans_check_dir + 'discrete/proved'
         self.disc_trans_unproved_dir = self.trans_check_dir + 'discrete/unproved'
-
+        self.metit_timeout = metit_timeout
         self.bad_state = experiment.bad_state
         self.trans_proved = 0
         self.trans_unproved = 0
         self.infeas_proved = 0
         self.infeas_unproved = 0
 
-        self.metit_options = experiment.metit_options
+        self.metit_options = ''
         
         
 def create_exp_dirs(exp):

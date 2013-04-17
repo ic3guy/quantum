@@ -27,11 +27,13 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
                          'inv': []}}
 
 initial_state = {'d':('cont',),'c':['X1>0','X2>0']}
-bad_state = predicate.MetitPredicate(x2-8,'>')
+
 
 equations = [predicate.MetitEquation(x1,'t'),
              predicate.MetitEquation(x2,'t'),
              predicate.MetitEquation(x2-8,'t')]
+
+bad_state = predicate.MetitPredicate(x2-8,'>')
 
 e5 = predicate.MetitEquation(system_def[('cont',)]['flow'][x2.diff(t)],'t')
 equations.extend(predicate.get_derivs(1,e5,system_def,('cont',)))

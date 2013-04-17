@@ -22,7 +22,7 @@ filenames = ['simplePendulum3-new']
 
 for file_name in filenames:
 
-    for metit_timeout in [1000]:
+    for metit_timeout in [2000]:
         cur_exp = experiment.Experiment(file_name,metit_timeout)        
     #execfile('quantum6.py',globals())
 

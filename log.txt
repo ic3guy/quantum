@@ -738,4 +738,14 @@ simplePendulum3-new.py-1000-
 ****************************************
 Number of Abstraction Functions : 6
 Number of Initial Abstract States : 729
+**PROP VIOLATED******************************************
+simplePendulum3-new.py-2000-
+****************************************
+Number of Abstraction Functions : 6
+Number of Initial Abstract States : 729
+**PROP VIOLATED******************************************
+simplePendulum3-new.py-2000-
+****************************************
+Number of Abstraction Functions : 6
+Number of Initial Abstract States : 729
 **PROP VIOLATED**

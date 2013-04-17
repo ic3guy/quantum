@@ -275,7 +275,8 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
         print 'iterating again'
         print 'number of new states %s' % (len(new_next_states)-len(old_next_states))
         print 'new_next_states %s' % new_next_states
-    
+
+    return True
 def ex_state(system, state_num):
     print '%s : %s' % (state_num, system[state_num])
     print '-'*10

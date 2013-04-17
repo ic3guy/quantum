@@ -17,12 +17,12 @@ import experiment
 #filenames = ['bounceBallsin-new5c']
 #filenames = ['simplePendulum3-new','simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new',]
-filenames = ['simplePendulum3-new']
+filenames = ['simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 for file_name in filenames:
 
-    for metit_timeout in [2000]:
+    for metit_timeout in [10, 100, 1000]:
         cur_exp = experiment.Experiment(file_name,metit_timeout)        
     #execfile('quantum6.py',globals())
 

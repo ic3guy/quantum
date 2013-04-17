@@ -73,7 +73,7 @@ def initial_abstract_system_setup(equations, q, system_def):
     
     ## For each continous equation, create a predicate
     for equation in equations:
-        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id) for op in oplist])
+        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov) for op in oplist])
 
     predicates.append(product(*q))
     
@@ -263,7 +263,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                 for to_state_num in new_cont_states+new_disc_states:
                     if bad_predicate and bad_predicate in system[to_state_num].state:
                         print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
-                        return
+                        return False
 
                 new_next_states.update(new_cont_states+new_disc_states)
                 #exp.trans_proved += len(new_cont_states) +len(new_disc_states)

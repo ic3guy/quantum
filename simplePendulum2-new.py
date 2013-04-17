@@ -21,10 +21,12 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
 #vars_dict = {x1 : X1, x2 : X2}
 
 initial_state = {'d':('cont',),'c':['X1>0','X2>0']}
-bad_state = []
 
 equations = [predicate.MetitEquation(x1,'t'),
-             predicate.MetitEquation(x2,'t')]
+             predicate.MetitEquation(x2,'t'),
+             predicate.MetitEquation(x2-8,'t')]
+
+bad_state = predicate.MetitPredicate(x2-8,'>')
 #predicate.MetitEquation(1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.0084319171,'t',deriv_dict,vars_dict,is_lyapunov=True)]
 
 e5 = predicate.MetitEquation(system_def[('cont',)]['flow'][x2.diff(t)],'t')

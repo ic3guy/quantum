@@ -17,12 +17,12 @@ import experiment
 #filenames = ['bounceBallsin-new5c']
 #filenames = ['simplePendulum3-new','simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new',]
-
-filenames = ['simplePendulum2-new']
+filenames = ['simplePendulum3-new']
+#filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 for file_name in filenames:
 
-    for metit_timeout in [10,100,1000]:
+    for metit_timeout in [1000]:
         cur_exp = experiment.Experiment(file_name,metit_timeout)        
     #execfile('quantum6.py',globals())
 
@@ -64,32 +64,33 @@ for file_name in filenames:
         f.write('Number of Initial Abstract States : %s\n' % len(hybrid_system))
     
         next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir,cur_exp)]
+        
+        ## LAZY QUAL ABS ##
+
+        #bad = predicate.MetitPredicate(py-h,'>')
+        #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
     
-## LAZY QUAL ABS ##
-
-    #bad = predicate.MetitPredicate(py-h,'>')
-    #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
-
-        abstraction.lazy_cont_abs(hybrid_system, next_states, cur_exp.system_def, var_string, cur_exp, bad_predicate=cur_exp.bad_state)
-
-        SMV = open(cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')
-
-        smv_output = nusmv.construct_nusmv_input(hybrid_system,2)
-
-        SMV.write(smv_output)
-        SMV.close()
-
-        end_time = time.time()
+        if not(abstraction.lazy_cont_abs(hybrid_system, next_states, cur_exp.system_def, var_string, cur_exp, bad_predicate=cur_exp.bad_state)):
+            f.write('**PROP VIOLATED**')
+        else:
+            SMV = open(cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')
+            
+            smv_output = nusmv.construct_nusmv_input(hybrid_system,2)
+            
+            SMV.write(smv_output)
+            SMV.close()
+            
+            end_time = time.time()
 
     
-        f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible]))
-        f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
-        f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
-        f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)        
-        f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
-        f.close()
-
-        abstraction.print_system(hybrid_system)
+            f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible]))
+            f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
+            f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
+            f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)        
+            f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
+            f.close()
+            
+            abstraction.print_system(hybrid_system)
 
     
 

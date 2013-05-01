@@ -108,7 +108,7 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
     if not(state.feasability_checked):
         fof = metitarski.make_fof_inf(state, var_string)
         #print "Sending: " + fof
-        rc = metitarski.send_to_metit(fof)
+        rc = metitarski.send_to_metit(fof,exp.metit_options)
         state.feasability_checked = True
         if rc == 0:
             metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)

@@ -7,7 +7,7 @@ import os
 
 metit_options = ('metit', 
                   '--autoInclude', 
-                  '--time','1',
+                  '--time','10',
                   '-q',
                   '-')
 
@@ -136,6 +136,8 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
 
 def checkTransition3(var_string, state, pred, x, system_def, updates, exp):
     Q1,Q2,Q3 = [],[],[]
+    
+    metit_options = exp.metit_options
 
     #options = ('metit', 
     #           '--autoInclude', 

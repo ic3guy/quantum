@@ -28,7 +28,7 @@ def send_to_metit(fof,output=metit_output,metit_options=metit_options):
         process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
 
     process.communicate(fof)
-    
+    print "return code: %s" % process.returncode
     return process.returncode
 
 def make_fof_inf(state, var_string,sc_heur=False):
@@ -77,6 +77,7 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False):
         return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
+    print 'sending %s\n' % name
     f = open('%s/%s' % (directory, name), 'wa')
     f.write(formula)
     f.close()        

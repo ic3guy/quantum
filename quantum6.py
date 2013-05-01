@@ -17,7 +17,7 @@ import experiment
 #filenames = ['bounceBallsin-new5c']
 #filenames = ['simplePendulum3-new','simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new',]
-filenames = ['simplePendulum4-new']
+filenames = ['simplePendulum-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 for file_name in filenames:
@@ -83,7 +83,8 @@ for file_name in filenames:
             end_time = time.time()
 
     
-            f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible]))
+            f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible and x.feasability_checked and x.next_states]))
+            f.write('Number of UnProved InFeasible : %s\n' % cur_exp.infeas_unproved)
             f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
             f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
             f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)        

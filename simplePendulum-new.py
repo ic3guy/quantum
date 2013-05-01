@@ -3,7 +3,7 @@ from itertools import product
 
 import predicate
 
-timeout = 10
+timeout = 1000
 
 metit_options = ('metit', 
                  '--autoInclude', 
@@ -12,8 +12,8 @@ metit_options = ('metit',
                  '-')
 
 t = Symbol('t')
-X1 = Symbol('X1')
-X2 = Symbol('X2')
+#X1 = Symbol('X1')
+#X2 = Symbol('X2')
 x1 = Function('x1')(t)
 x2 = Function('x2')(t)
 

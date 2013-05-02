@@ -3,6 +3,7 @@ import re
 import predicate
 import uuid
 import os
+import tempfile
 #import predicates.State
 
 #metit_options = ('metit', 
@@ -24,15 +25,26 @@ extra_constraints = ['X1<3.141', 'X1>-3.141']
 process = None
 
 def send_to_metit(fof,output=metit_output,metit_options=metit_options):
-    if output:
-        print fof
-        process = subprocess.Popen(metit_options, stdin=subprocess.PIPE)
-    else:
-        process = subprocess.Popen(metit_options, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
 
-    process.communicate(fof)
-    print "return code: %s" % process.returncode
-    return process.returncode
+    with tempfile.NamedTemporaryFile() as temp:
+        temp.write(fof)
+        temp.flush()
+        temp.seek(0)
+        
+        #metit_options.append(str(temp.name))
+        metit_options_call = metit_options + [str(temp.name)]
+        #print metit_options_call
+
+        if output:
+            print fof
+            process = subprocess.call(metit_options_call, stdin=subprocess.PIPE)
+        else:
+            process = subprocess.call(metit_options_call, shell=False, stdout=open('/dev/null','w'), stdin=subprocess.PIPE)
+
+    #process.communicate(fof)
+            
+        print "return code: %s" % process
+        return process
 
 def make_fof_inf(state, var_string,sc_heur=False):
     #print [str(state)]

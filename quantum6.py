@@ -17,22 +17,21 @@ import experiment
 #filenames = ['bounceBallsin-new5c']
 #filenames = ['simplePendulum3-new','simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new',]
-filenames = ['simplePendulum-new']
+filenames = ['simplePendulum4-new']
 #filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 for file_name in filenames:
 
-    for metit_timeout in [10, 100, 1000]:
+    for metit_timeout in [10, 100, 1000,4000]:
         cur_exp = experiment.Experiment(file_name,metit_timeout)        
     #execfile('quantum6.py',globals())
 
         print cur_exp.system_def
         
-        cur_exp.metit_options = ('metit', 
+        cur_exp.metit_options = ['metit', 
                  '--autoInclude', 
                  '--time',str(metit_timeout),
-                 '-q',
-                 '-')
+                 '-q']
         
         experiment.create_exp_dirs(cur_exp)
 

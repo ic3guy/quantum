@@ -5,11 +5,14 @@ import uuid
 import os
 #import predicates.State
 
-metit_options = ('metit', 
-                  '--autoInclude', 
-                  '--time','10',
-                  '-q',
-                  '-')
+#metit_options = ('metit', 
+#                  '--autoInclude', 
+#                  '--time','10',
+#                  '-q',
+#                  '-')
+
+metit_options = "NONE"
+
 
 metit_output = False
 sc_heur = False

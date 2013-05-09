@@ -11,6 +11,10 @@ import time
 from termcolor import colored, cprint
 import qutilities
 import experiment
+import sys
+
+
+sys.path.insert(0,'./examples/')
 
 #filenames = ['twotanks']
 #filenames = ['heater-new-timed']

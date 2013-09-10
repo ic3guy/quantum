@@ -10,7 +10,7 @@ import re
 #to find all functions.
 from sympy.core.function import AppliedUndef
 
-assert diff
+#assert diff
 
 def get_derivs(n, seed, system, state):
     #Input is a metit equation
@@ -24,17 +24,29 @@ def get_derivs(n, seed, system, state):
     return derivatives
 
 def gen_meti_string(cls, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
-        var_replace_list = [[var, sympify(str(var).replace("("+str(cls.depvar)+")","").upper())] for var in cls.equation.atoms(AppliedUndef)]
-        #print var_list
-        # any other variables
-        var_replace_list.extend([[var, sympify(str(var).upper())] for var in cls.equation.free_symbols])
-        #print var_list
+        
+    # Get a list of function names to metitarski variables of the form [[x1(t),X1],[x2(t),X2]]
+    #
+    # See http://docs.sympy.org/dev/modules/core.html for more info about atoms(AppliedUndef)
+    # It returns all undefined functions or in our case implicitly defined variables. Because
+    # we are dealing with dynamical systems, every variable implicitly depends on time.
 
-        #print into a format by metitarski)
-        rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
-        #print rep
-        pattern = re.compile("|".join(rep.keys()))
-        equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(cls.equation.subs(var_replace_list)))
+    var_replace_list = [[var, sympify(str(var).replace("("+str(cls.depvar)+")","").upper())] for var in cls.equation.atoms(AppliedUndef)]
+     
+    # any other variables, such as parameters (they are considered free in sympy)
+
+    var_replace_list.extend([[var, sympify(str(var).upper())] for var in cls.equation.free_symbols])
+
+    # convert the equation into the MetiTarski representation
+    # modified this code from stackoverflow, can't find original link
+    #
+    # see : http://docs.python.org/2/library/re.html
+    # when replacing using REs and sub, you can pass a function, in our case that is the lambda below
+    # It will be applied for every non-overlapping occurrence of the patern.
+    
+    rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+    pattern = re.compile("|".join(rep.keys()))
+    equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(cls.equation.subs(var_replace_list)))
 
         return equation_out
 
@@ -156,9 +168,9 @@ if __name__ == '__main__':
     z = MetitEquation(1.90843655*sin(x1(t))**2 + 1.90843655*cos(x1(t))**2 - 3.916868466*cos(x1(t)) + 0.19984*x2(t)**2 - 0.0084319171)
 
     system_def_test = {('cont',): {'flow': {x1.diff(t): x2,
-                                   x2.diff(t): -9.8*sin(x1)},
-                              't': [],
-                              'inv': []}}
+                                            x2.diff(t): -9.8*sin(x1)},
+                                   't': [],
+                                   'inv': []}}
     
     #flow = {x1.diff(t): x2, x2.diff(t): -9.8*sin(x1)}
     

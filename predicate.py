@@ -42,13 +42,15 @@ def gen_meti_string(cls, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
     #
     # see : http://docs.python.org/2/library/re.html
     # when replacing using REs and sub, you can pass a function, in our case that is the lambda below
-    # It will be applied for every non-overlapping occurrence of the patern.
+    # It will be applied for every non-overlapping occurrence of the patern. In this case we are replacing
+    # each variable from the list above, thats the .subs(var_replace_list) part, then going through
+    # and replacing each value from the subsdict
     
     rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
     pattern = re.compile("|".join(rep.keys()))
     equation_out = pattern.sub(lambda m: subsdict[m.group(0)], str(cls.equation.subs(var_replace_list)))
 
-        return equation_out
+    return equation_out
 
 class MetitEquation:
     def __init__(self, equation, var_id=0, depvar=Symbol('t'), is_lyapunov=False):

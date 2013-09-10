@@ -77,7 +77,8 @@ def initial_abstract_system_setup(equations, q, system_def):
 
     predicates.append(product(*q))
     
-    print predicates
+    #for p in predicates:
+    #    print list(p)
 
     ## Create an abstract state for each combination of the predicates
     #import pdb; pdb.set_trace()

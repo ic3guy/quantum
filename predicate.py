@@ -67,8 +67,6 @@ class MetitEquation:
     def __str__(self):
         return self.meti_string
 
-
-    
     def plot_format(self, subs_dict):
         return self.equation.subs(subs_dict)
     
@@ -77,24 +75,15 @@ class MetitPredicate(MetitEquation):
     def __init__(self,equation,operator,var_id=0,is_lyapunov=False):
         super(MetitPredicate, self).__init__(equation,var_id=var_id,is_lyapunov=is_lyapunov)
         self.operator = operator
-        #self.is_lyapunov = is_lyapunov
-        #self.derivative = equation.print_derivative()
-        #self.depvar = equation.depvar
-        #self.equation_string = str(equation) + operator + '0'
-        #self.plot_format_str = plot_format(equation,operator)
-        #self.subs_dict = equation.subs_dict
-        #self.vars_dict = equation.vars_dict
-
+        
     def __str__(self):
-        x = super(MetitPredicate, self).__str__() + self.operator + '0'
-        return x
-
+        return super(MetitPredicate, self).__str__() + self.operator + '0'
+    
     def print_equation(self):
         return super(MetitPredicate, self).__str__()
     
     def __eq__(self, other):
         return str(self) == str(other)
-
 
 def get_var_string(equations):
 

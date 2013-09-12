@@ -1,0 +1,9 @@
+fof(checkTransition, conjecture, (![X1,X2] : (X2>0 & X2<1 & X1=5.25 => -8.5 + 8*sqrt(X1) + 2*X1 - 2*sqrt(X1)^3 + 0.5*sqrt(X2) +  2*sqrt(X1)*X2 - 2*sqrt(X2)^3 < 0))).
+
+include('Axioms/general.ax').
+%include('Axioms/minmax.ax').
+include('Axioms/sqrt-general.ax').
+include('Axioms/sqrt-lower.ax').
+include('Axioms/sqrt-upper.ax').
+%include('Axioms/sqrt-extended.ax').
+include('Axioms/trans.ax').

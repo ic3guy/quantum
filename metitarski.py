@@ -15,12 +15,12 @@ import tempfile
 metit_options = "NONE"
 
 
-metit_output = False
+metit_output = True
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
-extra_constraints = ['X1<3.141', 'X1>-3.141']
-#extra_constraints = []
+#extra_constraints = ['X1<3.141', 'X1>-3.141']
+extra_constraints = []
 
 process = None
 

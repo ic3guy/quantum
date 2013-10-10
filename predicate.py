@@ -23,7 +23,7 @@ def get_derivs(n, seed, system, state):
 
     return derivatives
 
-def gen_meti_string(cls, subsdict={'e':'*10^', '**':'^', 'Abs':'abs'}):
+def gen_meti_string(cls, subsdict={'e[^x]':'*10^', '**':'^', 'Abs':'abs'}):
         
     # Get a list of function names to metitarski variables of the form [[x1(t),X1],[x2(t),X2]]
     #

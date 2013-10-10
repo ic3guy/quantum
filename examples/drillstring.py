@@ -44,7 +44,7 @@ system_def = {('slip+',) : {'flow' : {x1.diff(t): (6000 - 597.3067*x1 - 861.5336
                             't'    : [{'guard'      : ([slipp_to_slipn_guard,x3_eqz],[x3_ltz]), 
                                        'next_state' : ('slip-',),
                                        'updates'    : {}},
-                                      {'guard'      : ([x3_eqz,absueq_guard]),
+                                      {'guard'      : ([x3_eqz,absueq_guard],),
                                        'next_state' : ('stuck',),
                                        'updates' : {}}],
                             'inv'  : (x3_ltz,)},
@@ -54,7 +54,7 @@ system_def = {('slip+',) : {'flow' : {x1.diff(t): (6000 - 597.3067*x1 - 861.5336
                             't'    : [{'guard'      : ([slipn_to_slipp_guard,x3_eqz],[x3_gtz]), 
                                        'next_state' : ('slip+',),
                                        'updates'    : {}},
-                                      {'guard'       : ([x3_eqz,absueq_guard]),
+                                      {'guard'       : ([x3_eqz,absueq_guard],),
                                        'next_state' : ('stuck',),
                                        'updates' : {}}],
                             'inv'  : (x3_gtz,)},
@@ -67,7 +67,7 @@ system_def = {('slip+',) : {'flow' : {x1.diff(t): (6000 - 597.3067*x1 - 861.5336
                                       {'guard'      : ([slipn_to_slipp_guard,x3_eqz],[x3_gtz]), 
                                        'next_state' : ('slip+',),
                                        'updates'    : {}}],
-                            'inv'  : (x3_ltz,x3_gtz)}}
+                            'inv'  : (x3_ltz, x3_gtz)}}
 
 equations = [predicate.MetitEquation(x1),
              predicate.MetitEquation(x3),

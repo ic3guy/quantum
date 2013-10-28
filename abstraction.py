@@ -105,8 +105,8 @@ def print_system(system, feasible_only=True):
         elif feasible_only==False:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
 
-def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir,exp):
-    if not(state.feasability_checked):
+def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir,exp, check=False):
+    if check or not(state.feasability_checked):
         fof = metitarski.make_fof_inf(state, var_string)
         #print "Sending: " + fof
         rc = metitarski.send_to_metit(fof,metit_options=exp.metit_options)
@@ -129,7 +129,7 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
         cprint('State %s Already Checked : It is %s' % (state.number, ('Possibly Feasible' if state.is_feasible else 'Not Feasible')), 'blue')
         return state.is_feasible
 
-def next_cont_states(state, system, system_def, var_string, experiment, bad=False):
+def next_cont_states(state, system, system_def, var_string, experiment, bad=False, check=False):
     pos_successors = []
     for z, pred in enumerate(state.state):
         if bad:
@@ -166,7 +166,7 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
 
         #not more_than_one_diff(state, found_next_state)
         
-        if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment) and not more_than_one_diff(state, found_next_state) :
+        if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
@@ -183,7 +183,7 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
         #only delete the state at the end
         #state.is_feasible = False
 
-def next_disc_states(state, system, system_def, var_string, exp, bad=False):
+def next_disc_states(state, system, system_def, var_string, exp, bad=False, check=False):
     next_states = []
     for transition in system_def[state.discrete_part]['t']:
         if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
@@ -222,7 +222,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False):
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
-                    if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp) :
+                    if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp, check) :
                         next_states.append(found_next_state.number)
            
                 if next_states: 
@@ -235,7 +235,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False):
             else:
                 found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
 
-                if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp):
+                if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp, check):
                     next_states.append(found_next_state.number)
                        
         if next_states:
@@ -260,12 +260,46 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                 print 'Analyzing state %s' % state_num
                 new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp)]
                 new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp)]
+                
+                done = False
+                iter_num = 0
+                orig_timeout = exp.metit_timeout
+                orig_opt = exp.metit_options
+                current_states = new_cont_states+new_disc_states
+                
+                while not done:
+                    for to_state_num in current_states:
+                        if bad_predicate and bad_predicate in system[to_state_num].state:
+                            print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  
+                            
+                            iter_num += 1
+                            old_timeout = exp.metit_timeout
+                            new_timeout = old_timeout*2
+                            
+                            exp.metit_options =  ['metit', 
+                                                  '--autoInclude', 
+                                                  '--time',str(new_timeout),
+                                                  '-q']
 
-                for to_state_num in new_cont_states+new_disc_states:
-                    if bad_predicate and bad_predicate in system[to_state_num].state:
-                        print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
-                        return False
+                            print 'new timeout: %s' % new_timeout
+                            exp.metit_timeout = new_timeout
 
+                            new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp, check=True)]
+                            new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp, check=True)]
+                            new_current_states = new_cont_states+new_disc_states
+
+                            if new_current_states == current_states and iter_num > 5:
+                                print 'Too many retries'
+                                return False
+                            else:
+                                current_states = new_current_states
+                                print 'Iteration %s' % iter_num
+                                break
+                    else:
+                        done = True
+                
+                exp.metit_timeout = orig_timeout
+                exp.metit_options = orig_opt
                 new_next_states.update(new_cont_states+new_disc_states)
                 #exp.trans_proved += len(new_cont_states) +len(new_disc_states)
                 #new_next_states.anew_disc_states)

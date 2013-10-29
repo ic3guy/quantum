@@ -37,7 +37,8 @@ def send_to_metit(fof,output=metit_output,metit_options=metit_options):
 
         if output:
             print fof
-            process = subprocess.call(metit_options_call)
+            print metit_options
+            process = subprocess.call(metit_options_call,stderr=subprocess.STDOUT)
         else:
             process = subprocess.call(metit_options_call, shell=False, stdout=open('/dev/null','w'))
 

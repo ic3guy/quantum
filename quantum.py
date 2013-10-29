@@ -25,7 +25,7 @@ filenames = ['twotanks']
 
 for file_name in filenames:
 
-    for metit_timeout in [100]:
+    for metit_timeout in [1000]:
         cur_exp = experiment.Experiment(file_name,metit_timeout)        
     #execfile('quantum6.py',globals())
 
@@ -33,8 +33,7 @@ for file_name in filenames:
         
         cur_exp.metit_options = ['metit', 
                  '--autoInclude', 
-                 '--time',str(metit_timeout),
-                 '-q']
+                 '--time',str(metit_timeout)]
         
         experiment.create_exp_dirs(cur_exp)
 

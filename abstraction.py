@@ -278,8 +278,8 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                             
                             exp.metit_options =  ['metit', 
                                                   '--autoInclude', 
-                                                  '--time',str(new_timeout),
-                                                  '-q']
+                                                  '--time',str(new_timeout)]
+                                                
 
                             print 'new timeout: %s' % new_timeout
                             exp.metit_timeout = new_timeout

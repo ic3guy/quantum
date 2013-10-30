@@ -16,10 +16,15 @@ class CLI(cmd.Cmd):
         sys.exit(1)
     
     def do_abstract(self, arg):
+        
         try:
             #print type(arg)
-            quantum.run(arg.split())
+            if not arg:
+                quantum.restart()
+            else :
+                quantum.run(arg.split())
         except KeyboardInterrupt:
+            pause = 1
             print 'abstraction paused'
             
             

@@ -40,7 +40,8 @@ class CLI(cmd.Cmd):
         print 'Abstraction Proof Statistics'
         print '*'*40
 
-        print 'Total Number of States : {}'.format(len([x for x in hs.itervalues() if x.is_feasible and x.feasability_checked and x.next_states]))
+        print 'Total Number of States : {}'.format(len([x for x in hs.itervalues() 
+                                                        if x.is_feasible and x.feasability_checked and x.next_states]))
         print 'Total Number of Proved Transition Problems : {}'.format(quantum.cur_exp.trans_proved)
         print 'Total Number of Unproved Transition Problems : {}'.format(quantum.cur_exp.trans_unproved)
         print 'Total Number of Proved Infeasible Problems : {}'.format(quantum.cur_exp.infeas_proved)

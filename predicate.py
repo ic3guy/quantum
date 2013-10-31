@@ -77,7 +77,10 @@ class MetitPredicate(MetitEquation):
         self.operator = operator
         
     def __str__(self):
-        return super(MetitPredicate, self).__str__() + self.operator + '0'
+        if self.operator == '=':
+            return super(MetitPredicate, self).__str__() + '<' + '10^-6' + ' & ' + super(MetitPredicate, self).__str__() + '>' + '-10^-6'
+        else :
+            return super(MetitPredicate, self).__str__() + self.operator + '0'
     
     def print_equation(self):
         return super(MetitPredicate, self).__str__()

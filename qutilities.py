@@ -3,6 +3,8 @@ from sympy import *
 from sympy.plotting.plot import Plot
 import predicate
 import itertools
+import pydot
+
 #import experiment
 #import cfg
 
@@ -53,5 +55,25 @@ def make_discrete_system(system, discrete_variables_q, system_def):
             system_fd[str(state.number+n*1000)]=copy_state(state,discrete_part=discrete_state,number=state.number+n*1000,system_def=system_def)
 
     return system_fd
-           
+
+nodes = {}
     
+def output_graphiz(system):
+    graph = pydot.Dot(graph_type='digraph')
+
+    for state_number, state in system.iteritems():
+        if state.is_feasible and state.next_states:
+            nodes[state_number] = pydot.Node(state_number,label=str(state) + '\n' + str(state.discrete_part))
+            
+    #print nodes
+
+    for n, node in nodes.iteritems():
+        graph.add_node(node)
+
+    for state_number, state in system.iteritems():
+        print state_number, set(state.next_states)
+        for ns in set(state.next_states):
+            graph.add_edge(pydot.Edge(nodes[state_number],nodes[ns]))
+
+    graph.write_png('test.png')
+            

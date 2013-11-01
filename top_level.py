@@ -1,6 +1,7 @@
 import code
 import cmd, sys
 import quantum
+import qutilities
 
 #my_console = code.InteractiveConsole()
 #my_console.interact('Quantum Top Level')
@@ -27,7 +28,9 @@ class CLI(cmd.Cmd):
             pause = 1
             print 'abstraction paused'
             
-            
+    def do_graphiz(self,arg):
+        qutilities.output_graphiz(quantum.hybrid_system)
+
     def do_print(self, arg):
         #print quantum.filenames
         print quantum.cur_exp.system_def

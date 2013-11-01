@@ -82,6 +82,9 @@ class MetitPredicate(MetitEquation):
         else :
             return super(MetitPredicate, self).__str__() + self.operator + '0'
     
+    def pretty_print(self):
+        return super(MetitPredicate, self).__str__() + self.operator + '0'
+
     def print_equation(self):
         return super(MetitPredicate, self).__str__()
     
@@ -130,6 +133,9 @@ class State:
         
     def __str__(self):
         return " & ".join([str(x) for x in self.state])
+    
+    def pretty_print(self):
+        return " & ".join([x.pretty_print() for x in self.state])
 
     def print_state_number(self):
         return str(self.number)

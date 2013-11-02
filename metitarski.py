@@ -120,7 +120,7 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
 
     if pred.operator == '>' or pred.operator == '=':
         if not send_to_metit(gteq,metit_options=metit_options):
-            Q1.append(state)
+            Q1.append(state.number)
             exp.trans_proved += 1
             #print 'In Q1'
             send_to_file(gteq, exp.cont_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
@@ -130,7 +130,7 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
     
     if pred.operator == '<' or pred.operator == '=':
         if not send_to_metit(lteq,metit_options=metit_options):
-            Q3.append(state)
+            Q3.append(state.number)
             exp.trans_proved += 1
             #print 'In Q3'
             send_to_file(lteq, exp.cont_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
@@ -140,7 +140,7 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
     
     if pred.operator == '=':
         if not send_to_metit(gt_or_lt,metit_options=metit_options):
-            Q2.append(state)
+            Q2.append(state.number)
             exp.trans_proved += 1
             send_to_file(gt_or_lt, exp.cont_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
             #print 'In Q2'

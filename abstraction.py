@@ -140,21 +140,21 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
         lt_pred, eq_pred, gt_pred = gen_pos_pred(pred.equation)
 
         if pred.operator == '>':
-            if state in Q1: 
+            if state.number in Q1: 
                 pos_successors.append([gt_pred])
             else:
                 pos_successors.append([gt_pred,eq_pred])
         elif pred.operator == '<':
-            if state in Q3:
+            if state.number in Q3:
                 pos_successors.append([lt_pred])
             else:
                 pos_successors.append([lt_pred,eq_pred])
         else:
-            if state in Q1 and state in Q2:
+            if state.number in Q1 and state.number in Q2:
                 pos_successors.append([gt_pred])
-            elif state in Q3 and state in Q2:
+            elif state.number in Q3 and state.number in Q2:
                 pos_successors.append([lt_pred])
-            elif state in Q1 and state in Q3:
+            elif state.number in Q1 and state.number in Q3:
                 pos_successors.append([eq_pred])
             else:
                 pos_successors.append([eq_pred,lt_pred,gt_pred])
@@ -312,6 +312,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
         print 'new_next_states %s' % new_next_states
 
     return True
+
 def ex_state(system, state_num):
     print '%s : %s' % (state_num, system[state_num])
     print '-'*10

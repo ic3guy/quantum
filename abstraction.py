@@ -3,7 +3,7 @@ from itertools import product
 import qutilities
 import metitarski
 from termcolor import colored, cprint
-#import multiprocessing as mp
+import multiprocessing as mp
 from multiprocessing.dummy import Pool
 #from multiprocessing import Pool
 import functools
@@ -176,7 +176,7 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
     pool = Pool()
     #args = state, system,system_def,var_string, experiments
     #import pdb; pdb.set_trace()
-    next_pos_states = pool.map(functools.partial(gen_pos_successors,system=system,state=state,system_def=system_def, var_string=var_string, experiment=experiment), state.state)
+    next_pos_states = pool.map(functools.partial(gen_pos_successors,system=system,state=state,system_def=system_def, var_string=var_string, experiment=experiment), state.state, chunksize=1)
     
     #import pdb; pdb.set_trace()
     #for z, pred in enumerate(state.state): #pos multiproc on this
@@ -187,7 +187,8 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
         
     for possible_next_state in product(*next_pos_states):
         found_next_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
-
+        
+        #find all next states, and parallel send to metiTarski
         #not more_than_one_diff(state, found_next_state)
             
         if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :

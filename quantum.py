@@ -27,7 +27,7 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=100):
+def run(filenames, to=40):
     for file_name in filenames:
 
         for metit_timeout in [to]:

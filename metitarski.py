@@ -5,7 +5,7 @@ import uuid
 import os
 import tempfile
 #import predicates.State
-from multiprocessing import Pool
+#from multiprocessing import Pool
 from functools import partial
 
 #metit_options = ('metit', 
@@ -17,7 +17,7 @@ from functools import partial
 metit_options = "NONE"
 
 
-metit_output = True
+metit_output = False
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
@@ -226,22 +226,28 @@ def checkTransition3(var_string, state, pred, x, system_def, updates, exp):
     gt_or_lt = make_fof_rel_2(var_string, state,der,'>', '<',sc_heur=sc_heur)
     #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel_2(var_string, state,der,'>', '=',sc_heur=sc_heur)
+    
+    commands = [lteq, gteq, gt_or_lt]
+    processes = [send_to_metit_nob(cmd,metit_options=metit_options) for cmd in commands]
 
-    if not send_to_metit(gteq,metit_options=metit_options):
+    for proc in processes:
+        proc.wait()
+
+    if not processes[1].returncode:
         Q1.append(state)
             #print 'In Q1'
         send_to_file(gteq, exp.disc_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     else: 
         send_to_file(gteq, exp.disc_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
     
-    if not send_to_metit(lteq,metit_options=metit_options):
+    if not processes[0].returncode:
         Q3.append(state)
             #print 'In Q3'
         send_to_file(lteq, exp.disc_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
     else:
         send_to_file(lteq, exp.disc_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
 
-    if not send_to_metit(gt_or_lt,metit_options=metit_options):
+    if not processes[2].returncode:
         Q2.append(state)
             #print 'In Q2'
         send_to_file(gt_or_lt, exp.disc_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))

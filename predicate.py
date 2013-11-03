@@ -1,5 +1,7 @@
 __metaclass__ = type
 
+
+import dill
 from sympy import *
 from sympy import diff
 import metitarski

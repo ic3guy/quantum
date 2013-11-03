@@ -3,6 +3,12 @@ from itertools import product
 import qutilities
 import metitarski
 from termcolor import colored, cprint
+#import multiprocessing as mp
+from multiprocessing.dummy import Pool
+#from multiprocessing import Pool
+import functools
+import dill as pickle
+
 
 def find_state(system, next_state):
     for state in system.values():
@@ -129,45 +135,63 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
         cprint('State %s Already Checked : It is %s' % (state.number, ('Possibly Feasible' if state.is_feasible else 'Not Feasible')), 'blue')
         return state.is_feasible
 
-def next_cont_states(state, system, system_def, var_string, experiment, bad=False, check=False):
-    pos_successors = []
-    for z, pred in enumerate(state.state): #pos multiproc on this
-        if bad:
-            Q1,Q2,Q3 = ([],[],[])
-        else:
-            Q1,Q2,Q3 = metitarski.cont_abs_trans_rel(var_string, state, pred, z, experiment)
-        
-        lt_pred, eq_pred, gt_pred = gen_pos_pred(pred.equation)
+def gen_pos_successors(pred, state, system, system_def, var_string, experiment,bad=False,z=1):
 
-        if pred.operator == '>':
-            if state.number in Q1: 
-                pos_successors.append([gt_pred])
-            else:
-                pos_successors.append([gt_pred,eq_pred])
-        elif pred.operator == '<':
-            if state.number in Q3:
-                pos_successors.append([lt_pred])
-            else:
-                pos_successors.append([lt_pred,eq_pred])
+    #state, system, system_def, var_string, experiments = params
+
+    pos_successors = []
+
+    if bad:
+        Q1,Q2,Q3 = ([],[],[])
+    else:
+        Q1,Q2,Q3 = metitarski.cont_abs_trans_rel(var_string, state, pred, z, experiment)
+        
+    lt_pred, eq_pred, gt_pred = gen_pos_pred(pred.equation)
+
+    if pred.operator == '>':
+        if state.number in Q1: 
+            pos_successors.extend([gt_pred])
         else:
-            if state.number in Q1 and state.number in Q2:
-                pos_successors.append([gt_pred])
-            elif state.number in Q3 and state.number in Q2:
-                pos_successors.append([lt_pred])
-            elif state.number in Q1 and state.number in Q3:
-                pos_successors.append([eq_pred])
-            else:
-                pos_successors.append([eq_pred,lt_pred,gt_pred])
-                
+            pos_successors.extend([gt_pred,eq_pred])
+    elif pred.operator == '<':
+        if state.number in Q3:
+            pos_successors.extend([lt_pred])
+        else:
+            pos_successors.extend([lt_pred,eq_pred])
+    else:
+        if state.number in Q1 and state.number in Q2:
+            pos_successors.extend([gt_pred])
+        elif state.number in Q3 and state.number in Q2:
+            pos_successors.extend([lt_pred])
+        elif state.number in Q1 and state.number in Q3:
+            pos_successors.extend([eq_pred])
+        else:
+            pos_successors.extend([eq_pred,lt_pred,gt_pred])
+
+    return pos_successors
+
+
+def next_cont_states(state, system, system_def, var_string, experiment, bad=False, check=False):
+    
+    pool = Pool()
+    #args = state, system,system_def,var_string, experiments
+    #import pdb; pdb.set_trace()
+    next_pos_states = pool.map(functools.partial(gen_pos_successors,system=system,state=state,system_def=system_def, var_string=var_string, experiment=experiment), state.state)
+    
+    #import pdb; pdb.set_trace()
+    #for z, pred in enumerate(state.state): #pos multiproc on this
+        
+    #for pos_successors in next_pos_states:
+           
     next_states = []
         
-    for possible_next_state in product(*pos_successors):
+    for possible_next_state in product(*next_pos_states):
         found_next_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
 
         #not more_than_one_diff(state, found_next_state)
-        
+            
         if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
-            next_states.append(found_next_state.number)
+                next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
                 

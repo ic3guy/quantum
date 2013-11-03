@@ -3,6 +3,7 @@ import cmd, sys
 import quantum
 import qutilities
 
+
 #my_console = code.InteractiveConsole()
 #my_console.interact('Quantum Top Level')
 #my_console.raw_input('Command: ')
@@ -18,6 +19,8 @@ class CLI(cmd.Cmd):
     
     def do_abstract(self, arg):
         
+        quantum.hybrid_system = None
+
         try:
             #print type(arg)
             if not arg:

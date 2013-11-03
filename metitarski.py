@@ -5,6 +5,8 @@ import uuid
 import os
 import tempfile
 #import predicates.State
+from multiprocessing import Pool
+from functools import partial
 
 #metit_options = ('metit', 
 #                  '--autoInclude', 
@@ -46,6 +48,30 @@ def send_to_metit(fof,output=metit_output,metit_options=metit_options):
             
         print "return code: %s" % process
         return process
+
+def send_to_metit_nob(fof,output=metit_output,metit_options=metit_options):
+
+    with tempfile.NamedTemporaryFile(delete=False) as temp:
+        temp.write(fof)
+        temp.flush()
+        temp.seek(0)
+        
+        #metit_options.append(str(temp.name))
+        metit_options_call = metit_options + [str(temp.name)]
+        #print metit_options_call
+
+        if output:
+            print fof
+            print metit_options
+            process = subprocess.Popen(metit_options_call,stderr=subprocess.STDOUT)
+        else:
+            process = subprocess.Popen(metit_options_call, shell=False, stdout=open('/dev/null','w'))
+
+    #process.communicate(fof)
+            
+        print "return code: %s" % process
+        return process
+
 
 def make_fof_inf(state, var_string,sc_heur=False):
     #print [str(state)]
@@ -107,7 +133,9 @@ def pred_2_text(pred):
         return 'eq'
 
 def cont_abs_trans_rel(var_string, state, pred, x, exp):
-    
+
+    #use multiprocessing on calling this function.
+
     metit_options = exp.metit_options
     Q1,Q2,Q3 = [],[],[]
      
@@ -118,7 +146,7 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
     #lt = make_fof_rel(state,der,'<')
     gteq = make_fof_rel_2(var_string, state,der,'>', '=',sc_heur=sc_heur)
 
-    if pred.operator == '>' or pred.operator == '=':
+    if pred.operator == '>': #or pred.operator == '=':
         if not send_to_metit(gteq,metit_options=metit_options):
             Q1.append(state.number)
             exp.trans_proved += 1
@@ -128,7 +156,7 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
             send_to_file(gteq, exp.cont_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, x, pred_2_text(pred.operator)))
             exp.trans_unproved += 1
     
-    if pred.operator == '<' or pred.operator == '=':
+    if pred.operator == '<': #or pred.operator == '=':
         if not send_to_metit(lteq,metit_options=metit_options):
             Q3.append(state.number)
             exp.trans_proved += 1
@@ -138,15 +166,39 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
             send_to_file(lteq, exp.cont_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, x, pred_2_text(pred.operator)))
             exp.trans_unproved +=1
     
+    #multi processing here
     if pred.operator == '=':
-        if not send_to_metit(gt_or_lt,metit_options=metit_options):
+        #pool = Pool(processes=4)
+    
+        commands = [lteq, gteq, gt_or_lt]
+        processes = [send_to_metit_nob(cmd,metit_options=metit_options) for cmd in commands]
+
+        for proc in processes:
+            proc.wait()
+
+        if not processes[0].returncode:
+            Q3.append(state.number)
+        
+        if not processes[1].returncode:
+            Q1.append(state.number)
+       
+        if not processes[2].returncode:
             Q2.append(state.number)
-            exp.trans_proved += 1
-            send_to_file(gt_or_lt, exp.cont_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
-            #print 'In Q2'
-        else:
-            send_to_file(gt_or_lt, exp.cont_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
-            exp.trans_unproved += 1
+
+        #jobs = [('lteq', 'metit_options=metit_options'),('gteq', 'metit_options=metit_options'),('gt_or_lt', 'metit_options=metit_options')]
+
+        #result = pool.map(lambda args: send_to_metit(*args),jobs)
+        
+        #print result
+
+        # if not send_to_metit(gt_or_lt,metit_options=metit_options):
+        #     Q2.append(state.number)
+        #     exp.trans_proved += 1
+        #     send_to_file(gt_or_lt, exp.cont_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+        #     #print 'In Q2'
+        # else:
+        #     send_to_file(gt_or_lt, exp.cont_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number, x, pred_2_text(pred.operator)))
+        #     exp.trans_unproved += 1
 
     return (Q1,Q2,Q3)
 

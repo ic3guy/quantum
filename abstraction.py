@@ -131,7 +131,7 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
 
 def next_cont_states(state, system, system_def, var_string, experiment, bad=False, check=False):
     pos_successors = []
-    for z, pred in enumerate(state.state):
+    for z, pred in enumerate(state.state): #pos multiproc on this
         if bad:
             Q1,Q2,Q3 = ([],[],[])
         else:

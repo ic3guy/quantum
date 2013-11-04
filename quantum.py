@@ -12,6 +12,8 @@ from termcolor import colored, cprint
 import qutilities
 import experiment
 import sys
+from multiprocessing.dummy import Pool
+import functools
 
 sys.path.insert(0,'./examples/')
 
@@ -27,7 +29,7 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=40):
+def run(filenames, to=100):
     for file_name in filenames:
 
         for metit_timeout in [to]:
@@ -70,9 +72,18 @@ def run(filenames, to=40):
 
             f.write('Number of Abstraction Functions : %s\n' % len(cur_exp.equations))
             f.write('Number of Initial Abstract States : %s\n' % len(hybrid_system))
-    
-            next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir,cur_exp)]
+            
+            #next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir,cur_exp)]
         
+            
+            next_states=[]
+            pool2 = Pool()
+            
+            next_states_res = pool2.map(functools.partial(abstraction.is_state_feasible,var_string=var_string, feas_check_proved_dir=cur_exp.feas_check_proved_dir, feas_check_unproved_dir=cur_exp.feas_check_unproved_dir,exp=cur_exp), [hybrid_system[state_num] for state_num in initial_state_numbers], chunksize=1)
+            
+            for sn, res in zip(initial_state_numbers, next_states_res):
+                if res:
+                    next_states.append(sn)
             ## LAZY QUAL ABS ##
 
             #bad = predicate.MetitPredicate(py-h,'>')

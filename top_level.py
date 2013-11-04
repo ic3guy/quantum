@@ -19,6 +19,7 @@ class CLI(cmd.Cmd):
     
     def do_abstract(self, arg):
         
+        reload(quantum)
         quantum.hybrid_system = None
 
         try:

@@ -14,6 +14,8 @@ def find_state(system, next_state):
     for state in system.values():
         if state == next_state and state.is_feasible:
             return state
+    #else:
+    #    return None
 
 def update_next_states(pos_state, system, next_states, more_than_one=False):
     found_next_state = find_state(system, pos_state)
@@ -35,7 +37,6 @@ def more_than_one_diff(s1, s2):
             id_dict[t[0].var_id] += 1
 
     if [diffs for diffs in id_dict.values() if diffs>1]:
-        #import pdb; pdb.set_trace()
         return True
     else:
         return False
@@ -186,23 +187,34 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
     next_states = []
         
     for possible_next_state in product(*next_pos_states):
-        found_next_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
-        
+        found_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
+        if found_state:        
+            next_states.append(found_state)
         #find all next states, and parallel send to metiTarski
         #not more_than_one_diff(state, found_next_state)
+    #import pdb; pdb.set_trace()
+    feas_pos_states = pool.map(functools.partial(is_state_feasible,var_string=var_string, feas_check_proved_dir=experiment.feas_check_proved_dir, feas_check_unproved_dir=experiment.feas_check_unproved_dir,exp=experiment,check=check), next_states, chunksize=1)
             
-        if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
-                next_states.append(found_next_state.number)
+    #if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
+   #             next_states.append(found_next_state.number)
         #else:
             #print 'Multiple variable jumps'
-                
-    if next_states:
-        next_states = list(set(next_states))
-        print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, next_states)
-        state.next_states = next_states
+    
+    feas_next_states = []
+
+    for state2, is_feas in zip(next_states,feas_pos_states):
+        if is_feas and not more_than_one_diff(state,state2):
+            feas_next_states.append(state2.number)
+    
+    #import pdb; pdb.set_trace()
+
+    if feas_next_states:
+        feas_next_states = list(set(feas_next_states))
+        print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, feas_next_states)
+        state.next_states = feas_next_states
         
 
-    return next_states
+    return feas_next_states
     #else:
         #print 'no next state found, but might come during discrete abstraction. State %s' % (state.number)
         #only delete the state at the end

@@ -307,7 +307,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                     for to_state_num in current_states:
                         if bad_predicate and bad_predicate in system[to_state_num].state:
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  
-                            
+                            #double check here!
                             iter_num += 1
                             old_timeout = exp.metit_timeout
                             new_timeout = old_timeout*2

@@ -17,7 +17,7 @@ from functools import partial
 metit_options = "NONE"
 
 
-metit_output = True
+metit_output = False
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
@@ -116,7 +116,7 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False):
         
         return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
     else:
-        #derivative someties contain e, but very small, simplify to zero
+            #derivative someties contain e, but very small, simplify to zero
         if op2 == '=':
             return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
         else:
@@ -136,7 +136,7 @@ def pred_2_text(pred):
     elif pred == '=':
         return 'eq'
 
-def cont_abs_trans_rel(var_string, state, pred, x, exp):
+def cont_abs_trans_rel(var_string, state, pred, x, exp,subsdict={'exp':'10^','e':'*10^'}):
 
     #use multiprocessing on calling this function.
 
@@ -144,6 +144,11 @@ def cont_abs_trans_rel(var_string, state, pred, x, exp):
     Q1,Q2,Q3 = [],[],[]
      
     der = str(predicate.metit_derivative(pred, state.discrete_part, exp.system_def))
+    
+    if subsdict:
+            rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
+            pattern = re.compile("|".join(rep.keys()))
+            der = pattern.sub(lambda m: rep[m.group(0)], der)
 
     lteq = make_fof_rel_2(var_string, state, der,'<','=',sc_heur=sc_heur)
     gt_or_lt = make_fof_rel_2(var_string, state, der,'>', '<',sc_heur=sc_heur)

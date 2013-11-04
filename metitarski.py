@@ -113,10 +113,10 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False):
         #y = pattern.sub(lambda m: subsdict[m.group(0)], y)
 
         fof_rel = 'fof(checkTransition, conjecture, (![%s,S,C] : (%s & S^2+C^2=1 => (%s %s 0 | %s %s 0)))).' % (var_string, ' & '.join(y), derivative, op1, derivative, op2)
-
+        
         return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
     else:
-        
+        #derivative someties contain e, but very small, simplify to zero
         if op2 == '=':
             return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
         else:

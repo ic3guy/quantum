@@ -150,10 +150,10 @@ class State:
 
 def metit_derivative(metit_equation, discrete_state, system):
     if metit_equation.is_lyapunov:
-        return MetitEquation(metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow']) - 10**-2)
+        return MetitEquation(N(metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow']) - 10**-2,chop=True))
     else:
         sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow'])
-        return MetitEquation(sympy_equation)
+        return MetitEquation(N(sympy_equation,chop=True))
     
 def metit_substitution(metit_equation, discrete_state, system, updates):
     sympy_equation = metit_equation.equation.subs(updates)

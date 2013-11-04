@@ -194,7 +194,6 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
         #not more_than_one_diff(state, found_next_state)
     #import pdb; pdb.set_trace()
     feas_pos_states = pool.map(functools.partial(is_state_feasible,var_string=var_string, feas_check_proved_dir=experiment.feas_check_proved_dir, feas_check_unproved_dir=experiment.feas_check_unproved_dir,exp=experiment,check=check), next_states, chunksize=1)
-            
     #if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
    #             next_states.append(found_next_state.number)
         #else:

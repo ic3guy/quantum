@@ -12,6 +12,7 @@ x2 = Function('x2')(t)
 q = [('cont',)]
 
 bad = False
+extra_constraints = ['X1<3.141', 'X1>-3.141']
 
 system_def = {('cont',): {'flow': {x1.diff(t): x2,
                                   x2.diff(t): -9.8*sin(x1)},

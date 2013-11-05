@@ -23,7 +23,8 @@ class Experiment:
         self.equations = experiment.equations # a list of predicate.MetitEquations
         self.initial_state = experiment.initial_state # dictionary 
         self.bad_predicate = experiment.bad_state # a predicate.MetitPredicate
-        
+        self.extra_constraints = experiment.extra_constraints
+
         self.now = datetime.datetime.now()
         
         #setup folders for the experimental results
@@ -47,6 +48,7 @@ class Experiment:
         self.hybrid_system = None
         self.var_string = None
         self.initial_state_numbers = None
+        
 
     def set_metit_timeout(self, timeout):
         self.metit_timeout = timeout

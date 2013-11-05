@@ -17,7 +17,7 @@ from functools import partial
 metit_options = "NONE"
 
 
-metit_output = False
+metit_output = True
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
@@ -149,10 +149,12 @@ def cont_abs_trans_rel(state, pred, exp, subsdict={'exp':'10^','e':'*10^'}):
             rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
             pattern = re.compile("|".join(rep.keys()))
             der = pattern.sub(lambda m: rep[m.group(0)], der)
+            
+    ec = exp.extra_constraints
 
-    lteq = make_fof_rel_2(exp.var_string, state, der,'<','=',sc_heur=sc_heur)
-    gt_or_lt = make_fof_rel_2(exp.var_string, state, der,'>', '<',sc_heur=sc_heur)
-    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',sc_heur=sc_heur)
+    lteq = make_fof_rel_2(exp.var_string, state, der,'<','=',sc_heur=sc_heur,extra_constraints=ec)
+    gt_or_lt = make_fof_rel_2(exp.var_string, state, der,'>', '<',sc_heur=sc_heur,extra_constraints=ec)
+    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',sc_heur=sc_heur,extra_constraints=ec)
 
     if pred.operator == '>': #or pred.operator == '=':
         if not send_to_metit(gteq,metit_options=metit_options):
@@ -230,10 +232,12 @@ def checkTransition3(state, pred, updates, exp):
     #print state
     #print der
     
-    lteq = make_fof_rel_2(exp.var_string, state, der,'<', '=',sc_heur=sc_heur)
-    gt_or_lt = make_fof_rel_2(exp.var_string, state,der,'>', '<',sc_heur=sc_heur)
+    ec = exp.extra_constraints
+
+    lteq = make_fof_rel_2(exp.var_string, state, der,'<', '=',sc_heur=sc_heur, extra_constraints=ec)
+    gt_or_lt = make_fof_rel_2(exp.var_string, state,der,'>', '<',sc_heur=sc_heur,extra_constraints=ec)
     #lt = make_fof_rel(state,der,'<')
-    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',sc_heur=sc_heur)
+    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',sc_heur=sc_heur,extra_constraints=ec)
     
     commands = [lteq, gteq, gt_or_lt]
     processes = [send_to_metit_nob(cmd,metit_options=metit_options) for cmd in commands]

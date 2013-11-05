@@ -7,6 +7,7 @@ t = Symbol('t')
 x = Function('x')(t)
 
 bad = False
+extra_constraints = ''
 
 pre = x-80
 g_pred_80gt = predicate.MetitPredicate(pre,'>')

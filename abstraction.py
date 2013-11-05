@@ -309,7 +309,7 @@ def lazy_cont_abs(exp,initial_states):
                 while not done:
                     for to_state_num in current_states:
                         if exp.bad_predicate and exp.bad_predicate in exp.hybrid_system[to_state_num].state:
-                            import pdb; pdb.set_trace()
+                            #import pdb; pdb.set_trace()
                             current_states_copy = list(current_states)
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  
                             #double check here!
@@ -329,7 +329,7 @@ def lazy_cont_abs(exp,initial_states):
                             new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp, check=True)]
                             new_current_states = new_cont_states+new_disc_states
                             
-                            import pdb; pdb.set_trace()
+                            #import pdb; pdb.set_trace()
 
                             if len(new_current_states) == len(current_states_copy): 
                                 if iter_num > 4:
@@ -357,6 +357,7 @@ def lazy_cont_abs(exp,initial_states):
         print 'iterating again'
         print 'number of new states %s' % (len(new_next_states)-len(old_next_states))
         print 'new_next_states %s' % new_next_states
+        #import pdb; pdb.set_trace()
 
     return True
 

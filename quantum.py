@@ -77,10 +77,10 @@ def run(filenames, to=100):
                 if res:
                     next_states.append(sn)
             ## LAZY QUAL ABS ##
-            import pdb; pdb.set_trace()
+            
             #bad = predicate.MetitPredicate(py-h,'>')
             #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
-    
+            
             if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
                 f.write('**PROP VIOLATED**')
             else:
@@ -94,7 +94,7 @@ def run(filenames, to=100):
                 end_time = time.time()
 
     
-                f.write('Number of Final Abstract States : %s\n' % len([x for x in hybrid_system.itervalues() if x.is_feasible and x.feasability_checked and x.next_states]))
+                f.write('Number of Final Abstract States : %s\n' % len([x for x in cur_exp.hybrid_system.itervalues() if x.is_feasible and x.feasability_checked and x.next_states]))
                 f.write('Number of UnProved InFeasible : %s\n' % cur_exp.infeas_unproved)
                 f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
                 f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
@@ -102,9 +102,11 @@ def run(filenames, to=100):
                 f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
                 f.close()
             
-                abstraction.print_system(hybrid_system)
+                abstraction.print_system(cur_exp.hybrid_system)
 
     
+
+
 
 
 

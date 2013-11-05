@@ -33,7 +33,7 @@ class CLI(cmd.Cmd):
             print 'abstraction paused'
             
     def do_graphiz(self,arg):
-        qutilities.output_graphiz(quantum.hybrid_system)
+        qutilities.output_graphiz(quantum.cur_exp.hybrid_system)
 
     def do_print(self, arg):
         #print quantum.filenames

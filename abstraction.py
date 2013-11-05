@@ -74,15 +74,15 @@ def print_reach(system, state, depth):
 def conc_to_abs(system, discrete_part, predicates):
     return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
 
-def initial_abstract_system_setup(equations, q, system_def):
+def initial_abstract_system_setup(exp):
     oplist = ['>','=','<']
     predicates = []
     
     ## For each continous equation, create a predicate
-    for equation in equations:
+    for equation in exp.equations:
         predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov) for op in oplist])
 
-    predicates.append(product(*q))
+    predicates.append(product(*exp.q))
     
     #for p in predicates:
     #    print list(p)
@@ -90,7 +90,7 @@ def initial_abstract_system_setup(equations, q, system_def):
     ## Create an abstract state for each combination of the predicates
     #import pdb; pdb.set_trace()
     
-    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1]) for n, element in enumerate(product(*predicates)) if not any([invariant in system_def[element[-1]]['inv'] for invariant in element[:-1]])]
+    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1]) for n, element in enumerate(product(*predicates)) if not any([invariant in exp.system_def[element[-1]]['inv'] for invariant in element[:-1]])]
                                
     #should create a state here everytime!!
     
@@ -137,9 +137,12 @@ def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unpro
         return state.is_feasible
 
 def gen_pos_successors(pred, state, system, system_def, var_string, experiment,bad=False,z=1):
+    """Generates a list possible predicates in the next abstract continous state from the current predicate.
 
-    #state, system, system_def, var_string, experiments = params
+    pred -- current state predicate function
+    state -- current state
 
+    """
     pos_successors = []
 
     if bad:
@@ -321,7 +324,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
 
                             print 'new timeout: %s' % new_timeout
                             exp.metit_timeout = new_timeout
-
+    
                             new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp, check=True)]
                             new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp, check=True)]
                             new_current_states = new_cont_states+new_disc_states
@@ -329,7 +332,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                             import pdb; pdb.set_trace()
 
                             if len(new_current_states) == len(current_states_copy): 
-                                if iter_num > 5:
+                                if iter_num > 4:
                                     print 'Too many retries'
                                     return False
                                 else:

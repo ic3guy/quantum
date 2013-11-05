@@ -29,28 +29,21 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=100):
+def run(filenames, to=10000):
     for file_name in filenames:
 
         for metit_timeout in [to]:
             global cur_exp
             cur_exp = experiment.Experiment(file_name,metit_timeout)        
-            #execfile('quantum6.py',globals())
 
             print cur_exp.system_def
         
-            cur_exp.metit_options = ['metit', 
-                 '--autoInclude', 
-                 '--time',str(metit_timeout)]
+            #cur_exp.metit_options = ['metit', 
+            #     '--autoInclude', 
+            #     '--time',str(metit_timeout)]
         
-            experiment.create_exp_dirs(cur_exp)
+            cur_exp.create_dirs(cur_exp)
 
-            feas_check_proved_dir = cur_exp.feas_check_proved_dir
-            feas_check_unproved_dir = cur_exp.feas_check_unproved_dir
-            cont_trans_proved_dir =  cur_exp.cont_trans_proved_dir
-            cont_trans_unproved_dir = cur_exp.cont_trans_unproved_dir
-            disc_trans_proved_dir = cur_exp.disc_trans_proved_dir
-            disc_trans_unproved_dir = cur_exp.disc_trans_unproved_dir
         
             start_time = time.time()    
             f = open('log.txt', 'a', 0)
@@ -61,8 +54,8 @@ def run(filenames, to=100):
             print 'starting quantum6'
             
             global hybrid_system
-            hybrid_system = abstraction.initial_abstract_system_setup(cur_exp.equations, cur_exp.q, cur_exp.system_def)
-            var_string = predicate.get_var_string(cur_exp.equations)
+            cur_exp.hybrid_system = abstraction.initial_abstract_system_setup(cur_exp.equations, cur_exp.q, cur_exp.system_def)
+            cur_exp.var_string = predicate.get_var_string(cur_exp.equations)
 
             #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0')
 

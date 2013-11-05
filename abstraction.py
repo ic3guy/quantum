@@ -306,6 +306,8 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                 while not done:
                     for to_state_num in current_states:
                         if bad_predicate and bad_predicate in system[to_state_num].state:
+                            import pdb; pdb.set_trace()
+                            current_states_copy = list(current_states)
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  
                             #double check here!
                             iter_num += 1
@@ -323,19 +325,25 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                             new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp, check=True)]
                             new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp, check=True)]
                             new_current_states = new_cont_states+new_disc_states
+                            
+                            import pdb; pdb.set_trace()
 
-                            if new_current_states == current_states and iter_num > 5:
-                                print 'Too many retries'
-                                return False
-                            else:
-                                current_states = new_current_states
-                                print 'Iteration %s' % iter_num
+                            if len(new_current_states) == len(current_states_copy): 
+                                if iter_num > 5:
+                                    print 'Too many retries'
+                                    return False
+                                else:
+                                    print 'Iteration %s' % iter_num
+                                    break
+                            elif len(new_current_states) < len(current_states_copy):
+                                print 'progress!'
                                 break
                     else:
                         done = True
                 
                 exp.metit_timeout = orig_timeout
                 exp.metit_options = orig_opt
+                iter_num = 0
                 new_next_states.update(new_cont_states+new_disc_states)
                 #exp.trans_proved += len(new_cont_states) +len(new_disc_states)
                 #new_next_states.anew_disc_states)

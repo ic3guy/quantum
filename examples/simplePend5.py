@@ -26,7 +26,8 @@ equations = [predicate.MetitEquation(x1,'t'),
 
 lf1 = 1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.3084319171
 
-bad_state = [predicate.MetitPredicate(lf1,'>')]
+bad_state = None
+#bad_state = predicate.MetitPredicate(lf1,'>')
 #bad_state = predicate.MetitPredicate(x2-8,'>')
 
 #e5 = predicate.MetitEquation(system_def[('cont',)]['flow'][x2.diff(t)],'t')

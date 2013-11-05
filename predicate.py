@@ -91,7 +91,7 @@ class MetitPredicate(MetitEquation):
         return super(MetitPredicate, self).__str__()
     
     def __eq__(self, other):
-        return pretty_print(self) == pretty_print(other)
+        return self.pretty_print() == other.pretty_print()
 
 def get_var_string(equations):
 

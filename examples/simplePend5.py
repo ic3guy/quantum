@@ -20,9 +20,9 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
 
 initial_state = {'d':('cont',),'c':['X1>0','X2>0','0.19984*X2^2 + 1.90843655*sin(X1)^2 + 1.90843655*cos(X1)^2 - 3.916868466*cos(X1) + 0.3084319171<0']}
 
-equations = [predicate.MetitEquation(x1,'t'),
-             predicate.MetitEquation(x2,'t'),
-             predicate.MetitEquation(1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.3084319171,'t',is_lyapunov=True)]
+equations = [predicate.MetitEquation(x1,'t',eq_num=0),
+             predicate.MetitEquation(x2,'t',eq_num=1),
+             predicate.MetitEquation(1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.3084319171,'t',is_lyapunov=True,eq_num=2)]
 
 lf1 = 1.90843655*sin(x1)**2 + 1.90843655*cos(x1)**2 - 3.916868466*cos(x1) + 0.19984*x2**2 + 0.3084319171
 

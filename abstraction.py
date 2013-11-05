@@ -80,7 +80,7 @@ def initial_abstract_system_setup(exp):
     
     ## For each continous equation, create a predicate
     for equation in exp.equations:
-        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov) for op in oplist])
+        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov,eq_num=equation.eq_num) for op in oplist])
 
     predicates.append(product(*exp.q))
     
@@ -136,7 +136,7 @@ def is_state_feasible(state, exp, check=False):
         cprint('State %s Already Checked : It is %s' % (state.number, ('Possibly Feasible' if state.is_feasible else 'Not Feasible')), 'blue')
         return state.is_feasible
 
-def gen_pos_successors(pred, state, system, system_def, var_string, experiment,bad=False,z=1):
+def gen_pos_successors(pred, state, exp, bad=False, z=1):
     """Generates a list possible predicates in the next abstract continous state from the current predicate.
 
     pred -- current state predicate function
@@ -148,7 +148,7 @@ def gen_pos_successors(pred, state, system, system_def, var_string, experiment,b
     if bad:
         Q1,Q2,Q3 = ([],[],[])
     else:
-        Q1,Q2,Q3 = metitarski.cont_abs_trans_rel(var_string, state, pred, z, experiment)
+        Q1,Q2,Q3 = metitarski.cont_abs_trans_rel(state, pred, exp)
         
     lt_pred, eq_pred, gt_pred = gen_pos_pred(pred.equation)
 
@@ -175,12 +175,12 @@ def gen_pos_successors(pred, state, system, system_def, var_string, experiment,b
     return pos_successors
 
 
-def next_cont_states(state, system, system_def, var_string, experiment, bad=False, check=False):
+def next_cont_states(state, exp, bad=False, check=False):
     
     pool = Pool()
     #args = state, system,system_def,var_string, experiments
     #import pdb; pdb.set_trace()
-    next_pos_states = pool.map(functools.partial(gen_pos_successors,system=system,state=state,system_def=system_def, var_string=var_string, experiment=experiment), state.state, chunksize=1)
+    next_pos_states = pool.map(functools.partial(gen_pos_successors,state=state, exp=exp), state.state, chunksize=1)
     
     #import pdb; pdb.set_trace()
     #for z, pred in enumerate(state.state): #pos multiproc on this
@@ -190,13 +190,13 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
     next_states = []
         
     for possible_next_state in product(*next_pos_states):
-        found_state = find_state(system, predicate.State(666, state.discrete_part, *possible_next_state))
+        found_state = find_state(exp.hybrid_system, predicate.State(666, state.discrete_part, *possible_next_state))
         if found_state:        
             next_states.append(found_state)
         #find all next states, and parallel send to metiTarski
         #not more_than_one_diff(state, found_next_state)
     #import pdb; pdb.set_trace()
-    feas_pos_states = pool.map(functools.partial(is_state_feasible,var_string=var_string, feas_check_proved_dir=experiment.feas_check_proved_dir, feas_check_unproved_dir=experiment.feas_check_unproved_dir,exp=experiment,check=check), next_states, chunksize=1)
+    feas_pos_states = pool.map(functools.partial(is_state_feasible,exp=exp,check=check), next_states, chunksize=1)
     #if found_next_state and is_state_feasible(found_next_state, var_string, experiment.feas_check_proved_dir, experiment.feas_check_unproved_dir,experiment,check) and not more_than_one_diff(state, found_next_state) :
    #             next_states.append(found_next_state.number)
         #else:
@@ -222,9 +222,9 @@ def next_cont_states(state, system, system_def, var_string, experiment, bad=Fals
         #only delete the state at the end
         #state.is_feasible = False
 
-def next_disc_states(state, system, system_def, var_string, exp, bad=False, check=False):
+def next_disc_states(state, exp, bad=False, check=False):
     next_states = []
-    for transition in system_def[state.discrete_part]['t']:
+    for transition in exp.system_def[state.discrete_part]['t']:
         if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
             #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
             #print [x in state.state for x in transition['guard']]
@@ -236,7 +236,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False, chec
                     if bad:
                         Q1,Q2,Q3 = ([],[],[])
                     else:
-                        Q1,Q2,Q3 = metitarski.checkTransition3(var_string, state, pred2, z, system_def, transition['updates'], exp)
+                        Q1,Q2,Q3 = metitarski.checkTransition3(state, pred2, transition['updates'], exp)
 
                     lt_pred, eq_pred, gt_pred = gen_pos_pred(pred2.equation)
 
@@ -256,12 +256,12 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False, chec
                         pos_successors.append([eq_pred,lt_pred,gt_pred])
 
                 for possible_next_state in product(*pos_successors):
-                    found_next_state = find_state(system, predicate.State(666, transition['next_state'], *possible_next_state))
+                    found_next_state = find_state(exp.hybrid_system, predicate.State(666, transition['next_state'], *possible_next_state))
 
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
-                    if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp, check) :
+                    if found_next_state and is_state_feasible(found_next_state, exp, check) :
                         next_states.append(found_next_state.number)
            
                 if next_states: 
@@ -272,9 +272,9 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False, chec
                     print 'Substitution sends us to an infeasible state...possible error here.'
                     #state.is_feasible = False
             else:
-                found_next_state = find_state(system, predicate.State(666,transition['next_state'],*state.state))
+                found_next_state = find_state(exp.hybrid_system, predicate.State(666,transition['next_state'],*state.state))
 
-                if found_next_state and is_state_feasible(found_next_state, var_string, exp.feas_check_proved_dir, exp.feas_check_unproved_dir, exp, check):
+                if found_next_state and is_state_feasible(found_next_state, exp, check):
                     next_states.append(found_next_state.number)
                        
         if next_states:
@@ -286,7 +286,7 @@ def next_disc_states(state, system, system_def, var_string, exp, bad=False, chec
 
     return next_states
             
-def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predicate=''):
+def lazy_cont_abs(exp,initial_states):
     new_next_states = set(initial_states)
     old_next_states = set()
 
@@ -295,10 +295,10 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
     while new_next_states != old_next_states:
         old_next_states = set(new_next_states)
         for state_num in old_next_states:
-            if not system[state_num].next_states:
+            if not exp.hybrid_system[state_num].next_states:
                 print 'Analyzing state %s' % state_num
-                new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp)]
-                new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp)]
+                new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp)]
+                new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp)]
                 
                 done = False
                 iter_num = 0
@@ -308,7 +308,7 @@ def lazy_cont_abs(system, initial_states, system_def, var_string, exp, bad_predi
                 
                 while not done:
                     for to_state_num in current_states:
-                        if bad_predicate and bad_predicate in system[to_state_num].state:
+                        if exp.bad_predicate and exp.bad_predicate in exp.hybrid_system[to_state_num].state:
                             import pdb; pdb.set_trace()
                             current_states_copy = list(current_states)
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  

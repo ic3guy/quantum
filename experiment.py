@@ -22,7 +22,7 @@ class Experiment:
         self.q = experiment.q
         self.equations = experiment.equations # a list of predicate.MetitEquations
         self.initial_state = experiment.initial_state # dictionary 
-        self.bad_state = experiment.bad_state # a predicate.MetitPredicate
+        self.bad_predicate = experiment.bad_state # a predicate.MetitPredicate
         
         self.now = datetime.datetime.now()
         
@@ -44,6 +44,10 @@ class Experiment:
         self.infeas_proved = 0
         self.infeas_unproved = 0        
     
+        self.hybrid_system = None
+        self.var_string = None
+        self.initial_state_numbers = None
+
     def set_metit_timeout(self, timeout):
         self.metit_timeout = timeout
         self.metit_options = ['metit', '--autoInclude', '--time', str(timeout)]

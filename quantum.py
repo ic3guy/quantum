@@ -29,7 +29,7 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=10000):
+def run(filenames, to=100):
     for file_name in filenames:
 
         for metit_timeout in [to]:
@@ -81,12 +81,12 @@ def run(filenames, to=10000):
             #bad = predicate.MetitPredicate(py-h,'>')
             #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
     
-            if not(abstraction.lazy_cont_abs(hybrid_system, next_states, cur_exp.system_def, var_string, cur_exp, bad_predicate=cur_exp.bad_state)):
+            if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
                 f.write('**PROP VIOLATED**')
             else:
                 SMV = open(cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')
             
-                smv_output = nusmv.construct_nusmv_input(hybrid_system,2)
+                smv_output = nusmv.construct_nusmv_input(cur_exp.hybrid_system,2)
             
                 SMV.write(smv_output)
                 SMV.close()

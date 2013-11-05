@@ -55,7 +55,8 @@ def gen_meti_string(cls, subsdict={'e[^x]':'*10^', '**':'^', 'Abs':'abs'}):
     return equation_out
 
 class MetitEquation:
-    def __init__(self, equation, var_id=0, depvar=Symbol('t'), is_lyapunov=False):
+
+    def __init__(self, equation, var_id=0, depvar=Symbol('t'), eq_num=666, is_lyapunov=False):
         #only accept a sympy function
         self.equation = equation
         #self.derivative = sympify(equation).diff(depvar).subs(subs_dict)
@@ -65,6 +66,7 @@ class MetitEquation:
         self.var_list = [sympify(str(var).replace("("+str(self.depvar)+")","").upper()) for var in self.equation.atoms(AppliedUndef)]
         self.var_id = var_id
         self.meti_string = gen_meti_string(self)
+        self.eq_num = eq_num
         
     def __str__(self):
         return self.meti_string
@@ -74,7 +76,7 @@ class MetitEquation:
     
 class MetitPredicate(MetitEquation):
 
-    def __init__(self,equation,operator,var_id=0,is_lyapunov=False):
+    def __init__(self,equation,operator,var_id=0,is_lyapunov=False,eq_num=666):
         super(MetitPredicate, self).__init__(equation,var_id=var_id,is_lyapunov=is_lyapunov)
         self.operator = operator
         

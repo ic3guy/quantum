@@ -71,8 +71,8 @@ def print_reach(system, state, depth):
             #print state.number, state
             print_reach(system, system[x], depth-1)
 
-def conc_to_abs(system, discrete_part, predicates):
-    return [state.number for state in system.values() if all([p in [str(pred) for pred in state.state] for p in predicates]) and discrete_part==state.discrete_part]
+def conc_to_abs(exp):
+    return [state.number for state in exp.hybrid_system.values() if all([p in [str(pred) for pred in state.state] for p in exp.initial_state['c']]) and exp.initial_state['d']==state.discrete_part]
 
 def initial_abstract_system_setup(exp):
     oplist = ['>','=','<']
@@ -112,21 +112,21 @@ def print_system(system, feasible_only=True):
         elif feasible_only==False:
             print("{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states))
 
-def is_state_feasible(state, var_string, feas_check_proved_dir, feas_check_unproved_dir,exp, check=False):
+def is_state_feasible(state, exp, check=False):
     if check or not(state.feasability_checked):
-        fof = metitarski.make_fof_inf(state, var_string)
+        fof = metitarski.make_fof_inf(state, exp.var_string)
         #print "Sending: " + fof
         rc = metitarski.send_to_metit(fof,metit_options=exp.metit_options)
         state.feasability_checked = True
         if rc == 0:
-            metitarski.send_to_file(fof, feas_check_proved_dir, '%s.tptp' % state.number)
+            metitarski.send_to_file(fof, exp.feas_check_proved_dir, '%s.tptp' % state.number)
             state.is_feasible = False
             cprint('State %s is DEFINITELY not feasible. PROVED' % state.number, 'green')
             exp.infeas_proved += 1
             return False
         
         else:
-            metitarski.send_to_file(fof, feas_check_unproved_dir, '%s.tptp' % state.number)    
+            metitarski.send_to_file(fof, exp.feas_check_unproved_dir, '%s.tptp' % state.number)    
             #feasible = feasible+1
             exp.infeas_unproved += 1
             cprint('State %s is POSSIBLY feasible. UNPROVED' % state.number, 'red')

@@ -42,9 +42,8 @@ def run(filenames, to=10000):
             #     '--autoInclude', 
             #     '--time',str(metit_timeout)]
         
-            cur_exp.create_dirs(cur_exp)
+            cur_exp.create_dirs()
 
-        
             start_time = time.time()    
             f = open('log.txt', 'a', 0)
             f.write(40*'*'+'\n')
@@ -53,32 +52,32 @@ def run(filenames, to=10000):
 
             print 'starting quantum6'
             
-            global hybrid_system
-            cur_exp.hybrid_system = abstraction.initial_abstract_system_setup(cur_exp.equations, cur_exp.q, cur_exp.system_def)
-            cur_exp.var_string = predicate.get_var_string(cur_exp.equations)
+            #global hybrid_system
+            cur_exp.hybrid_system = abstraction.initial_abstract_system_setup(cur_exp)
+            cur_exp.var_string = predicate.get_var_string(cur_exp)
 
             #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'VY=0','PY<0','G<0','-G - PY + sin(PX)=0','PX<0','VX=0')
 
             #initial_state_numbers = abstraction.conc_to_abs(hybrid_system,('falling',),'-H + PY<0','VY=0','VX=0')
 
-            initial_state_numbers = abstraction.conc_to_abs(hybrid_system,cur_exp.initial_state['d'],cur_exp.initial_state['c'])
+            cur_exp.initial_state_numbers = abstraction.conc_to_abs(cur_exp)
 
             f.write('Number of Abstraction Functions : %s\n' % len(cur_exp.equations))
-            f.write('Number of Initial Abstract States : %s\n' % len(hybrid_system))
+            f.write('Number of Initial Abstract States : %s\n' % len(cur_exp.hybrid_system))
             
             #next_states = [state_num for state_num in initial_state_numbers if abstraction.is_state_feasible(hybrid_system[state_num], var_string,feas_check_proved_dir, feas_check_unproved_dir,cur_exp)]
-        
+            
             
             next_states=[]
             pool2 = Pool()
             
-            next_states_res = pool2.map(functools.partial(abstraction.is_state_feasible,var_string=var_string, feas_check_proved_dir=cur_exp.feas_check_proved_dir, feas_check_unproved_dir=cur_exp.feas_check_unproved_dir,exp=cur_exp), [hybrid_system[state_num] for state_num in initial_state_numbers], chunksize=1)
+            next_states_res = pool2.map(functools.partial(abstraction.is_state_feasible,exp=cur_exp), [cur_exp.hybrid_system[state_num] for state_num in cur_exp.initial_state_numbers], chunksize=1)
             
-            for sn, res in zip(initial_state_numbers, next_states_res):
+            for sn, res in zip(cur_exp.initial_state_numbers, next_states_res):
                 if res:
                     next_states.append(sn)
             ## LAZY QUAL ABS ##
-
+            import pdb; pdb.set_trace()
             #bad = predicate.MetitPredicate(py-h,'>')
             #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
     

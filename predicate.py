@@ -93,10 +93,10 @@ class MetitPredicate(MetitEquation):
     def __eq__(self, other):
         return self.pretty_print() == other.pretty_print()
 
-def get_var_string(equations):
+def get_var_string(exp):
 
     var_list = []
-    for equation in equations:
+    for equation in exp.equations:
         for variable in equation.var_list:
             if str(variable) not in var_list:
                 var_list.append(str(variable))

@@ -29,7 +29,7 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=10000):
+def run(filenames, to=100):
     for file_name in filenames:
 
         for metit_timeout in [to]:
@@ -80,7 +80,8 @@ def run(filenames, to=10000):
             
             #bad = predicate.MetitPredicate(py-h,'>')
             #bad2 = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
-            
+            pool2.close()
+
             if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
                 f.write('**PROP VIOLATED**')
             else:

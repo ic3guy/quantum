@@ -215,6 +215,7 @@ def next_cont_states(state, exp, bad=False, check=False):
         print "Continuous Abstract Transition: From State %s Next State %s" % (state.number, feas_next_states)
         state.next_states = feas_next_states
         
+    pool.close()
 
     return feas_next_states
     #else:

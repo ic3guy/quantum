@@ -163,9 +163,9 @@ def cont_abs_trans_rel(state, pred, exp, subsdict={'exp':'10^','e':'*10^'}):
             Q1.append(state.number)
             exp.trans_proved += 1
             #print 'In Q1'
-            send_to_file(gteq, exp.cont_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            send_to_file(gteq, exp.cont_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
         else: 
-            send_to_file(gteq, exp.cont_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            send_to_file(gteq, exp.cont_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
             exp.trans_unproved += 1
     
     if pred.operator == '<': #or pred.operator == '=':
@@ -173,9 +173,9 @@ def cont_abs_trans_rel(state, pred, exp, subsdict={'exp':'10^','e':'*10^'}):
             Q3.append(state.number)
             exp.trans_proved += 1
             #print 'In Q3'
-            send_to_file(lteq, exp.cont_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            send_to_file(lteq, exp.cont_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
         else:
-            send_to_file(lteq, exp.cont_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            send_to_file(lteq, exp.cont_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
             exp.trans_unproved +=1
     
     #multi processing here
@@ -190,12 +190,24 @@ def cont_abs_trans_rel(state, pred, exp, subsdict={'exp':'10^','e':'*10^'}):
 
         if not processes[0].returncode:
             Q3.append(state.number)
+            send_to_file(lteq, exp.cont_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+        else: 
+            send_to_file(lteq, exp.cont_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            exp.trans_unproved += 1
         
         if not processes[1].returncode:
             Q1.append(state.number)
+            send_to_file(gteq, exp.cont_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+        else: 
+            send_to_file(gteq, exp.cont_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            exp.trans_unproved += 1
        
         if not processes[2].returncode:
             Q2.append(state.number)
+            send_to_file(gt_or_lt, exp.cont_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+        else: 
+            send_to_file(gt_or_lt, exp.cont_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+            exp.trans_unproved += 1
 
         #jobs = [('lteq', 'metit_options=metit_options'),('gteq', 'metit_options=metit_options'),('gt_or_lt', 'metit_options=metit_options')]
 

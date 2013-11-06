@@ -16,7 +16,7 @@ class Experiment:
         experiment = __import__(name) #run-time loading of experiment
 
         self.metit_timeout = metit_timeout
-        self.metit_options = ['metit', '--autoInclude','--autoIncludeExtended','--autoIncludeSuperExtended', '--time', str(metit_timeout)]
+        self.metit_options = ['metit', '--autoInclude','--autoIncludeExtended', '--time', str(metit_timeout)]
         
         self.system_def = experiment.system_def
         self.q = experiment.q

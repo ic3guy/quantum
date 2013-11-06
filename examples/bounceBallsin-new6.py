@@ -1,6 +1,7 @@
 from sympy import *
 from itertools import product
 #product is a name inside sympy, so we can't redefine it here. Otherwise import won't work
+import predicate
 
 t = Symbol('t')
 h = Symbol('h')
@@ -14,6 +15,9 @@ g = Function('g')(t)
 q = [('falling',)] #can just get dictionary keys...
 
 bad = False
+extra_constraints = ['PX<6','PY<10']
+initial_state = {'d' : ('falling',), 'c': ['PX>0','PY<0']}
+bad_state = ''
 
 #guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)
 
@@ -45,8 +49,8 @@ g_gt = predicate.MetitPredicate(g,'>')
 system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
                                         vx.diff(t): 0,
-                                        vy.diff(t): -9.8 + 0.01*vy**2,},
-                                        g.diff(t): cos(px)*vx-vy},
+                                        vy.diff(t): -9.8 + 0.01*vy**2},
+                                        #g.diff(t): cos(px)*vx-vy},
                                         #b.diff(t): 1},
                               't' : [{'guard':([guard],), 
                                       'next_state' : ('falling',),
@@ -59,10 +63,10 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
 
 equations = [predicate.MetitEquation(vy),
              predicate.MetitEquation(py),
-             #predicate.MetitEquation(px),
-             #predicate.MetitEquation(vx),
-             predicate.MetitEquation(cos(px)*vx-vy),
-             predicate.MetitEquation(sin(px)-py-g),
+             predicate.MetitEquation(px),
+             predicate.MetitEquation(vx),
+             #predicate.MetitEquation(cos(px)*vx-vy),
+             #predicate.MetitEquation(sin(px)-py-g),
              #predicate.MetitEquation(g),
              #sapredicate.MetitEquation(b),
              #predicate.MetitEquation(vy),

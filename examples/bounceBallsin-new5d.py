@@ -46,6 +46,9 @@ g_gt = predicate.MetitPredicate(g,'>')
 
 #energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
 
+bad_state=''
+extra_constraints=''
+
 energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(h-sin(px)),'>')
 
 initial_state = {'d':('falling',),'c':['PY>0','VY=0','VX=0','PX<0','H>0']}

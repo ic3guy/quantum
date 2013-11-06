@@ -59,6 +59,7 @@ def make_discrete_system(system, discrete_variables_q, system_def):
 nodes = {}
     
 def output_graphiz(system):
+    nodes = {}
     graph = pydot.Dot(graph_type='digraph')
 
     for state_number, state in system.iteritems():

@@ -46,10 +46,12 @@ g_gt = predicate.MetitPredicate(g,'>')
 
 #energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+2*9.8*py-2*9.8*sin(px)-9.8,'>')
 
-energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(h-sin(px)),'>')
+energy_inv = predicate.MetitPredicate(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(1-sin(px)),'>')
 
-initial_state = {'d':('falling',),'c':['-H + PY<0','VY=0','VX=0']}
-bad_state = predicate.MetitPredicate(py-h,'>')
+extra_constraints=['PX<3','PX>0']
+
+initial_state = {'d':('falling',),'c':['PY - 1<0','VY=0','VX=0']}
+bad_state = predicate.MetitPredicate(py-1,'>')
 
 system_def = {('falling',) : {'flow' : {px.diff(t): vx,
                                         py.diff(t): vy,
@@ -67,14 +69,14 @@ system_def = {('falling',) : {'flow' : {px.diff(t): vx,
 
 
 equations = [#predicate.MetitEquation(vy),
-             predicate.MetitEquation(py-h),
+             predicate.MetitEquation(py-1),
              #predicate.MetitEquation(h-1),
              #predicate.MetitEquation(py),
              #predicate.MetitEquation(h-1),
              #predicate.MetitEquation(px),
              predicate.MetitEquation(vy),
              predicate.MetitEquation(vx),
-             predicate.MetitEquation(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(h-sin(px))),
+             predicate.MetitEquation(0.5*vx**2+0.5*vy**2+9.8*(py-sin(px))-9.8*(1-sin(px))),
              predicate.MetitEquation(guard_equation)]
 
 #predicate.MetitEquation(py),

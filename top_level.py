@@ -19,9 +19,12 @@ class CLI(cmd.Cmd):
     
     def do_abstract(self, arg):
         
-        reload(quantum)
-        #quantum.cur_exp.hybrid_system = None
-
+        try:
+            quantum.cur_exp.hybrid_system = None
+            print 'Cleared hybrid_system'
+        except AttributeError:
+            pass
+            
         try:
             #print type(arg)
             if not arg:
@@ -64,6 +67,7 @@ class CLI(cmd.Cmd):
 
     # shortcuts
     do_q = do_quit
+    do_g = do_graphiz
 
 if __name__ == '__main__':
     cli = CLI()

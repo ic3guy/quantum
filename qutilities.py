@@ -74,8 +74,11 @@ def output_graphiz(system):
     for state_number, state in system.iteritems():
         print state_number, set(state.next_states)
         for ns in set(state.next_states):
-            if system[ns].is_feasible:
-                graph.add_edge(pydot.Edge(nodes[state_number],nodes[ns]))
+            try:
+                if system[ns].is_feasible:
+                    graph.add_edge(pydot.Edge(nodes[state_number],nodes[ns]))
+            except KeyError:
+                next
 
     graph.write_png('test.png')
             

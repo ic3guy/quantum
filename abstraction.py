@@ -326,8 +326,8 @@ def lazy_cont_abs(exp,initial_states):
                             print 'new timeout: %s' % new_timeout
                             exp.metit_timeout = new_timeout
     
-                            new_cont_states = [x for x in next_cont_states(system[state_num], system, system_def, var_string, exp, check=True)]
-                            new_disc_states  = [x for x in next_disc_states(system[state_num], system, system_def, var_string, exp, check=True)]
+                            new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp, check=True)]
+                            new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
                             new_current_states = new_cont_states+new_disc_states
                             
                             #import pdb; pdb.set_trace()

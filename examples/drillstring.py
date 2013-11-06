@@ -14,7 +14,7 @@ x3 = Function('x3')(t)
 q = [('slip+','slip-','stuck')] #can just get dictionary keys...
 
 bad = False
-
+extra_constraints = ''
 #guard_equation = predicate.MetitEquation(sin(px)-py,'t',[],vars_dict)
 
 #ct = sympify(2.3)

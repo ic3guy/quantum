@@ -16,7 +16,7 @@ class Experiment:
         experiment = __import__(name) #run-time loading of experiment
 
         self.metit_timeout = metit_timeout
-        self.metit_options = ['metit', '--autoInclude', '--time', str(metit_timeout)]
+        self.metit_options = ['metit', '--autoInclude','--autoIncludeExtended','--autoIncludeSuperExtended', '--time', str(metit_timeout)]
         
         self.system_def = experiment.system_def
         self.q = experiment.q
@@ -24,6 +24,7 @@ class Experiment:
         self.initial_state = experiment.initial_state # dictionary 
         self.bad_predicate = experiment.bad_state # a predicate.MetitPredicate
         self.extra_constraints = experiment.extra_constraints
+
 
         self.now = datetime.datetime.now()
         

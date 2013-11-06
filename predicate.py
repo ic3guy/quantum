@@ -84,8 +84,11 @@ class MetitPredicate(MetitEquation):
         if self.operator == '=':
             return super(MetitPredicate, self).__str__() + '<' + '10^-6' + ' & ' + super(MetitPredicate, self).__str__() + '>' + '-10^-6'
         else :
-            return super(MetitPredicate, self).__str__() + self.operator + '0'
-    
+            if self.operator == '>':
+                return super(MetitPredicate, self).__str__() + self.operator + '10^-6'
+            elif self.operator == '<':
+                return super(MetitPredicate, self).__str__() + self.operator + '-10^-6'
+
     def pretty_print(self):
         return super(MetitPredicate, self).__str__() + self.operator + '0'
 
@@ -152,10 +155,10 @@ class State:
 
 def metit_derivative(metit_equation, discrete_state, system):
     if metit_equation.is_lyapunov:
-        return MetitEquation(N(metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow']) - 10**-2,chop=True))
+        return MetitEquation(metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow']) - 10**-2)
     else:
         sympy_equation = metit_equation.equation.diff(metit_equation.depvar).subs(system[discrete_state]['flow'])
-        return MetitEquation(N(sympy_equation,chop=True))
+        return MetitEquation(sympy_equation)
     
 def metit_substitution(metit_equation, discrete_state, system, updates):
     sympy_equation = metit_equation.equation.subs(updates)

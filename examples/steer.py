@@ -13,11 +13,11 @@ w = Function('w')(t)
 
 #r = 2
 
-q = [('go_ahead','straight_ahead','correct_right','left_border','go_ahead','right_border')]
+q = [('go_ahead','straight_ahead','correct_right','left_border','correct_left','right_border','in_canal')]
 
 bad = False
 #extra_constraints = ['X1<3.141', 'X1>-3.141']
-extra_constraints = ['X<3.14','X>-3.14']
+extra_constraints = ['G<2*3.14','G>2*-3.14']
 
 eq1 = c
 eq2 = x-1
@@ -25,7 +25,7 @@ eq3 = x+1
 eq4 = x+2
 eq5 = g-0.785
 eq6 = g+0.785
-#eq7 = w
+#eq7 = w - 
 
 equations = [predicate.MetitEquation(eq) for eq in [eq1, eq2, eq3, eq4, eq5, eq6]]
 
@@ -35,10 +35,10 @@ x_eq_m1 = predicate.MetitPredicate(x+1,'=')
 x_eq_m2 = predicate.MetitPredicate(eq4,'=')
 
 initial_state = {'d':('go_ahead',),'c':[str(predicate.MetitPredicate(*e)) for e in
-                                         [(eq2,'<'),
+                                         [(eq2,'='),
                                           (eq3,'>'),
                                           (eq5,'<'),
-                                          (eq6,'='),
+                                          (eq6,'>'),
                                           (eq1,'=')]]}
 
 bad_state = []

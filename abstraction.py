@@ -225,6 +225,7 @@ def next_cont_states(state, exp, bad=False, check=False):
 
 def next_disc_states(state, exp, bad=False, check=False):
     next_states = []
+    
     for transition in exp.system_def[state.discrete_part]['t']:
         if any([all([p in state.state for p in guard_conj]) for guard_conj in transition['guard']]):
             #Numpy+ipython bug. Does not like any+generator (automatically evaluates true) therefore wrap in list comprehension
@@ -240,7 +241,7 @@ def next_disc_states(state, exp, bad=False, check=False):
                         Q1,Q2,Q3 = metitarski.checkTransition3(state, pred2, transition['updates'], exp)
 
                     lt_pred, eq_pred, gt_pred = gen_pos_pred(pred2.equation)
-
+                    
                     if state in Q1 and state in Q2: 
                         pos_successors.append([gt_pred])
                     elif state in Q3 and state in Q2:
@@ -255,16 +256,18 @@ def next_disc_states(state, exp, bad=False, check=False):
                         pos_successors.append([lt_pred,eq_pred])
                     else:
                         pos_successors.append([eq_pred,lt_pred,gt_pred])
-
+                
                 for possible_next_state in product(*pos_successors):
-                    found_next_state = find_state(exp.hybrid_system, predicate.State(666, transition['next_state'], *possible_next_state))
+                    test_state = predicate.State(666, transition['next_state'], *possible_next_state)
+                    found_next_state = find_state(exp.hybrid_system, test_state)
+                    #import pdb; pdb.set_trace()
 
                     #print abstraction.get_true_guards(state, transition['guard'])
                     #print [s for s in found_next_state.state if s in abstraction.get_true_guards(state, transition['guard'])]
                     
                     if found_next_state and is_state_feasible(found_next_state, exp, check) :
                         next_states.append(found_next_state.number)
-           
+                        #import pdb; pdb.set_trace()
                 if next_states: 
                     print "Updating State %s has produced Next States %s" % (state.number,next_states)
                             #is this ok, check alogorithm
@@ -295,7 +298,7 @@ def lazy_cont_abs(exp,initial_states):
     
     while new_next_states != old_next_states:
         old_next_states = set(new_next_states)
-        for state_num in old_next_states:
+        for n, state_num in enumerate(old_next_states):
             if not exp.hybrid_system[state_num].next_states:
                 print 'Analyzing state %s' % state_num
                 new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp)]

@@ -63,7 +63,7 @@ def output_graphiz(system):
     graph = pydot.Dot(graph_type='digraph')
 
     for state_number, state in system.iteritems():
-        if state.is_feasible and state.next_states:
+        if state.is_feasible and state.feasability_checked: #and state.next_states:
             nodes[state_number] = pydot.Node(state_number,label=state.pretty_print() + '\n' + str(state.discrete_part))
             
     #print nodes

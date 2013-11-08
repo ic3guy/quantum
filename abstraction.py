@@ -90,7 +90,7 @@ def initial_abstract_system_setup(exp):
     ## Create an abstract state for each combination of the predicates
     #import pdb; pdb.set_trace()
     
-    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1]) for n, element in enumerate(product(*predicates)) if not any([invariant in exp.system_def[element[-1]]['inv'] for invariant in element[:-1]])]
+    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1],colour=exp.system_def[element[-1]].get('colour','white')) for n, element in enumerate(product(*predicates)) if not any([invariant in exp.system_def[element[-1]]['inv'] for invariant in element[:-1]])]
                                
     #should create a state here everytime!!
     

@@ -59,12 +59,13 @@ def make_discrete_system(system, discrete_variables_q, system_def):
 nodes = {}
     
 def output_graphiz(system):
+
     nodes = {}
     graph = pydot.Dot(graph_type='digraph')
 
     for state_number, state in system.iteritems():
         if state.is_feasible and state.feasability_checked: #and state.next_states:
-            nodes[state_number] = pydot.Node(state_number,label=state.pretty_print() + '\n' + str(state.discrete_part))
+            nodes[state_number] = pydot.Node(state_number,label=state.pretty_print() + '\n' + str(state.discrete_part),style='filled',fillcolor=state.colour)
             
     #print nodes
 
@@ -72,7 +73,7 @@ def output_graphiz(system):
         graph.add_node(node)
 
     for state_number, state in system.iteritems():
-        print state_number, set(state.next_states)
+        print state_number, set(state.next_states), state.colour
         for ns in set(state.next_states):
             try:
                 if system[ns].is_feasible:

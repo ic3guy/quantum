@@ -119,7 +119,7 @@ def plot_format(equation, operator):
         
 class State:
 
-    def __init__(self, number, discrete_part, *predicates):
+    def __init__(self, number, discrete_part, *predicates, **kwargs):
         self.is_feasible = True
         self.state = predicates
         self.number = number
@@ -127,6 +127,7 @@ class State:
         self.discrete_part = discrete_part
         self.guards = []
         self.feasability_checked = False
+        self.colour = kwargs.get('colour','white')
       
     def __eq__(self, other):
         for pred in self.state:

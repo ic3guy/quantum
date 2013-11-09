@@ -79,7 +79,7 @@ class MetitPredicate(MetitEquation):
     def __init__(self,equation,operator,var_id=0,is_lyapunov=False,eq_num=666):
         super(MetitPredicate, self).__init__(equation,var_id=var_id,is_lyapunov=is_lyapunov,eq_num=eq_num)
         self.operator = operator
-        
+        self.pretty_pr = super(MetitPredicate, self).__str__() + self.operator + '0'
     # def __str__(self):
     #     if self.operator == '=':
     #         return super(MetitPredicate, self).__str__() + '<' + '10^-6' + ' & ' + super(MetitPredicate, self).__str__() + '>' + '-10^-6'
@@ -90,16 +90,16 @@ class MetitPredicate(MetitEquation):
     #             return super(MetitPredicate, self).__str__() + self.operator + '-10^-6'
 
     def __str__(self):
-        return super(MetitPredicate, self).__str__() + self.operator + '0'
+        return self.pretty_pr
 
     def pretty_print(self):
-        return super(MetitPredicate, self).__str__() + self.operator + '0'
+        return self.pretty_pr
 
     def print_equation(self):
         return super(MetitPredicate, self).__str__()
     
     def __eq__(self, other):
-        return self.pretty_print() == other.pretty_print()
+        return self.pretty_pr == other.pretty_pr
 
 def get_var_string(exp):
 

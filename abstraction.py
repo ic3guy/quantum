@@ -79,8 +79,8 @@ def initial_abstract_system_setup(exp):
     predicates = []
     
     ## For each continous equation, create a predicate
-    for equation in exp.equations:
-        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov,eq_num=equation.eq_num) for op in oplist])
+    for n, equation in enumerate(exp.equations):
+        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov,eq_num=n) for op in oplist])
 
     predicates.append(product(*exp.q))
     

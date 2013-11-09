@@ -128,11 +128,14 @@ class State:
         self.guards = []
         self.feasability_checked = False
         self.colour = kwargs.get('colour','white')
-      
+        self.pretty_string = " & ".join([str(x) for x in self.state])
+
     def __eq__(self, other):
-        for pred in self.state:
-            if pred not in other.state:
-                return False
+        # for pred in self.state:
+        #     if pred not in other.state:
+        #         return False
+        if str(self) != str(other):
+            return False
 
         if self.discrete_part != other.discrete_part:
             return False
@@ -143,10 +146,10 @@ class State:
     #    return self
         
     def __str__(self):
-        return " & ".join([str(x) for x in self.state])
+        return self.pretty_string
     
     def pretty_print(self):
-        return " & ".join([x.pretty_print() for x in self.state])
+        return self.pretty_string
 
     def print_state_number(self):
         return str(self.number)

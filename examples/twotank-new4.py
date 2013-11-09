@@ -23,12 +23,13 @@ e3 = x2-2
 
 #e3 = x2-1
 
-#e4 = x1-4
-e5 = x1-4.1
+e4 = x1-5.25
+e5 = x1-5.75
 e6 = x2-0.5
 #e5 = 1-sqrt(x1)
 #e6 = sqrt(x1)-sqrt(x2)
-e7 = (x1-4.25)**2+(x2-0.25)**2-0.0625
+e7 = (x1-4.5)**2+(x2-0.75)**2-0.0625
+e8 = x2-(6.47243 - 1.23943*x1)
 
 equations = [predicate.MetitEquation(ge,var_id=2),
              predicate.MetitEquation(x2,var_id=2),
@@ -36,8 +37,10 @@ equations = [predicate.MetitEquation(ge,var_id=2),
              predicate.MetitEquation(e2, var_id=1),
              predicate.MetitEquation(e7),
              predicate.MetitEquation(e1,var_id=1),
-             predicate.MetitEquation(e5, var_id=1),
+             predicate.MetitEquation(e5,var_id=1),
              predicate.MetitEquation(e6,var_id=2),
+             predicate.MetitEquation(e8),
+             predicate.MetitEquation(e4,var_id=1)
             ]
 
 
@@ -45,7 +48,7 @@ initial_state = {'d':('s1',),'c': [str(predicate.MetitPredicate(*x)) for x in
                                           [(ge,'<'),
                                            (x2,'>'),
                                            (e7,'>'),
-                                          # (e4,'>'),
+                                           (e4,'>'),
                                            (e5,'<'),
                                            (e6,'>'),
                                            (e1,'>')]]}

@@ -77,7 +77,7 @@ class MetitEquation:
 class MetitPredicate(MetitEquation):
 
     def __init__(self,equation,operator,var_id=0,is_lyapunov=False,eq_num=666):
-        super(MetitPredicate, self).__init__(equation,var_id=var_id,is_lyapunov=is_lyapunov)
+        super(MetitPredicate, self).__init__(equation,var_id=var_id,is_lyapunov=is_lyapunov,eq_num=eq_num)
         self.operator = operator
         
     # def __str__(self):

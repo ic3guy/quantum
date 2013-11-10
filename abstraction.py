@@ -75,22 +75,30 @@ def conc_to_abs(exp):
     return [state.number for state in exp.hybrid_system.values() if all([p in [str(pred) for pred in state.state] for p in exp.initial_state['c']]) and exp.initial_state['d']==state.discrete_part]
 
 def initial_abstract_system_setup(exp):
-    oplist = ['>','=','<']
+    #oplist = ['>','=','<']
     predicates = []
     
     ## For each continous equation, create a predicate
     for n, equation in enumerate(exp.equations):
-        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov,eq_num=n) for op in oplist])
+        predicates.append([predicate.MetitPredicate(equation.equation,op,equation.var_id,is_lyapunov=equation.is_lyapunov,eq_num=n) for op in equation.oplist])
 
     predicates.append(product(*exp.q))
     
     #for p in predicates:
     #    print list(p)
 
+    #global invariants delete here
+    # for predicate_list in predicates:
+    #     for predicate in predicate_list:
+    #         if predicate in exp.global_invariants:
+                
+
     ## Create an abstract state for each combination of the predicates
     #import pdb; pdb.set_trace()
     
-    initial_abstract_system = [predicate.State(n,element[-1],*element[:-1],colour=exp.system_def[element[-1]].get('colour','white')) for n, element in enumerate(product(*predicates)) if not any([invariant in exp.system_def[element[-1]]['inv'] for invariant in element[:-1]])]
+    initial_abstract_system = [predicate.State(n,element[-1],
+                                               *element[:-1],
+                                               colour=exp.system_def[element[-1]].get('colour','white')) for n, element in enumerate(product(*predicates)) if not any([invariant in exp.system_def[element[-1]]['inv'] for invariant in element[:-1]])]
                                
     #should create a state here everytime!!
     

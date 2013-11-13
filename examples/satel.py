@@ -36,7 +36,7 @@ def dist (nu1, p1, e1, nu2, p2, e2):
 
 e1 = nu1 - 330
 e2 = nu2 - 330
-e3 = dist(nu1,6718,0,nu2,676,0.0585)
+e3 = dist(nu1,6718,0,nu2,676,0.0585) - 500
 e4 = nu1 - 270
 e5 = nu2 - 267.5
 
@@ -65,7 +65,7 @@ system_def = {('initial',) : {'flow' : { nu1.diff(t): nudot(nu1, 6718,0),
                               'colour':'lightblue'},
               ('transfer',) : {'flow' : { nu1.diff(t): nudot(nu1, 6718,0),
                                           nu2.diff(t): nudot(nu2, 6767,0.0585)},
-                               't' : [{'guard':([MetitPredicate(dist(nu1,6718,0,nu2,676,0.0585),'<')],),
+                               't' : [{'guard':([MetitPredicate(dist(nu1,6718,0,nu2,676,0.0585) - 500,'<')],),
                                        'next_state' : ('rendezvous',),
                                        'updates' : {}}],
                          'inv' : (),

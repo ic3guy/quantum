@@ -94,7 +94,7 @@ class MetitPredicate(MetitEquation):
         return self.pretty_pr
 
     def pretty_print(self):
-        return self.pretty_pr
+        return self.pretty_pr[-20:]
 
     def print_equation(self):
         return super(MetitPredicate, self).__str__()
@@ -150,7 +150,7 @@ class State:
         return self.pretty_string
     
     def pretty_print(self):
-        return self.pretty_string
+        return " & ".join([x.pretty_print() for x in self.state])
 
     def print_state_number(self):
         return str(self.number)

@@ -16,7 +16,7 @@ extra_constraints = ''
 bad_state = ''
 
 def nudot (nu, p, e):
-    b = sqrt(0.5/p**3)
+    b = sqrt(1.0/p**3)
     e = (1+e*cos(nu))**2
     
     return b*e

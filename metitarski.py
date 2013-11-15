@@ -19,6 +19,7 @@ metit_options = "NONE"
 
 metit_output = True
 sc_heur = False
+zapprox = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
 #extra_constraints = ['X1<3.141', 'X1>-3.141']
@@ -100,7 +101,7 @@ def make_fof_inf(state, var_string,sc_heur=False,extra_constraints=[]):
 #         #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 #         return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False, extra_constraints=[]):
+def make_fof_rel_2(var_string, state, derivative, op1, op2, zapprox=False, sc_heur=False, extra_constraints=[]):
     y = list(extra_constraints)
     y.extend([str(state)])
     #y = ' & '.join(y)
@@ -115,13 +116,21 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, sc_heur=False, extra
         fof_rel = 'fof(checkTransition, conjecture, (![%s,S,C] : (%s & S^2+C^2=1 => (%s %s 0 | %s %s 0)))).' % (var_string, ' & '.join(y), derivative, op1, derivative, op2)
         
         return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
+    elif zapprox:
+            #derivative someties contain e, but very small, simplify to zero
+        if op2 == '=' and op1 =='>':
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s >= -10^-6 )))).' % (var_string,  ' & '.join(y), derivative)
+        elif op2 =='=' and op1 == '<':
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s <= 10^-6 )))).' % (var_string,  ' & '.join(y), derivative)
+        else:
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s > 10^-6 | %s <-10^-6)))).' % (var_string,  ' & '.join(y), derivative, derivative)
     else:
             #derivative someties contain e, but very small, simplify to zero
-        # if op2 == '=' and op1 =='>':
-        #     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 10^-6 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
-        # elif op2 =='=' and op1 == '<':
-        #     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s -10^-6 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
-        # else:
+            # if op2 == '=' and op1 =='>':
+            #     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 10^-6 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
+            # elif op2 =='=' and op1 == '<':
+            #     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s -10^-6 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
+            # else:
         return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
     
 def send_to_file(formula, directory, name):
@@ -154,9 +163,9 @@ def cont_abs_trans_rel(state, pred, exp, subsdict={'e':'*10^'}):
             
     ec = exp.extra_constraints
 
-    lteq = make_fof_rel_2(exp.var_string, state, der,'<','=',sc_heur=sc_heur,extra_constraints=ec)
-    gt_or_lt = make_fof_rel_2(exp.var_string, state, der,'>', '<',sc_heur=sc_heur,extra_constraints=ec)
-    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',sc_heur=sc_heur,extra_constraints=ec)
+    lteq = make_fof_rel_2(exp.var_string, state, der,'<','=',zapprox=zapprox,sc_heur=sc_heur,extra_constraints=ec)
+    gt_or_lt = make_fof_rel_2(exp.var_string, state, der,'>', '<',zapprox=zapprox,sc_heur=sc_heur,extra_constraints=ec)
+    gteq = make_fof_rel_2(exp.var_string, state,der,'>', '=',zapprox=zapprox,sc_heur=sc_heur,extra_constraints=ec)
 
     if pred.operator == '>': #or pred.operator == '=':
         if not send_to_metit(gteq,metit_options=metit_options):

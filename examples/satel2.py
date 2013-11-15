@@ -36,9 +36,11 @@ def nu_y(nu, p, e):
 def dist(nu1, p1, e1, nu2, p2, e2):
     return (nu_x(nu1,p1,e1)-nu_x(nu2,p2,e2))**2 + (nu_y(nu1,p1,e1)-nu_y(nu2,p2,e2))**2
 
-e1 = nu1 - 100
-e2 = nu2 - 150
-e3 = dist(nu1,7074,0.05,nu2,7748,0.10) - 250000
+e1 = nu1 - 200
+e2 = nu2 - 100
+e4 = nu1 - 250
+
+e3 = dist(nu1,7074,0.05,nu2,7748,0.10) - 25000000
 
 e6 = 1.1*nu1 - nu2 - 50
 e7 = nu1 - 90
@@ -52,26 +54,24 @@ equations = [predicate.MetitEquation(nu1),
              predicate.MetitEquation(e3),
              MetitEquation(e1),
              MetitEquation(e2),
-             MetitEquation(e7),
-             MetitEquation(e6)
+             MetitEquation(e4)
             ]
 
 initial_state = {'d':('initial',),'c': [str(predicate.MetitPredicate(*x)) for x in
                                           [(nu1,'>'),
                                            (nu2,'>'),
                                            (e3,'>'),
-                                           (e1,'<'),
                                            (e2,'<'),
-                                           (e6,'>'),
-                                           (e7,'>')]]}
+                                           (e1,'>'),
+                                           (e4,'<')]]}
 
 
 system_def = {('initial',) : {'flow' : { nu1.diff(t): nd1,
                                          nu2.diff(t): nd2},
-                              't' : [{'guard':([MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 250000,'=')],), 
+                              't' : [{'guard':([MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 25000000,'=')],), 
                                       'next_state' : ('rendezvous',),
                                       'updates' : {}}],
-                              'inv' : [MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 250000,'<')],
+                              'inv' : [MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 25000000,'<')],
                               'colour':'green'},
               ('rendezvous',) : {'flow' : { nu1.diff(t): 0,
                                             nu2.diff(t): 0},

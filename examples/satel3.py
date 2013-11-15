@@ -13,7 +13,7 @@ nu2 = Function('nu2')(t)
 q = [('initial','rendezvous')] #can just get dictionary keys...
 
 bad = False
-extra_constraints = ['NU1<6','NU2<6']
+extra_constraints = ['NU1<5.5','NU2<5.5']
 #extra_constraints = ''
 bad_state = ''
 
@@ -36,16 +36,16 @@ def nu_y(nu, p, e):
 def dist(nu1, p1, e1, nu2, p2, e2):
     return (nu_x(nu1,p1,e1)-nu_x(nu2,p2,e2))**2 + (nu_y(nu1,p1,e1)-nu_y(nu2,p2,e2))**2
 
-e1 = nu1 - 3
+e1 = nu1 - 4
 e2 = nu2 - 1
-e4 = nu1 - 4
+e4 = nu1 - 5
 
-e3 = dist(nu1,7467,0.10,nu2,7670,0.10) - 2500000
+#e3 = dist(nu1,7467,0.10,nu2,7670,0.10) - 2500000
 #e3 = 4.124 + 0.817*nu1 - nu2
 
 #this better1
 #e3 = -137.513 + 1.59823*nu1 - 0.00142977*nu1**2 - nu2
-
+e3=-5.76876 + 2.418415*nu1 - 0.16014*nu1**2 - nu2
 
 e6 = 1.1*nu1 - nu2 - 50
 e7 = nu1 - 90

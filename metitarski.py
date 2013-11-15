@@ -19,7 +19,7 @@ metit_options = "NONE"
 
 metit_output = True
 sc_heur = False
-zapprox = False
+zapprox = True
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
 #extra_constraints = ['X1<3.141', 'X1>-3.141']
@@ -119,11 +119,11 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, zapprox=False, sc_he
     elif zapprox:
             #derivative someties contain e, but very small, simplify to zero
         if op2 == '=' and op1 =='>':
-            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s >= -10^-6 )))).' % (var_string,  ' & '.join(y), derivative)
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s > -10^-6)))).' % (var_string,  ' & '.join(y), derivative)
         elif op2 =='=' and op1 == '<':
-            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s <= 10^-6 )))).' % (var_string,  ' & '.join(y), derivative)
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s < 10^-6)))).' % (var_string,  ' & '.join(y), derivative)
         else:
-            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s > 10^-6 | %s <-10^-6)))).' % (var_string,  ' & '.join(y), derivative, derivative)
+            return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s > 10^-6 | %s < -10^-6)))).' % (var_string,  ' & '.join(y), derivative, derivative)
     else:
             #derivative someties contain e, but very small, simplify to zero
             # if op2 == '=' and op1 =='>':

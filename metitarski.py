@@ -17,7 +17,7 @@ from functools import partial
 metit_options = "NONE"
 
 
-metit_output = False
+metit_output = True
 sc_heur = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
@@ -138,7 +138,7 @@ def pred_2_text(pred):
     elif pred == '=':
         return 'eq'
 
-def cont_abs_trans_rel(state, pred, exp, subsdict={'e[^x]':'*10^'}):
+def cont_abs_trans_rel(state, pred, exp, subsdict={'e':'*10^'}):
 
     #use multiprocessing on calling this function.
 

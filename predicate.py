@@ -1,12 +1,10 @@
 __metaclass__ = type
 
-
 import dill
 from sympy import *
 from sympy import diff
 import metitarski
 from itertools import product
-import MetitarskiPrinter
 import re
 
 #to find all functions.

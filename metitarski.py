@@ -17,9 +17,9 @@ from functools import partial
 metit_options = "NONE"
 
 
-metit_output = True
+metit_output = False
 sc_heur = False
-zapprox = True
+zapprox = False
 
 #extra_constraints = ['SS^2+C^2=1','SS<1','SS>-1','C<1','C>-1']
 #extra_constraints = ['X1<3.141', 'X1>-3.141']

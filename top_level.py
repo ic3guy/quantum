@@ -34,7 +34,7 @@ class CLI(cmd.Cmd):
         except KeyboardInterrupt:
             pause = 1
             print 'abstraction paused'
-            
+
     def do_graphiz(self,arg):
         qutilities.output_graphiz(quantum.cur_exp.hybrid_system)
 

@@ -147,7 +147,7 @@ def pred_2_text(pred):
     elif pred == '=':
         return 'eq'
 
-def cont_abs_trans_rel(state, pred, exp, subsdict={'exp':'10^'}):
+def cont_abs_trans_rel(state, pred, exp, subsdict={'e[^x]':'*10^'}):
 
     #use multiprocessing on calling this function.
 

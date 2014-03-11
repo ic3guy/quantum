@@ -25,16 +25,30 @@ inv2 = y + 10
 ddx = -ax * sin(omega * tau)
 ddy = -ay * sin(omega * tau) * omega
 
+system_def = {('m1',):
+              {'flow': {x.diff(t): ddx,
+                        y.diff(t): ddy,
+                        tau.diff(t): 1},
+               't': [],
+               'inv': (MetitPredicate(x + 10, '<'),
+                       MetitPredicate(y + 10, '<'),),
+               'colour': 'lightblue'}, }
+
+dxdt = predicate.metit_derivative(predicate.MetitEquation(ddx), ('m1',), system_def)
+dydt = predicate.metit_derivative(predicate.MetitEquation(ddy), ('m1',), system_def)
+
 equations = [predicate.MetitEquation(ddx),
              predicate.MetitEquation(ddy),
-             predicate.MetitEquation(inv1),
-             predicate.MetitEquation(inv2),
+             predicate.MetitEquation(inv1, oplist=['>', ]),
+             predicate.MetitEquation(inv2, oplist=['>', ]),
              predicate.MetitEquation(tau, oplist=['>', '=']),
              predicate.MetitEquation(x),
              predicate.MetitEquation(y),
              predicate.MetitEquation(tau - 10, oplist=['<', ]),
              predicate.MetitEquation(x - 10, oplist=['<', ]),
-             predicate.MetitEquation(y - 10, oplist=['<', ]), ]
+             predicate.MetitEquation(y - 10, oplist=['<', ]),
+             dxdt,
+             dydt]
              #predicate.MetitEquation(x + 10, oplist=['>', '=']),
              #predicate.MetitEquation(y + 10, oplist=['>', '='])]
              
@@ -45,14 +59,7 @@ initial_state = {'d': ('m1', ),
 
 bad_state = ''
 
-system_def = {('m1',):
-              {'flow': {x.diff(t): ddx,
-                        y.diff(t): ddy,
-                        tau.diff(t): 1},
-               't': [],
-               'inv': (MetitPredicate(x + 10, '<'),
-                       MetitPredicate(y + 10, '<'),),
-               'colour': 'lightblue'}, }
+
                                      
 # x1eq = predicate.MetitEquation(1 - sqrt(x1))
 # x1d = predicate.metit_derivative(x1eq, ('s1',), system_def)

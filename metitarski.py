@@ -101,19 +101,27 @@ def make_fof_inf(state, var_string,sc_heur=False,extra_constraints=[]):
 #         #return 'fof(checkTransition, conjecture, (![%s] : ((X1>-3.141 & X1<3.141) & %s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 #         return 'fof(checkTransition, conjecture, (![%s] : (%s => %s %s 0))).' % (state.varstring, equation, derivative, op)
 
-def make_fof_rel_2(var_string, state, derivative, op1, op2, zapprox=False, sc_heur=False, extra_constraints=[]):
+
+def make_fof_rel_2(var_string, state, derivative,
+                   op1, op2, zapprox=False,
+                   sc_heur=False, extra_constraints=[]):
+    
     y = list(extra_constraints)
     y.extend([str(state)])
     #y = ' & '.join(y)
     #print y
     #print y
     if sc_heur:
-        subsdict={'cos(PX)':'C','sin(PX)':'S'}
+        subsdict = {'cos(PX)': 'C', 'sin(PX)': 'S'}
         rep = dict((re.escape(k), v) for k, v in subsdict.iteritems())
         pattern = re.compile("|".join(rep.keys()))
         #y = pattern.sub(lambda m: subsdict[m.group(0)], y)
 
-        fof_rel = 'fof(checkTransition, conjecture, (![%s,S,C] : (%s & S^2+C^2=1 => (%s %s 0 | %s %s 0)))).' % (var_string, ' & '.join(y), derivative, op1, derivative, op2)
+        fof_rel = ('fof(checkTransition, conjecture, '
+                   '(![{},S,C] : '
+                   '({} & S^2+C^2=1 => ({} {} 0 | {} {} 0))'
+                   ')).').format(var_string, ' & '.join(y),
+                                 derivative, op1, derivative, op2)
         
         return pattern.sub(lambda m: subsdict[m.group(0)], fof_rel)
     elif zapprox:
@@ -131,7 +139,12 @@ def make_fof_rel_2(var_string, state, derivative, op1, op2, zapprox=False, sc_he
             # elif op2 =='=' and op1 == '<':
             #     return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s -10^-6 | (%s < 10^-6 & %s > -10^-6))))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, derivative)
             # else:
-        return 'fof(checkTransition, conjecture, (![%s] : (%s => (%s %s 0 | %s %s 0)))).' % (var_string,  ' & '.join(y), derivative, op1, derivative, op2)
+        return ('fof(checkTransition, conjecture, '
+                '(![{}] :'
+                '({} => ({} {} 0 | {} {} 0)))).').format(var_string,
+                                                         ' & '.join(y),
+                                                         derivative, op1,
+                                                         derivative, op2)
     
 def send_to_file(formula, directory, name):
     print 'sending %s\n' % name

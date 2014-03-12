@@ -8,15 +8,7 @@ import tempfile
 #from multiprocessing import Pool
 from functools import partial
 
-#metit_options = ('metit', 
-#                  '--autoInclude', 
-#                  '--time','10',
-#                  '-q',
-#                  '-')
-
 metit_options = "NONE"
-
-
 metit_output = False
 sc_heur = False
 zapprox = False
@@ -27,7 +19,8 @@ zapprox = False
 
 process = None
 
-def send_to_metit(fof,output=metit_output,metit_options=metit_options):
+
+def send_to_metit(fof, output=metit_output, metit_options=metit_options):
 
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(fof)
@@ -41,16 +34,21 @@ def send_to_metit(fof,output=metit_output,metit_options=metit_options):
         if output:
             print fof
             print metit_options
-            process = subprocess.call(metit_options_call,stderr=subprocess.STDOUT)
+            process = subprocess.call(metit_options_call,
+                                      stderr=subprocess.STDOUT)
         else:
-            process = subprocess.call(metit_options_call, shell=False, stdout=open('/dev/null','w'))
+            process = subprocess.call(metit_options_call,
+                                      shell=False,
+                                      stdout=open('/dev/null', 'w'))
 
     #process.communicate(fof)
             
         print "return code: %s" % process
         return process
 
-def send_to_metit_nob(fof,output=metit_output,metit_options=metit_options):
+
+def send_to_metit_nob(fof, output=metit_output,
+                      metit_options=metit_options):
 
     with tempfile.NamedTemporaryFile(delete=False) as temp:
         temp.write(fof)
@@ -64,9 +62,12 @@ def send_to_metit_nob(fof,output=metit_output,metit_options=metit_options):
         if output:
             print fof
             print metit_options
-            process = subprocess.Popen(metit_options_call,stderr=subprocess.STDOUT)
+            process = subprocess.Popen(metit_options_call,
+                                       stderr=subprocess.STDOUT)
         else:
-            process = subprocess.Popen(metit_options_call, shell=False, stdout=open('/dev/null','w'))
+            process = subprocess.Popen(metit_options_call,
+                                       shell=False,
+                                       stdout=open('/dev/null', 'w'))
 
     #process.communicate(fof)
             
@@ -145,12 +146,13 @@ def make_fof_rel_2(var_string, state, derivative,
                                                          ' & '.join(y),
                                                          derivative, op1,
                                                          derivative, op2)
-    
+
+
 def send_to_file(formula, directory, name):
     print 'sending %s\n' % name
     f = open('%s/%s' % (directory, name), 'wa')
     f.write(formula)
-    f.close()        
+    f.close()
     
 def pred_2_text(pred):
     if pred == '>':
@@ -160,12 +162,13 @@ def pred_2_text(pred):
     elif pred == '=':
         return 'eq'
 
-def cont_abs_trans_rel(state, pred, exp, subsdict={'e[^x]':'*10^'}):
+    
+def cont_abs_trans_rel(state, pred, exp, subsdict={'e[^x]': '*10^'}):
 
     #use multiprocessing on calling this function.
 
     metit_options = exp.metit_options
-    Q1,Q2,Q3 = [],[],[]
+    Q1, Q2, Q3 = [], [], []
      
     der = str(predicate.metit_derivative(pred, state.discrete_part, exp.system_def))
     

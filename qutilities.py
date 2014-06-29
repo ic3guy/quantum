@@ -84,4 +84,5 @@ def output_graphiz(system):
                 next
 
     graph.write_png('test.png')
+    graph.write('graph_out.txt')
             

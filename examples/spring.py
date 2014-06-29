@@ -24,7 +24,7 @@ equations = [MetitEquation(x),
              MetitEquation(v, var_id=1)]
 
 
-equations.extend(get_derivs(1, MetitEquation(v), system_def, ('m1',)))
+equations.extend(get_derivs(2, MetitEquation(v), system_def, ('m1',)))
 
 initial_state = {'d': ('m1', ), 'c': [str(MetitPredicate(*_)) for _ in
                                      [(x, '='),

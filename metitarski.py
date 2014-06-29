@@ -287,23 +287,23 @@ def checkTransition3(state, pred, updates, exp):
     if not processes[1].returncode:
         Q1.append(state)
             #print 'In Q1'
-        send_to_file(gteq, exp.disc_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(gteq, exp.disc_trans_proved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number, pred.eq_num, pred_2_text(pred.operator)))
     else: 
-        send_to_file(gteq, exp.disc_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(gteq, exp.disc_trans_unproved_dir, 'S_%s--Q1--P_%s--O_%s--I_gteq.tptp' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
     
     if not processes[0].returncode:
         Q3.append(state)
             #print 'In Q3'
-        send_to_file(lteq, exp.disc_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(lteq, exp.disc_trans_proved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
     else:
-        send_to_file(lteq, exp.disc_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(lteq, exp.disc_trans_unproved_dir, 'S_%s--Q3--P_%s--O_%s--I_lteq.tptp' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
 
     if not processes[2].returncode:
         Q2.append(state)
             #print 'In Q2'
-        send_to_file(gt_or_lt, exp.disc_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(gt_or_lt, exp.disc_trans_proved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq.tptp' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
     else:
-        send_to_file(gt_or_lt, exp.disc_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
+        send_to_file(gt_or_lt, exp.disc_trans_unproved_dir, 'S_%s--Q2--P_%s--O_%s--I_neq.tptp' % (state.number,pred.eq_num, pred_2_text(pred.operator)))
 
     return (Q1,Q2,Q3)
 

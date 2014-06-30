@@ -19,8 +19,8 @@ system_def = {('m1', ):
                't': [],
                'inv': [], }}
               
-equations = [MetitEquation((x1**2+x2**2-1))]
+equations = [MetitEquation((x1**2+x2**2-1)**3)]
 
 initial_state = {'d': ('m1',), 'c': [str(MetitPredicate(*x)) for x in
-                                     [((x1**2+x2**2-1), '<')]]}
+                                     [((x1**2+x2**2-1)**3, '<')]]}
 

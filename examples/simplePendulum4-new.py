@@ -20,6 +20,7 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
 
 initial_state = {'d':('cont',),'c':['X1>0','X2>0']}
 bad_state = []
+extra_constraints = ''
     
 equations = [predicate.MetitEquation(x1),
              predicate.MetitEquation(x2),

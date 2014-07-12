@@ -122,7 +122,7 @@ def print_system(system, feasible_only=True):
 
 def is_state_feasible(state, exp, check=False):
     if check or not(state.feasability_checked):
-        fof = metitarski.make_fof_inf(state, exp.var_string,extra_constraints=exp.extra_constraints)
+        fof = metitarski.make_fof_inf(state, exp.var_string,extra_constraints=exp.extra_constraints,sc_heur=False)
         #print "Sending: " + fof
         rc = metitarski.send_to_metit(fof,metit_options=exp.metit_options)
         state.feasability_checked = True
@@ -185,7 +185,7 @@ def gen_pos_successors(pred, state, exp, bad=False, z=1):
 
 def next_cont_states(state, exp, bad=False, check=False):
     
-    pool = Pool()
+    pool = Pool(1)
     #args = state, system,system_def,var_string, experiments
     #import pdb; pdb.set_trace()
     next_pos_states = pool.map(functools.partial(gen_pos_successors,state=state, exp=exp), state.state, chunksize=1)

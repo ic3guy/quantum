@@ -17,14 +17,6 @@ import functools
 
 sys.path.insert(0,'./examples/')
 
-#cur_exp = None
-#filenames = ['twotanks']
-#filenames = ['heater-new-timed']
-#filenames = ['bounceBallsin-new5c']
-#filenames = ['simplePendulum3-new','simplePendulum4-new']
-#filenames = ['simplePendulum-new','simplePendulum2-new',]
-#filenames = ['simplePendulum4-new']
-#filenames = ['simplePendulum-new','simplePendulum2-new','simplePendulum3-new','simplePendulum4-new']
 
 hybrid_system = None
 cur_exp = None
@@ -85,7 +77,7 @@ def run(filenames, to=[0.1]):
             if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
                 f.write('**PROP VIOLATED**')
             else:
-                SMV = open(cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')
+                SMV = open('./smv/'+cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')
             
                 smv_output = nusmv.construct_nusmv_input(cur_exp.hybrid_system,2)
             
@@ -102,10 +94,22 @@ def run(filenames, to=[0.1]):
                 f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)        
                 f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
                 f.close()
-            
-                abstraction.print_system(cur_exp.hybrid_system)
 
+                f = open('abs.txt', 'a', 0)
+                f.write(40*'*'+'\n')
+                f.write(cur_exp.filename + '-' + str(metit_timeout) + '-' + '\n')
+                f.write(40*'*' + '\n')
+                f.write(abstraction.print_system(cur_exp.hybrid_system))
+                f.close()
     
+
+
+
+
+
+
+
+
 
 
 

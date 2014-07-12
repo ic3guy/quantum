@@ -114,11 +114,16 @@ def initial_abstract_system_setup(exp):
     #return initial_abstract_system
 
 def print_system(system, feasible_only=True):
+
+    out_string = ""
+    
     for key, s in system.items():
         if s.is_feasible and s.feasability_checked and s.next_states and feasible_only:
-            return "{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states)
+            out_string+= "{} : From State {:>5} : {} - {} \tto States {}\n".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states)
         elif feasible_only==False:
-            return "{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states)
+            out_string+= "{} : From State {:>5} : {} - {} \tto States {}".format(s.is_feasible, s.number, s, s.discrete_part, s.next_states)
+
+    return out_string
 
 def is_state_feasible(state, exp, check=False):
     if check or not(state.feasability_checked):

@@ -29,10 +29,10 @@ sys.path.insert(0,'./examples/')
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=5):
+def run(filenames, to=[0.1]):
     for file_name in filenames:
 
-        for metit_timeout in [to]:
+        for metit_timeout in to:
             global cur_exp
             cur_exp = experiment.Experiment(file_name,metit_timeout)        
 
@@ -69,7 +69,7 @@ def run(filenames, to=5):
             
             
             next_states=[]
-            pool2 = Pool()
+            pool2 = Pool(1)
             
             next_states_res = pool2.map(functools.partial(abstraction.is_state_feasible,exp=cur_exp), [cur_exp.hybrid_system[state_num] for state_num in cur_exp.initial_state_numbers], chunksize=1)
             

@@ -15,18 +15,30 @@ import sys
 from multiprocessing.dummy import Pool
 import functools
 
-sys.path.insert(0,'./examples/')
+sys.path.insert(0, './examples/')
 
+# exps = ['pend-fric-th-timeout-base-1',
+#         'pend-fric-th-timeout-base1-1',
+#         'pend-fric-th-timeout-base2-1',
+#         'pend-fric-th-timeout-base3-1',
+        
+exps = ['pend-fric-th-timeout-base2-2',
+        'pend-fric-th-timeout-base3-2', ]
 
+# 'pend-fric-th-timeout-base-2',
+#         'pend-fric-th-timeout-base1-2',
+# 'pend-fric-th-timeout-base4-1',
+# 'pend-fric-th-timeout-base4-2'
+ 
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=[0.1]):
+def run(filenames, to=[10]):
     for file_name in filenames:
 
         for metit_timeout in to:
             global cur_exp
-            cur_exp = experiment.Experiment(file_name,metit_timeout)        
+            cur_exp = experiment.Experiment(file_name, metit_timeout)        
 
             print cur_exp.system_def
         
@@ -96,7 +108,7 @@ def run(filenames, to=[0.1]):
                 f.close()
 
                 f = open('abs.txt', 'a', 0)
-                f.write(40*'*'+'\n')
+                f.write('\n'+40*'*'+'\n')
                 f.write(cur_exp.filename + '-' + str(metit_timeout) + '-' + '\n')
                 f.write(40*'*' + '\n')
                 f.write(abstraction.print_system(cur_exp.hybrid_system))

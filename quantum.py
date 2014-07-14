@@ -87,6 +87,8 @@ def run(filenames, to=[10]):
             pool2.close()
 
             if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
+                end_time = time.time()
+                f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
                 f.write('**PROP VIOLATED**')
             else:
                 SMV = open('./smv/'+cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')

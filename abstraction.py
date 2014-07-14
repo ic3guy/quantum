@@ -328,36 +328,37 @@ def lazy_cont_abs(exp,initial_states):
                         if exp.bad_predicate and exp.bad_predicate in exp.hybrid_system[to_state_num].state:
                             #import pdb; pdb.set_trace()
                             current_states_copy = list(current_states)
-                            print 'found bad transition from state %s to state %s' % (state_num, to_state_num)  
-                            #double check here!
-                            iter_num += 1
-                            old_timeout = exp.metit_timeout
-                            new_timeout = old_timeout*2
+                            print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
+                            return False
+                            # #double check here!
+                            # iter_num += 1
+                            # old_timeout = exp.metit_timeout
+                            # new_timeout = old_timeout*2
                             
-                            exp.metit_options =  ['metit', 
-                                                  '--autoInclude', 
-                                                  '--time',str(new_timeout)]
+                            # exp.metit_options =  ['metit', 
+                            #                       '--autoInclude', 
+                            #                       '--time',str(new_timeout)]
                                                 
 
-                            print 'new timeout: %s' % new_timeout
-                            exp.metit_timeout = new_timeout
+                            # print 'new timeout: %s' % new_timeout
+                            # exp.metit_timeout = new_timeout
     
-                            new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp, check=True)]
-                            new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
-                            new_current_states = new_cont_states+new_disc_states
+                            # new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp, check=True)]
+                            # new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
+                            # new_current_states = new_cont_states+new_disc_states
                             
-                            #import pdb; pdb.set_trace()
+                            # #import pdb; pdb.set_trace()
 
-                            if len(new_current_states) == len(current_states_copy): 
-                                if iter_num > 4:
-                                    print 'Too many retries'
-                                    return False
-                                else:
-                                    print 'Iteration %s' % iter_num
-                                    break
-                            elif len(new_current_states) < len(current_states_copy):
-                                print 'progress!'
-                                break
+                            # if len(new_current_states) == len(current_states_copy): 
+                            #     if iter_num > 4:
+                            #         print 'Too many retries'
+                            #         return False
+                            #     else:
+                            #         print 'Iteration %s' % iter_num
+                            #         break
+                            # elif len(new_current_states) < len(current_states_copy):
+                            #     print 'progress!'
+                            #     break
                     else:
                         done = True
                 

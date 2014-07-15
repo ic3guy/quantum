@@ -17,23 +17,31 @@ import functools
 
 sys.path.insert(0, './examples/')
 
-# exps = ['pend-fric-th-timeout-base-1',
-#         'pend-fric-th-timeout-base1-1',
-#         'pend-fric-th-timeout-base2-1',
-#         'pend-fric-th-timeout-base3-1',
-        
-exps = ['pend-fric-th-timeout-base2-2',
-        'pend-fric-th-timeout-base3-2', ]
+exps = ['pend-fric-th-timeout-base-1',
+        'pend-fric-th-timeout-base-2',
+        'pend-fric-th-timeout-base1-1',
+        'pend-fric-th-timeout-base1-2',
+        'pend-fric-th-timeout-base2-1',
+        'pend-fric-th-timeout-base2-2',
+        'pend-fric-th-timeout-base3-1']
 
-# 'pend-fric-th-timeout-base-2',
-#         'pend-fric-th-timeout-base1-2',
-# 'pend-fric-th-timeout-base4-1',
-# 'pend-fric-th-timeout-base4-2'
- 
+exps =  ['pend-fric-th-timeout-base4-1',
+         'pend-fric-th-timeout-base4-2',
+         'pend-fric-th-timeout-base3-2']
+
+# 'pend-fric-th-timeout-base3-2'
+
+# exps = ['pfth-base-b',
+#         'pfth-base-b1',
+#         'pfth-base-b2',
+#         'pfth-base-b3',
+#         'pfth-base-b4']
+
 hybrid_system = None
 cur_exp = None
 
-def run(filenames, to=[10]):
+
+def run(filenames, to=[0.1,1,10]):
     for file_name in filenames:
 
         for metit_timeout in to:
@@ -73,7 +81,7 @@ def run(filenames, to=[10]):
             
             
             next_states=[]
-            pool2 = Pool(1)
+            pool2 = Pool()
             
             next_states_res = pool2.map(functools.partial(abstraction.is_state_feasible,exp=cur_exp), [cur_exp.hybrid_system[state_num] for state_num in cur_exp.initial_state_numbers], chunksize=1)
             

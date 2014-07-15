@@ -190,7 +190,7 @@ def gen_pos_successors(pred, state, exp, bad=False, z=1):
 
 def next_cont_states(state, exp, bad=False, check=False):
     
-    pool = Pool(1)
+    pool = Pool()
     #args = state, system,system_def,var_string, experiments
     #import pdb; pdb.set_trace()
     next_pos_states = pool.map(functools.partial(gen_pos_successors,state=state, exp=exp), state.state, chunksize=1)

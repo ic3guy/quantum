@@ -25,9 +25,9 @@ exps = ['pend-fric-th-timeout-base-1',
         'pend-fric-th-timeout-base2-2',
         'pend-fric-th-timeout-base3-1']
 
-exps =  ['pend-fric-th-timeout-base4-1',
-         'pend-fric-th-timeout-base4-2',
-         'pend-fric-th-timeout-base3-2']
+exps = ['pend-fric-th-timeout-base4-1',
+        'pend-fric-th-timeout-base4-2',
+        'pend-fric-th-timeout-base3-2']
 
 # 'pend-fric-th-timeout-base3-2'
 
@@ -46,7 +46,7 @@ def run(filenames, to=[0.1,1,10]):
 
         for metit_timeout in to:
             global cur_exp
-            cur_exp = experiment.Experiment(file_name, metit_timeout)        
+            cur_exp = experiment.Experiment(file_name, metit_timeout)
 
             print cur_exp.system_def
         
@@ -56,7 +56,7 @@ def run(filenames, to=[0.1,1,10]):
         
             cur_exp.create_dirs()
 
-            start_time = time.time()    
+            start_time = time.time()
             f = open('log.txt', 'a', 0)
             f.write(40*'*'+'\n')
             f.write(cur_exp.filename + '-' + str(metit_timeout) + '-' + '\n')
@@ -113,7 +113,7 @@ def run(filenames, to=[0.1,1,10]):
                 f.write('Number of UnProved InFeasible : %s\n' % cur_exp.infeas_unproved)
                 f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
                 f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
-                f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)        
+                f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)
                 f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
                 f.close()
 

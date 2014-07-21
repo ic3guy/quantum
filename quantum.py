@@ -1,14 +1,14 @@
-from sympy import *
-import metitarski
-from itertools import product
+#from sympy import *
+#import metitarski
+#from itertools import product
 import predicate
 import abstraction
-import datetime
-import os
+#import datetime
+#import os
 import nusmv
 #import timing
 import time
-from termcolor import colored, cprint
+#from termcolor import colored, cprint
 import qutilities
 import experiment
 import sys
@@ -23,7 +23,7 @@ exps = ['pend-fric-th-timeout-base-1',
         'pend-fric-th-timeout-base1-2',
         'pend-fric-th-timeout-base2-1',
         'pend-fric-th-timeout-base2-2',
-        'pend-fric-th-timeout-base3-1']
+        'pend-fric-th-timeout-base3-1'] 
 
 exps = ['pend-fric-th-timeout-base4-1',
         'pend-fric-th-timeout-base4-2',
@@ -41,7 +41,8 @@ hybrid_system = None
 cur_exp = None
 
 
-def run(filenames, to=[0.1,1,10]):
+
+def run(filenames,to=[0.1]):
     for file_name in filenames:
 
         for metit_timeout in to:
@@ -97,6 +98,11 @@ def run(filenames, to=[0.1,1,10]):
             if not(abstraction.lazy_cont_abs(cur_exp,initial_states=next_states)):
                 end_time = time.time()
                 f.write('Total Time taken : %s\n' % qutilities.secondsToStr(end_time-start_time))
+                f.write('Number of Final Abstract States : %s\n' % len([x for x in cur_exp.hybrid_system.itervalues() if x.is_feasible and x.feasability_checked and x.next_states]))
+                f.write('Number of UnProved InFeasible : %s\n' % cur_exp.infeas_unproved)
+                f.write('Number of Proved Infeasible : %s\n' % cur_exp.infeas_proved)
+                f.write('Number of Proved Transitions : %s\n' % cur_exp.trans_proved)
+                f.write('Number of UnProved Transitions : %s\n' % cur_exp.trans_unproved)
                 f.write('**PROP VIOLATED**')
             else:
                 SMV = open('./smv/'+cur_exp.filename + '-' + str(metit_timeout) + '.smv','w')

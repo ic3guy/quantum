@@ -331,8 +331,13 @@ def lazy_cont_abs(exp,initial_states):
                             current_states_copy = list(current_states)
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
                             if cegar:
+                                f = open('cegar.txt', 'a', 0)
+                                f.write(40*'*'+'\n')
+                                f.write(exp.filename + '-' + str(exp.metit_timeout) + '-' + '\n')
+                                f.write(40*'*' + '\n')
+                                f.write('found bad transition from state %s to state %s' % (state_num, to_state_num))
                             #double check here!
-                                import pdb; pdb.set_trace()
+                                #import pdb; pdb.set_trace()
                                 iter_num += 1
                                 old_timeout = exp.metit_timeout
                                 new_timeout = old_timeout*10
@@ -342,7 +347,7 @@ def lazy_cont_abs(exp,initial_states):
                                                   '--time',str(new_timeout)]
                                                 
 
-                                print 'new timeout: %s' % new_timeout
+                                f.write('new timeout: %s' % new_timeout)
                                 exp.metit_timeout = new_timeout
 
                                 if not is_state_feasible(exp.hybrid_system[state_num],exp,check=True):
@@ -355,7 +360,7 @@ def lazy_cont_abs(exp,initial_states):
                                 new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
                                 new_current_states = new_cont_states+new_disc_states
                             
-                                import pdb; pdb.set_trace()
+                                #import pdb; pdb.set_trace()
 
                                 if len(new_current_states) == len(current_states_copy): 
                                     if iter_num > 4:
@@ -365,7 +370,7 @@ def lazy_cont_abs(exp,initial_states):
                                         print 'Iteration %s' % iter_num
                                         break
                                 elif len(new_current_states) < len(current_states_copy):
-                                        print 'progress!'
+                                        f.write('progress!\n')
                                         current_states = new_current_states
                                         break
                             else:

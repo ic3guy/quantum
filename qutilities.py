@@ -70,9 +70,16 @@ def output_graphiz(system):
             nodes[state_number] = pydot.Node(state_number,label=str(state.number) + '\n' + label + '\n' + str(state.discrete_part),style='filled',fillcolor=state.colour)
             
     #print nodes
+    
+    visited_states = []
+
+    for state_number, state in system.iteritems():
+        if state.is_feasible:
+            visited_states += system[state_number].next_states
 
     for n, node in nodes.iteritems():
-        graph.add_node(node)
+        if n in visited_states:
+            graph.add_node(node)
 
     for state_number, state in system.iteritems():
         print state_number, set(state.next_states), state.colour

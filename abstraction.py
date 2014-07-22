@@ -288,7 +288,7 @@ def next_disc_states(state, exp, bad=False, check=False):
                     state.next_states.extend(next_states)
                 else:
                     print 'Substitution sends us to an infeasible state...possible error here.'
-                    #state.is_feasible = False
+                    state.is_feasible = False
             else:
                 found_next_state = find_state(exp.hybrid_system, predicate.State(666,transition['next_state'],*state.state))
 

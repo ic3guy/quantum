@@ -40,9 +40,7 @@ exps = ['pend-fric-th-timeout-base4-1',
 hybrid_system = None
 cur_exp = None
 
-
-
-def run(filenames,to=[0.1]):
+def run(filenames, to=[0.1]):
     for file_name in filenames:
 
         for metit_timeout in to:

@@ -10,6 +10,7 @@ import functools
 import dill as pickle
 
 cegar = True
+sc_heur = True
 
 def find_state(system, next_state):
     for state in system.values():
@@ -128,7 +129,7 @@ def print_system(system, feasible_only=True):
 
 def is_state_feasible(state, exp, check=False):
     if check or not(state.feasability_checked):
-        fof = metitarski.make_fof_inf(state, exp.var_string,extra_constraints=exp.extra_constraints,sc_heur=False)
+        fof = metitarski.make_fof_inf(state, exp.var_string,extra_constraints=exp.extra_constraints,sc_heur=sc_heur)
         #print "Sending: " + fof
         rc = metitarski.send_to_metit(fof,metit_options=exp.metit_options)
         state.feasability_checked = True

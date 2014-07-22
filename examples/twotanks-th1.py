@@ -13,7 +13,7 @@ x2 = Function('x2')(t)
 q = [('s1','s2','unsafe')] #can just get dictionary keys...
 
 bad = False
-extra_constraints = ''
+extra_constraints = ['X1>4','X1<6']
 
 ge = x2 - 1
 guard = predicate.MetitPredicate(ge,'=')
@@ -26,7 +26,7 @@ guard = predicate.MetitPredicate(ge,'=')
 
 # e4 = x1-5.25
 # e5 = x1-5.75
-# e6 = x2-0.5
+e6 = x2-0.5
 #e5 = 1-sqrt(x1)
 #e6 = sqrt(x1)-sqrt(x2)
 unsafe = (x1-4.25)**2+(x2-0.25)**2-0.0625
@@ -36,14 +36,16 @@ e8 = x2-(6.47243 - 1.23943*x1)
 equations = [predicate.MetitEquation(ge,var_id=2),
              MetitEquation(unsafe),
              MetitEquation(init),
-             e8
+             MetitEquation(e8),
+             MetitEquation(e6)
             ]
 
 
 initial_state = {'d':('s1',),'c': [str(predicate.MetitPredicate(*x)) for x in
                                    [(e8, '>'),
                                     (init, '<'),
-                                    (unsafe, '>')]]}
+                                    (unsafe, '>'),
+                                    (e6, '<')]]}
 
 
 

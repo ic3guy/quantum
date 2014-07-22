@@ -29,7 +29,7 @@ e6 = x2-0.5
 #e5 = 1-sqrt(x1)
 #e6 = sqrt(x1)-sqrt(x2)
 e7 = (x1-4.25)**2+(x2-0.25)**2-0.0625
-e8 = x2-(6.47243 - 1.23943*x1)
+#e8 = x2-(6.47243 - 1.23943*x1)
 
 equations = [predicate.MetitEquation(ge,var_id=2),
              predicate.MetitEquation(x2,var_id=2,oplist=['>','=']),
@@ -39,7 +39,7 @@ equations = [predicate.MetitEquation(ge,var_id=2),
              predicate.MetitEquation(e1,var_id=1,oplist=['>','=']),
              predicate.MetitEquation(e5,var_id=1),
              predicate.MetitEquation(e6,var_id=2),
-             predicate.MetitEquation(e8),
+            # predicate.MetitEquation(e8),
              predicate.MetitEquation(e4,var_id=1)
             ]
 
@@ -74,8 +74,7 @@ system_def = {('s1',) : {'flow' : { x1.diff(t): 1 - sqrt(x1),
                                   MetitPredicate(x2,'<'),
                                   MetitPredicate(x2-1,'>'),
                                   MetitPredicate(x2-2,'>'), 
-                                  MetitPredicate(x2-2,'='), 
-                                  MetitPredicate(e7,'<')),
+                                  MetitPredicate(x2-2,'=')),
                          'colour':'lightblue'},
               ('s2',) : {'flow' : { x1.diff(t): 1 - sqrt(x1-x2+1),
                                     x2.diff(t): sqrt(x1-x2+1)-sqrt(x2)}
@@ -83,12 +82,22 @@ system_def = {('s1',) : {'flow' : { x1.diff(t): 1 - sqrt(x1),
                          't' : [{'guard':([guard],),
                                  'next_state' : ('s1',),
                                  'updates' : {}}],
-                         'inv' : (MetitPredicate(x1-4,'<'),MetitPredicate(x1-6,'>'),MetitPredicate(x2-1,'<'),MetitPredicate(x2-2,'>'),MetitPredicate(x2,'<'),MetitPredicate(x2,'='),MetitPredicate(x2-0.5,'<'),MetitPredicate(x2-0.5,'='),MetitPredicate(e7,'<')),
+                         'inv' : (MetitPredicate(x1-4,'<'),
+                                  MetitPredicate(x1-6,'>'),
+                                  MetitPredicate(x2-1,'<'),
+                                  MetitPredicate(x2-2,'>'),
+                                  MetitPredicate(x2,'<'),
+                                  MetitPredicate(x2,'='),
+                                  MetitPredicate(x2-0.5,'<'),
+                                  MetitPredicate(x2-0.5,'=')),
                          'colour':'green'},
               ('unsafe',): {'flow' : {x1.diff(t) : 0,
                                       x2.diff(t) : 0},
                             't' : [],
-                            'inv': (MetitPredicate(x1-4,'<'),MetitPredicate(x1-6,'>'),MetitPredicate(x2,'<'),MetitPredicate(x2-1,'>')),
+                            'inv': (MetitPredicate(x1-4,'<'),
+                                    MetitPredicate(x1-6,'>'),
+                                    MetitPredicate(x2,'<'),
+                                    MetitPredicate(x2-1,'>')),
                             'colour': 'red'}}
                                  
                                     

@@ -40,13 +40,7 @@ exps = ['pend-fric-th-timeout-base4-1',
 hybrid_system = None
 cur_exp = None
 
-
-<<<<<<< Updated upstream
-
-def run(filenames,to=[0.1]):
-=======
 def run(filenames, to=[0.1]):
->>>>>>> Stashed changes
     for file_name in filenames:
 
         for metit_timeout in to:

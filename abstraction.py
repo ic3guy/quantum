@@ -9,6 +9,7 @@ from multiprocessing.dummy import Pool
 import functools
 import dill as pickle
 
+cegar = True
 
 def find_state(system, next_state):
     for state in system.values():
@@ -312,7 +313,7 @@ def lazy_cont_abs(exp,initial_states):
     while new_next_states != old_next_states:
         old_next_states = set(new_next_states)
         for n, state_num in enumerate(old_next_states):
-            if not exp.hybrid_system[state_num].next_states:
+            if not exp.hybrid_system[state_num].next_states and exp.hybrid_system[state_num].is_feasible:
                 print 'Analyzing state %s' % state_num
                 new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp)]
                 new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp)]
@@ -329,36 +330,46 @@ def lazy_cont_abs(exp,initial_states):
                             #import pdb; pdb.set_trace()
                             current_states_copy = list(current_states)
                             print 'found bad transition from state %s to state %s' % (state_num, to_state_num)
-                            return False
-                            # #double check here!
-                            # iter_num += 1
-                            # old_timeout = exp.metit_timeout
-                            # new_timeout = old_timeout*2
+                            if cegar:
+                            #double check here!
+                                import pdb; pdb.set_trace()
+                                iter_num += 1
+                                old_timeout = exp.metit_timeout
+                                new_timeout = old_timeout*10
                             
-                            # exp.metit_options =  ['metit', 
-                            #                       '--autoInclude', 
-                            #                       '--time',str(new_timeout)]
+                                exp.metit_options =  ['metit', 
+                                                  '--autoInclude', 
+                                                  '--time',str(new_timeout)]
                                                 
 
-                            # print 'new timeout: %s' % new_timeout
-                            # exp.metit_timeout = new_timeout
-    
-                            # new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp, check=True)]
-                            # new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
-                            # new_current_states = new_cont_states+new_disc_states
-                            
-                            # #import pdb; pdb.set_trace()
+                                print 'new timeout: %s' % new_timeout
+                                exp.metit_timeout = new_timeout
 
-                            # if len(new_current_states) == len(current_states_copy): 
-                            #     if iter_num > 4:
-                            #         print 'Too many retries'
-                            #         return False
-                            #     else:
-                            #         print 'Iteration %s' % iter_num
-                            #         break
-                            # elif len(new_current_states) < len(current_states_copy):
-                            #     print 'progress!'
-                            #     break
+                                if not is_state_feasible(exp.hybrid_system[state_num],exp,check=True):
+                                    new_cont_states = []
+                                    new_disc_states = []
+                                    done=True
+                                    break
+    
+                                new_cont_states = [x for x in next_cont_states(exp.hybrid_system[state_num], exp, check=True)]
+                                new_disc_states  = [x for x in next_disc_states(exp.hybrid_system[state_num], exp, check=True)]
+                                new_current_states = new_cont_states+new_disc_states
+                            
+                                import pdb; pdb.set_trace()
+
+                                if len(new_current_states) == len(current_states_copy): 
+                                    if iter_num > 4:
+                                        print 'Too many retries'
+                                        return False
+                                    else:
+                                        print 'Iteration %s' % iter_num
+                                        break
+                                elif len(new_current_states) < len(current_states_copy):
+                                        print 'progress!'
+                                        current_states = new_current_states
+                                        break
+                            else:
+                                return False
                     else:
                         done = True
                 

@@ -33,9 +33,8 @@ equations = [MetitEquation(eq1),
              MetitEquation(x-0.5,var_id=3),
              MetitEquation(g-0.5,var_id=1),
              MetitEquation(g-0.6,var_id=1),
-             MetitEquation(eq4,var_id=3),
-             MetitEquation(cos(g)*0.785),
-             MetitEquation(-2*sin(g))]
+             MetitEquation(g,var_id=1),
+             MetitEquation(eq4,var_id=3)]
 
 
 

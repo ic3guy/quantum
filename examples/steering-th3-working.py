@@ -23,7 +23,6 @@ extra_constraints = []
 equations = [MetitEquation(x+2,var_id=1),
              MetitEquation(x+1,var_id=1),
              MetitEquation(g),
-             #MetitEquation(g+0.25),
              #MetitEquation(g-0.785),
              MetitEquation(-2*sin(g)),
              MetitEquation(-2*cos(g)*-0.785),

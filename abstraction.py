@@ -9,8 +9,8 @@ from multiprocessing.dummy import Pool
 import functools
 import dill as pickle
 
-cegar = True
-sc_heur = True
+cegar = False
+sc_heur = False
 
 def find_state(system, next_state):
     for state in system.values():
@@ -373,6 +373,9 @@ def lazy_cont_abs(exp,initial_states):
                                 elif len(new_current_states) < len(current_states_copy):
                                         f.write('progress!\n')
                                         current_states = new_current_states
+                                        exp.metit_timeout = orig_timeout
+                                        exp.metit_options = orig_opt
+                                        iter_num = 0
                                         break
                             else:
                                 return False

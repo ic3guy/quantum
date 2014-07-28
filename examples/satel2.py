@@ -15,7 +15,7 @@ q = [('initial','rendezvous')] #can just get dictionary keys...
 bad = False
 extra_constraints = ['NU1<300','NU2<300']
 #extra_constraints = ''
-bad_state = ''
+
 
 def nudot(nu, p, e):
     b = sqrt(1.0/(p**3))
@@ -54,16 +54,20 @@ equations = [predicate.MetitEquation(nu1, oplist=['>']),
              predicate.MetitEquation(e3),
              MetitEquation(e1),
              MetitEquation(e2),
-             MetitEquation(e4)
+             MetitEquation(e4),
+             MetitEquation(e6)
             ]
+
+bad_state = MetitPredicate(e3, '=')
 
 initial_state = {'d':('initial',),'c': [str(predicate.MetitPredicate(*x)) for x in
                                         [(nu1, '>'),
                                          (nu2, '>'),
                                          (e3, '>'),
                                          (e2, '<'),
-                                         (e1, '>'),
-                                         (e4, '<')]]}
+                                         (e1, '<'),
+                                         (e4, '<'),
+                                         (e6, '<')]]}
 
 
 system_def = {('initial',) : {'flow' : { nu1.diff(t): nd1,

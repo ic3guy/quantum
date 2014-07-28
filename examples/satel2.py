@@ -18,7 +18,7 @@ extra_constraints = ['NU1<300','NU2<300']
 bad_state = ''
 
 def nudot(nu, p, e):
-    b = ssqrt(1.0/(p**3))
+    b = sqrt(1.0/(p**3))
     e = (1+e*cos(nu * 0.0175))**2
     
     return b*e
@@ -40,7 +40,7 @@ e1 = nu1 - 250
 e2 = nu2 - 50
 e4 = nu1 - 300
 
-e3 = dist(nu1,7074,0.05,nu2,7748,0.10) - 2500000
+e3 = dist(nu1,7074,0.05,nu2,7748,0.10) - 25000000
 
 e6 = 1.1*nu1 - nu2 - 50
 e7 = nu1 - 90
@@ -49,8 +49,8 @@ nd1 = nudot(nu1, 7074,0.05)
 nd2 = nudot(nu2, 7748,0.10)
 
 
-equations = [predicate.MetitEquation(nu1),
-             predicate.MetitEquation(nu2),
+equations = [predicate.MetitEquation(nu1, oplist=['>']),
+             predicate.MetitEquation(nu2, oplist=['>']),
              predicate.MetitEquation(e3),
              MetitEquation(e1),
              MetitEquation(e2),
@@ -58,20 +58,20 @@ equations = [predicate.MetitEquation(nu1),
             ]
 
 initial_state = {'d':('initial',),'c': [str(predicate.MetitPredicate(*x)) for x in
-                                          [(nu1,'>'),
-                                           (nu2,'>'),
-                                           (e3,'>'),
-                                           (e2,'<'),
-                                           (e1,'>'),
-                                           (e4,'<')]]}
+                                        [(nu1, '>'),
+                                         (nu2, '>'),
+                                         (e3, '>'),
+                                         (e2, '<'),
+                                         (e1, '>'),
+                                         (e4, '<')]]}
 
 
 system_def = {('initial',) : {'flow' : { nu1.diff(t): nd1,
                                          nu2.diff(t): nd2},
-                              't' : [{'guard':([MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 2500000,'=')],), 
-                                      'next_state' : ('rendezvous',),
-                                      'updates' : {}}],
-                              'inv' : [MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 2500000,'<')],
+                              't': [{'guard':([MetitPredicate(dist(nu1,7074,0.05,nu2,7748,0.10) - 25000000,'=')],),
+                                     'next_state': ('rendezvous', ),
+                                     'updates': {}}],
+                              'inv': [],
                               'colour':'green'},
               ('rendezvous',) : {'flow' : { nu1.diff(t): 0,
                                             nu2.diff(t): 0},

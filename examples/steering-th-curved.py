@@ -15,23 +15,16 @@ tt = Function('tt')(t)
 
 #r = 2
 
-q = [('go_ahead','straight_ahead','correct_right','left_border','correct_left','right_border','in_canal')]
+q = [('go_ahead','correct_right','left_border','correct_left','right_border','in_canal')]
 
 bad = False
 #extra_constraints = ['X1<3.141', 'X1>-3.141']
 #extra_constraints = ['G<pi/2','G>-pi/2']
 extra_constraints = ['G<1.5','G>-1.5']
 
-eq1 = c
-eq2 = x-1
-eq3 = x+1
-eq4 = x+2
-eq5 = g-0.785
-eq6 = g-0.5
-#eq7 = w - 
-
-equations = [MetitEquation(tt),
-             MetitEquation(x+2,var_id=1,oplist=['>']),
+equations = [MetitEquation(tt,oplist=['>','=']),
+             MetitEquation(x+2,var_id=1),
+             MetitEquation(x-2,var_id=1),
              MetitEquation(x-(0.2*cos(tt-1.5)-0.25)),
              MetitEquation(x-(0.2*sin(tt)+0.5)),
              MetitEquation(g,var_id=2),
@@ -41,15 +34,17 @@ equations = [MetitEquation(tt),
              #MetitEquation(-2*cos(g)*-0.785),
              #MetitEquation(1.23245*sin(g))]
 
+x_eq_ls = predicate.MetitPredicate((x-(0.2*sin(tt)+0.5)),'=')
+x_eq_rs = predicate.MetitPredicate(x-(0.2*cos(tt-1.5)-0.25),'=')
 
-c_eq_z = predicate.MetitPredicate(c,'=')
-x_eq_1 = predicate.MetitPredicate((x-(0.2*sin(tt)+0.5)),'=')
-x_eq_m1 = predicate.MetitPredicate(x-(0.2*cos(tt-1.5)-0.25),'=')
-x_eq_m2 = predicate.MetitPredicate(eq4,'=')
-c_lt_z = predicate.MetitPredicate(c,'<')
+x_eq_m2 = predicate.MetitPredicate(x+2,'=')
+x_eq_2 = predicate.MetitPredicate(x-2,'=')
+
+g_eq_z = MetitPredicate(g,'=')
 
 initial_state = {'d':('go_ahead',),'c':[str(predicate.MetitPredicate(*e)) for e in
                                         [(x-(0.2*cos(tt-1.5)-0.25),'>'),
+                                         (x-(0.2*sin(tt)+0.5),'<'),
                                          (g,'>'),
                                          #(-2*sin(g),'<'),
                                          #(-2*cos(g)*-0.785,'<'),
@@ -58,48 +53,39 @@ initial_state = {'d':('go_ahead',),'c':[str(predicate.MetitPredicate(*e)) for e 
                                          (tt,'=')
                                          ]]}
 
-# initial_state = {'d':('go_ahead',),'c':[str(predicate.MetitPredicate(*e)) for e in
-#                                         [(x-0.6,'<'),
-#                                          (x-0.5,'>'),
-#                                          (eq5,'<'),
-#                                          (eq6,'>'),
-#                                          (eq1,'=')]]}
 
-# bad_state = MetitPredicate(eq4,'=') 
+# bad_state = MetitPredicate(eq4,'=')
 bad_state = ''
 
 system_def = {('correct_left',): {'flow': {x.diff(t): -2*sin(g),
-                                           g.diff(t): 0.785,
+                                           g.diff(t): -0.785,
                                            tt.diff(t): 1},
-                                  't': [{'guard': ([x_eq_1],),
+                                  't': [{'guard': ([x_eq_rs],),
                                          'next_state': ('right_border',),
                                          'updates': {}},
-                                        {'guard': ([c_eq_z],),
-                                         'next_state': ('straight_ahead',),
+                                        {'guard': ([g_eq_z],),
+                                         'next_state': ('go_ahead',),
                                          'updates': {}}],
                                   'inv': [],
                                   'colour':'purple'},
-              
-              ('straight_ahead',): {'flow': {x.diff(t): -2*sin(g),
-                                             g.diff(t): 0,
-                                             tt.diff(t): 1},
-                                    't': [],
-                                    'inv': [],
-                                    'colour': 'orange'},
+          
               
               ('correct_right',): {'flow': {x.diff(t): -2*sin(g),
-                                            g.diff(t): -0.785,
+                                            g.diff(t): 0.785,
                                             tt.diff(t): 1},
-                                   't': [{'guard': ([x_eq_m1],),
+                                   't': [{'guard': ([g_eq_z],),
+                                          'next_state': ('go_ahead', ),
+                                          'updates': {}},
+                                         {'guard': ([x_eq_ls],),
                                           'next_state': ('left_border', ),
                                           'updates': {}}],
                                    'inv': [],
                                    'colour': 'yellow'},
               
               ('left_border',): {'flow': {x.diff(t): -2*sin(g),
-                                          g.diff(t): -0.785,
+                                          g.diff(t): 0.785,
                                           tt.diff(t): 1},
-                                 't': [{'guard': ([x_eq_m1], ),
+                                 't': [{'guard': ([x_eq_ls], ),
                                         'next_state': ('correct_left',),
                                         'updates': {}},
                                        {'guard': ([x_eq_m2], ),
@@ -110,20 +96,23 @@ system_def = {('correct_left',): {'flow': {x.diff(t): -2*sin(g),
               ('go_ahead',): {'flow': {x.diff(t): -2*sin(g),
                                        g.diff(t): 0,
                                        tt.diff(t): 1},
-                              't': [{'guard': ([x_eq_m1], ),
+                              't': [{'guard': ([x_eq_ls], ),
                                      'next_state': ('left_border',),
                                      'updates': {}},
-                                    {'guard': ([x_eq_1],),
+                                    {'guard': ([x_eq_rs],),
                                      'next_state': ('right_border',),
                                      'updates': {}}],
                               'inv': [],
                               'colour': 'green'},
               
               ('right_border',): {'flow': {x.diff(t): -2*sin(g),
-                                           g.diff(t): 0.758,
+                                           g.diff(t): -0.758,
                                            tt.diff(t): 1},
-                                  't': [{'guard': ([x_eq_1], ),
+                                  't': [{'guard': ([x_eq_rs], ),
                                          'next_state': ('correct_right',),
+                                         'updates': {}},
+                                        {'guard': ([x_eq_2], ),
+                                         'next_state': ('in_canal',),
                                          'updates': {}}],
                                   'inv': [],
                                   'colour':'pink'},
@@ -131,7 +120,7 @@ system_def = {('correct_left',): {'flow': {x.diff(t): -2*sin(g),
               ('in_canal',): {'flow': {x.diff(t): 0,
                                        g.diff(t): 0,
                                        tt.diff(t): 1},
-                              't': [{'guard': ([x_eq_m2],),
+                              't': [{'guard': (),
                                      'next_state': [],
                                      'updates': {}}],
                               'inv': [],

@@ -20,9 +20,9 @@ q = [('go_ahead','correct_right','left_border','correct_left','right_border','in
 bad = False
 #extra_constraints = ['X1<3.141', 'X1>-3.141']
 #extra_constraints = ['G<pi/2','G>-pi/2']
-extra_constraints = ['G<1.5','G>-1.5']
+extra_constraints = ['G<1.5','G>-1.5','TT>=0','TT<6']
 
-equations = [MetitEquation(tt,oplist=['>','=']),
+equations = [# MetitEquation(tt,oplist=['>','=']),
              MetitEquation(x+2,var_id=1),
              MetitEquation(x-2,var_id=1),
              MetitEquation(x-(0.2*cos(tt-1.5)-0.25)),
@@ -50,7 +50,7 @@ initial_state = {'d':('go_ahead',),'c':[str(predicate.MetitPredicate(*e)) for e 
                                          #(-2*cos(g)*-0.785,'<'),
                                          #(1.23245*sin(g),'>'),
                                          (g-0.5,'<'),
-                                         (tt,'=')
+                                         #(tt,'=')
                                          ]]}
 
 
@@ -88,11 +88,12 @@ system_def = {('correct_left',): {'flow': {x.diff(t): -2*sin(g),
                                  't': [{'guard': ([x_eq_ls], ),
                                         'next_state': ('correct_left',),
                                         'updates': {}},
-                                       {'guard': ([x_eq_m2], ),
+                                       {'guard': ([x_eq_2], ),
                                         'next_state': ('in_canal',),
                                         'updates': {}}],
-                                 'inv': [],
+                                 'inv': [MetitPredicate(x-(0.2*sin(tt)+0.5),'<')],
                                  'colour':'blue'},
+
               ('go_ahead',): {'flow': {x.diff(t): -2*sin(g),
                                        g.diff(t): 0,
                                        tt.diff(t): 1},
@@ -111,15 +112,15 @@ system_def = {('correct_left',): {'flow': {x.diff(t): -2*sin(g),
                                   't': [{'guard': ([x_eq_rs], ),
                                          'next_state': ('correct_right',),
                                          'updates': {}},
-                                        {'guard': ([x_eq_2], ),
+                                        {'guard': ([x_eq_m2], ),
                                          'next_state': ('in_canal',),
                                          'updates': {}}],
-                                  'inv': [],
+                                  'inv': [MetitPredicate(x-(0.2*cos(tt-1.5)-0.25),'>')],
                                   'colour':'pink'},
 
               ('in_canal',): {'flow': {x.diff(t): 0,
                                        g.diff(t): 0,
-                                       tt.diff(t): 1},
+                                       tt.diff(t): 0},
                               't': [{'guard': (),
                                      'next_state': [],
                                      'updates': {}}],

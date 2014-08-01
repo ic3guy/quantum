@@ -24,7 +24,7 @@ system_def = {('cont',): {'flow': {x1.diff(t): x2,
 initial_state = {'d':('cont',),'c':['X1>0','X2>0',str(MetitPredicate(140.2141 - 127.418*cos(x1) + 63.709*x2**2 + 63.709 - 100,'<'))]}
 bad_state = []
 #extra_constraints = ['X1<3','X1>-3','X2<1','X2>-1']
-extra_constraints = ['X1<3','X1>-3']
+extra_constraints = ['X1<3', 'X1>-3', 'X2<2', 'X2>-2']
 
 
 #is_lyapunov looks nice
@@ -39,7 +39,7 @@ equations = [predicate.MetitEquation(x1),
 
 #bad_state = predicate.MetitPredicate(x2-8,'>')
 
-e5 = predicate.MetitEquation(system_def[('cont',)]['flow'][x2.diff(t)])
-equations.extend(predicate.get_derivs(2,e5,system_def,('cont',)))
+# e5 = predicate.MetitEquation(system_def[('cont',)]['flow'][x2.diff(t)])
+# equations.extend(predicate.get_derivs(2,e5,system_def,('cont',)))
 
 #adding more derivatives, makes more generate that have to be proved, balance between the two

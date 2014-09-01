@@ -2,7 +2,7 @@
 QUANTUM - Qualitative Abstractions of Non-Polynomial Models
 ***********************************************************
 
-26th Nov 2013
+1 Sep 2014
 
 This is a research tool for the automatic qualitative abstraction of hybrid
 dynamical systems that contain transcendental functions.
